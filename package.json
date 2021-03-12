@@ -1,0 +1,42 @@
+{
+  "name": "onemin-table",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "author": {
+    "name": "OrekiSH",
+    "email": "orekish@163.com"
+  },
+  "scripts": {
+    "bootstrap": "node ./scripts/bootstrap.js",
+    "lint": "eslint --ext .vue,.js --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext .vue,.js --ignore-path .gitignore .",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "build": "rollup -c",
+    "build:watch": "rollup -c --watch"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@rollup/plugin-babel": "^5.2.3",
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "@vuepress-dumi/vuepress-theme-dumi": "^0.3.6",
+    "async-validator": "1.11.5",
+    "babel-eslint": "^10.1.0",
+    "element-ui": "^2.15.0",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-vue": "^7.5.0",
+    "lerna": "^3.22.1",
+    "lodash": "^4.17.21",
+    "rollup": "2.30",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-vue": "^5.1.6",
+    "vuepress": "^1.8.1"
+  }
+}

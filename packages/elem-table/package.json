@@ -1,0 +1,48 @@
+{
+  "name": "@onemin-table/elem-table",
+  "version": "0.2.0",
+  "description": "@onemin-table/elem-table",
+  "module": "es/index.js",
+  "main": "lib/index.js",
+  "unpkg": "dist/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "dist",
+    "es"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OrekiSH/onemin-table"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "Firefox ESR",
+    "> 1%",
+    "ie >= 9"
+  ],
+  "keywords": [
+    "onemin-table",
+    "admin",
+    "element-ui",
+    "pro-code",
+    "low-code"
+  ],
+  "authors": [
+    "OrekiSH <orekish@163.com> (https://github.com/OrekiSH)"
+  ],
+  "license": "MIT",
+  "bugs": "https://github.com/OrekiSH/onemin-table/issues",
+  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-table#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@onemin-table/elem-input": "latest",
+    "@onemin-table/elem-select": "latest",
+    "@onemin-table/shared": "latest",
+    "camelcase": "^6.2.0",
+    "klona": "^2.0.4"
+  }
+}
