@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { inputMixin, CustomRender } from '@onemin-table/shared';
+import { inputMixin, CustomRender, loadingProps } from '@onemin-table/shared';
 import SelectSlot from './components/select-slot';
 
 export default {
@@ -104,6 +104,8 @@ export default {
       type: Function,
       default: null,
     },
+
+    ...loadingProps,
   },
 
   computed: {
@@ -131,6 +133,19 @@ export default {
 
     innerPopoverAttrs() {
       return this.genDefaultPopoverAttrs('ot-select__popover--elem');
+    },
+
+    /**
+     * 加载中、无内容时列表项内容渲染函数
+     * loading/empty options render function
+     */
+    innerEmptySlotRender() {
+      if (this.loading) {
+        if (this.emptySlotRender === 'function') return this.emptySlotRender;
+
+        return (h) => h('div', { class: 'el-select-dropdown__empty el-select-dropdown__loading' }, this.loadingText);
+      }
+      return this.emptySlotRender;
     },
   },
 

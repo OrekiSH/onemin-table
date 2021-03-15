@@ -30,6 +30,8 @@ $ yarn add @onemin-table/elem-select
       :border-color="group ? '' : 'red'"
       :width="300"
       :popover-slot-render="popoverSlotRender"
+      :loading="loading"
+      multiple
       @change="handleChange"
     />
   </div>
@@ -39,9 +41,11 @@ $ yarn add @onemin-table/elem-select
   export default {
     data() {
       return {
-        foo: 1,
+        foo: [1],
 
         group: true,
+        groupOptions: [],
+        loading: false,
       };
     },
 
@@ -58,27 +62,35 @@ $ yarn add @onemin-table/elem-select
           value: 3,
         }];
       },
-
-      groupOptions() {
-        return [{
-          label: '分组1',
-          children: this.options,
-        }, {
-          label: '分组2',
-          children: [{
-            label: 'd',
-            value: 4,
-          }],
-        }];
-      },
     },
 
     mounted() {
       const ref = this.$refs.select;
       if (ref) ref.focus();
+      this.fetchGroupOptions();
     },
 
     methods: {
+      fetchGroupOptions() {
+        this.loading = true;
+        setTimeout(() => {
+          const ref = this.$refs.select;
+          if (ref) ref.blur();
+          this.groupOptions = [{
+            label: '分组1',
+            children: this.options,
+          }, {
+            label: '分组2',
+            children: [{
+              label: 'd',
+              value: 4,
+              disabled: true,
+            }],
+          }];
+          this.loading = false;
+        }, 2e3);
+      },
+
       handleChange(val) {
         console.warn(this.foo, val);
       },
@@ -103,6 +115,10 @@ $ yarn add @onemin-table/elem-select
   .ot-select__popover--elem {
     padding: 16px;
   }
+
+  .el-select-dropdown__loading {
+    color: #000;
+  }
 </style>
 :::
 
@@ -113,6 +129,9 @@ $ yarn add @onemin-table/elem-select
 | options(必填) | 选择器下拉列表数据, 含有children的列表自动分组展示 | Array<{ label: string, value?: any, disabled?: boolean, children?: Array }> |
 | prefix-slot-render | 选择器头部内容渲染函数, 相当于`el-select`的prefix slot | Function |
 | empty-slot-render | 选择器无选项时列表渲染函数, 相当于`el-select`的empty slot | Function |
+| loading | 选择器是否加载中 | Boolean |
+| loading-text | 选择器选项加载中列表提示文字 | String |
+| loading-slot-render | 选择器选项加载中列表内容渲染函数, 优先级高于`loading-text` | Function |
 | prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | width | 选择器宽度, 传入数字会被识别为像素值(px) | `String|Number` |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
