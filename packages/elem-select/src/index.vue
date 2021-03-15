@@ -8,44 +8,48 @@
       <custom-render :render="popoverSlotRender" />
     </template>
 
-    <el-select
+    <div
+      class="el-select"
       slot="reference"
-      ref="select"
-      v-model="inputVal"
-      v-bind="attrs"
-      v-on="$listeners"
     >
-      <select-slot
-        :prefix-slot-render="prefixSlotRender"
-        :empty-slot-render="emptySlotRender"
-      />
+      <el-select
+        ref="select"
+        v-model="inputVal"
+        v-bind="attrs"
+        v-on="$listeners"
+      >
+        <select-slot
+          :prefix-slot-render="prefixSlotRender"
+          :empty-slot-render="emptySlotRender"
+        />
 
-      <template v-if="isGroup">
-        <el-option-group
-          v-for="(option, i) in (options || [])"
-          :key="i"
-          :label="option.label"
-        >
+        <template v-if="isGroup">
+          <el-option-group
+            v-for="(option, i) in (options || [])"
+            :key="i"
+            :label="option.label"
+          >
+            <el-option
+              v-for="(item, index) in option.children"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+              :disabled="item.disabled"
+            />
+          </el-option-group>
+        </template>
+
+        <template v-else>
           <el-option
-            v-for="(item, index) in option.children"
-            :key="index"
+            v-for="(item, i) in (options || [])"
+            :key="i"
             :label="item.label"
             :value="item.value"
             :disabled="item.disabled"
           />
-        </el-option-group>
-      </template>
-
-      <template v-else>
-        <el-option
-          v-for="(item, i) in (options || [])"
-          :key="i"
-          :label="item.label"
-          :value="item.value"
-          :disabled="item.disabled"
-        />
-      </template>
-    </el-select>
+        </template>
+      </el-select>
+    </div>
   </el-popover>
 </template>
 

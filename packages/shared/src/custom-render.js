@@ -1,4 +1,12 @@
 /**
+ * 驼峰转中划线
+ * camelcase to kebabcase
+ */
+ export function kebabCase(str) {
+  return str.replace(/(?!^)([A-Z\u00C0-\u00D6])/g, (match) => `-${match.toLowerCase()}`);
+}
+
+/**
  * custom render props
  * 自定义渲染函数
  */
@@ -23,7 +31,7 @@ export const genCustomSlotRenderFunc = (h, ctx) => {
   Object.keys(ctx.props).forEach((key) => {
     const slot = key.slice(0, -'SlotRender'.length);
     if (typeof ctx.props[key] === 'function') {
-      result.push(h('template', { slot }, [ctx.props[key](h)]));
+      result.push(h('template', { slot: kebabCase(slot) }, [ctx.props[key](h)]));
     }
   });
 

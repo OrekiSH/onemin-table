@@ -200,3 +200,36 @@ export const inputMixin = {
     },
   },
 };
+
+/**
+ * 加载状态props
+ * loading state props
+ */
+ export const loadingProps = {
+  /**
+   * @language=zh
+   * 选项加载中列表内容渲染函数
+   */
+  loadingSlotRender: {
+    type: Function,
+    default: null,
+  },
+
+  /**
+   * @language=zh
+   * 选项加载中列表内容
+   */
+  loadingText: {
+    type: String,
+    default: '加载中...',
+  },
+
+  /**
+   * @language=zh
+   * 选项加载中
+   */
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+};
