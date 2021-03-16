@@ -88,6 +88,14 @@ $ yarn add @onemin-table/elem-table
             },
           },
         }, {
+          label: '日期',
+          type: 'date',
+          prop: 'date',
+          minWidth: 160,
+          attrs: {
+            disabledDateStart: 3,
+          },
+        }, {
           label: '备注',
           prop: 'item.remark',
           type: 'input',
@@ -158,6 +166,7 @@ $ yarn add @onemin-table/elem-table
               level: [1],
               remark: '',
             },
+            date: '',
           }, {
             id: 2,
             name: 'ccsdaskdhajksbdajksdbakdbksadbsjdbkda',
@@ -166,6 +175,7 @@ $ yarn add @onemin-table/elem-table
               level: [2, 3],
               remark: '备注',
             },
+            date: '',
           }, {
             id: 3,
             name: 'b',
@@ -174,6 +184,7 @@ $ yarn add @onemin-table/elem-table
               level: [],
               remark: '',
             },
+            date: '',
           }];
           this.selection = [this.data[1]];
           this.loading = false;
@@ -188,6 +199,7 @@ $ yarn add @onemin-table/elem-table
       onDataChange({ colProp, rowIndex, value }) {
         const ref = this.$refs.table;
         if (!ref) return;
+        console.warn(this.data);
 
         if (rowIndex === 2) {
           ref.setCellAttrs(colProp, rowIndex, value.includes(1) ? {

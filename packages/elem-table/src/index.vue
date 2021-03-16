@@ -1,140 +1,65 @@
 <template>
-  <div>
-    <el-table
-      v-loading="loading"
-      ref="table"
-      :data="data"
-      v-bind="$attrs"
-      v-on="listeners"
-      class="ot-table--elem"
-      @select="handleSelectEvent"
-      @select-all="handleSelectAllEvent"
-      @cell-click="cellClick"
-      @cell-dblclick="cellDblclick"
-      @cell-mouse-enter="cellMouseEnter"
-      @cell-mouse-leave="cellMouseLeave"
+  <el-table
+    v-loading="loading"
+    ref="table"
+    :data="data"
+    v-bind="$attrs"
+    v-on="listeners"
+    class="ot-table--elem"
+    @select="handleSelectEvent"
+    @select-all="handleSelectAllEvent"
+    @cell-click="cellClick"
+    @cell-dblclick="cellDblclick"
+    @cell-mouse-enter="cellMouseEnter"
+    @cell-mouse-leave="cellMouseLeave"
+  >
+    <template
+      v-for="(col, index) in columns"
     >
-      <template
-        v-for="(col, index) in columns"
+      <!-- Builtin types, 内置类型 -->
+      <el-table-column
+        v-if="['selection', 'index', 'expand'].includes(col.type)"
+        :key="`${col.prop}_${index}`"
+        v-bind="genColumnAttrs(col)"
+      />
+
+      <!-- Other types, 其他类型 -->
+      <el-table-column
+        v-else
+        :key="`${col.prop}_${index}`"
+        v-bind="genColumnAttrs(col)"
       >
-        <!-- Image, 图片预览 -->
-        <el-table-column
-          v-if="col.type === 'image'"
-          :key="`${col.prop}_${index}`"
-          v-bind="genColumnAttrs(col)"
+        <template
+          v-if="col.headerSlotRender"
+          slot="header"
         >
-          <template
-            v-if="col.headerSlotRender"
-            slot="header"
-          >
-            <custom-render :render="col.headerSlotRender" />
-          </template>
+          <custom-render :render="col.headerSlotRender" />
+        </template>
 
-          <template slot-scope="scope">
-            <column-image
-              :col="col"
-              :scope="scope"
-              :image-popover="imagePopover"
-              :image-preview="imagePreview"
-            />
-          </template>
-        </el-table-column>
+        <template slot-scope="scope">
+          <!-- System component, 系统定义组件 -->
+          <component
+            v-if="COMPONENT_MAP[col.type]"
+            :is="COMPONENT_MAP[col.type]"
+            v-bind="genColumnItemAttrs(col, scope)"
+            v-on="genColumnItemListeners(col, scope)"
+          />
 
-        <!-- Select, 选择器 -->
-        <el-table-column
-          v-else-if="(col.type === 'select' || col.type === 'single-select')"
-          :key="`${col.prop}_${index}`"
-          v-bind="genColumnAttrs(col)"
-        >
-          <template
-            v-if="col.headerSlotRender"
-            slot="header"
-          >
-            <custom-render :render="col.headerSlotRender" />
-          </template>
+          <!-- Custom render component, 用户自定义渲染组件 -->
+          <custom-cell-render
+            v-else-if="typeof col.render === 'function'"
+            :index="scope.$index"
+            :column="col"
+            :row="scope.row"
+            :render="col.render"
+          />
 
-          <template slot-scope="scope">
-            <elem-select
-              :value="get(scope.row, col.prop)"
-              :options="col.options"
-              v-bind="genColumnItemAttrs(col, scope.$index)"
-              v-on="genColumnItemListeners(col, scope.$index)"
-              @change="(val) => handleChange(val, scope, col)"
-            />
-          </template>
-        </el-table-column>
-
-        <!-- Input, 输入框 -->
-        <el-table-column
-          v-else-if="col.type === 'input'"
-          :key="`${col.prop}_${index}`"
-          v-bind="genColumnAttrs(col)"
-        >
-          <template
-            v-if="col.headerSlotRender"
-            slot="header"
-          >
-            <custom-render :render="col.headerSlotRender" />
-          </template>
-
-          <template slot-scope="scope">
-            <elem-input
-              :value="get(scope.row, col.prop)"
-              v-bind="genColumnItemAttrs(col, scope.$index)"
-              v-on="genColumnItemListeners(col, scope.$index)"
-              @input="(val) => handleChange(val, scope, col)"
-            />
-          </template>
-        </el-table-column>
-
-        <!-- Custom render component, 自定义渲染组件 -->
-        <el-table-column
-          v-else-if="typeof col.render === 'function'"
-          :key="`${col.prop}_${index}`"
-          v-bind="genColumnAttrs(col)"
-        >
-          <template
-            v-if="col.headerSlotRender"
-            slot="header"
-          >
-            <custom-render :render="col.headerSlotRender" />
-          </template>
-
-          <template slot-scope="scope">
-            <custom-cell-render
-              :index="scope.$index"
-              :column="col"
-              :row="scope.row"
-              :render="col.render"
-            />
-          </template>
-        </el-table-column>
-
-        <!-- Builtin type, 内置类型 -->
-        <el-table-column
-          v-else-if="['selection', 'index', 'expand'].includes(col.type)"
-          :key="`${col.prop}_${index}`"
-          v-bind="genColumnAttrs(col)"
-        />
-
-        <!-- Default, 默认 -->
-        <el-table-column
-          v-else
-          :key="`${col.prop}_${index}`"
-          v-bind="genColumnAttrs(col)"
-        >
-          <template
-            v-if="col.headerSlotRender"
-            slot="header"
-          >
-            <custom-render :render="col.headerSlotRender" />
-          </template>
-
-          <template slot-scope="scope">{{ get(scope.row, col.prop) }}</template>
-        </el-table-column>
-      </template>
-    </el-table>
-  </div>
+          <!-- Default, 默认 -->
+          <template v-else>{{ get(scope.row, col.prop) }}</template>
+        </template>
+      </el-table-column>
+    </template>
+  </el-table>
 </template>
 
 <script>
@@ -145,7 +70,7 @@ import set from 'lodash/set';
 import kebabCase from 'lodash/kebabCase';
 import ElemSelect from '@onemin-table/elem-select';
 import ElemInput from '@onemin-table/elem-input';
-import { CustomRender } from '@onemin-table/shared';
+import { CustomRender, ELEM_DATE_TYPES } from '@onemin-table/shared';
 import CustomCellRender from './components/custom-cell-render';
 import ColumnImage from './components/column-image.vue';
 
@@ -287,6 +212,21 @@ export default {
   data() {
     return {
       cellAttrsMap: {},
+
+      COMPONENT_MAP: Object.freeze({
+        // input, 输入框
+        'input': 'elem-input',
+
+        // select, 选择器
+        'select': 'elem-select',
+        'single-select': 'elem-select',
+
+        // date-picker, 日期选择器
+        ...Object.fromEntries(ELEM_DATE_TYPES.map((e) => [e, 'elem-date-picker'])),
+
+        // iamge, 图片
+        'image': 'column-image',
+      }),
     };
   },
 
@@ -506,10 +446,30 @@ export default {
      * form element cell attrs
      * 列表单元素属性值
      */
-    genColumnItemAttrs(col, rowIndex) {
+    genColumnItemAttrs(col, scope) {
+      const map = {
+        image: {
+          col, scope,
+          'image-popover': this.imagePopover,
+          'image-preview': this.imagePreview,
+        },
+
+        select: {
+          options: col.options,
+          value: get(scope.row, col.prop),
+        },
+
+        input: { value: get(scope.row, col.prop) },
+
+        ...Object.fromEntries(ELEM_DATE_TYPES.map((t) => [t, { value: get(scope.row, col.prop), }])),
+      };
+
+      // default, attrs set, user set
+      // 默认属性, 通过attrs设置的属性, 用户手动设置的属性
       const result = {
+        ...map[col.type] || {},
         ...col.attrs,
-        ...this.cellAttrsMap?.[col.prop]?.[rowIndex],
+        ...this.cellAttrsMap?.[col.prop]?.[scope.$index],
       };
 
       if (col.type === 'select') result.multiple = true;
@@ -521,17 +481,35 @@ export default {
      * form element cell listeners
      * 列表单元素事件监听
      */
-    genColumnItemListeners(col, rowIndex) {
+    genColumnItemListeners(col, scope) {
+      const isSystemTypes = [
+        'input',
+        'select',
+        'single-select',
+        ...ELEM_DATE_TYPES,
+      ].includes(col.type);
+
+      // system components value changed, 系统定义组件值改变事件
+      const changeEvent = isSystemTypes
+        ? { [col.type === 'input' ? 'input' : 'change']: (val) => this.handleChange(val, scope, col) }
+        : {};
+
       const result = {};
       Object.keys(col?.listeners || {}).forEach((k) => {
         if (typeof col.listeners[k] === 'function') {
           result[k] = (...args) => {
-            col.listeners[k](rowIndex, ...args);
+            // merge system change event with user defined change event
+            // 合并系统值改变事件与用户定义值改变事件
+            if (typeof changeEvent[k] === 'function') changeEvent[k](...args);
+            col.listeners[k](scope.$index, ...args);
           };
         }
       });
 
-      return result;
+      return {
+        ...changeEvent,
+        ...result,
+      };
     },
 
     /**

@@ -26,7 +26,6 @@ $ yarn add @onemin-table/elem-input
       :popoverVisible="active"
       :border-color="active ? 'red' : ''"
       :prefix-slot-render="prefixSlotRender"
-      width="300"
       append=".com"
       prepend="https://"
       popover-content="content"
@@ -50,7 +49,7 @@ $ yarn add @onemin-table/elem-input
         console.warn(this.foo, val);
       },
 
-      prefixSlotRender(h) {
+      prefixSlotRender() {
         return <i class="el-icon-time el-input__icon" />;
       },
     },
@@ -69,6 +68,7 @@ $ yarn add @onemin-table/elem-input
 | append | 选择器后置内容字符串, 优先级低于`appendSlotRender` | String |
 | prepend | 选择器前置内容字符串, 优先级低于`prependSlotRender` | String |
 | prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
+| width | 选择器宽度, 传入数字会被识别为像素值(px) | `String|Number` |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
 | background-color | 选择器背景颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
 | color | 选择器字体颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |

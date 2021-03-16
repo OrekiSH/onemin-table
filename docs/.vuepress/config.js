@@ -7,6 +7,7 @@ module.exports = {
       ['/elem-table/', 'ElemTable'],
       ['/elem-select/', 'ElemSelect'],
       ['/elem-input/', 'ElemInput'],
+      ['/elem-date-picker/', 'ElemDatePicker'],
     ],
   },
 };
