@@ -16,7 +16,107 @@ $ yarn add @onemin-table/elem-table
 
 ## 用法
 
-::: demo
+多级表头:
+
+::: demo[scope]
+<template>
+  <elem-table
+    :loading="loading"
+    :data="data"
+    :columns="columns"
+    @on-change="onDataChange"
+  />
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        loading: false,
+        data: [],
+      };
+    },
+
+    computed: {
+      columns() {
+        return [{
+          label: '编号',
+          type: 'index',
+          prop: 'index',
+          width: 80,
+        }, {
+          label: '姓名',
+          prop: 'name',
+        }, {
+          children: [{
+            headerAlign: 'right',
+            headerSlotRender: this.headerSlotRender,
+            children: [{
+              label: '备注',
+              prop: 'item.remark',
+              type: 'input',
+              attrs: {
+                type: 'textarea',
+              },
+              listeners: {
+                input: (rowIndex, val) => {
+                  console.warn(rowIndex, val);
+                },
+              },
+            }]
+          }, {
+            headerSlotRender: this.headerSlotRender,
+            prop: 'item.age',
+            render: (h, p) => h('h2', {
+              style: 'overflow: hidden;text-overflow: ellipsis;',
+            }, p.row.name),
+          }],
+        }];
+      },
+    },
+
+    mounted() {
+      this.fetchMockData();
+    },
+
+    methods: {
+      onDataChange() {
+        console.warn(this.data);
+      },
+
+      headerSlotRender(h) {
+        return h('i', { class: 'el-icon-time' });
+      },
+
+      fetchMockData() {
+        this.loading = true;
+        setTimeout(() => {
+          this.data = [{
+            id: 1,
+            name: 'a',
+            item: {
+              age: 18,
+              remark: '',
+            },
+          }, {
+            id: 2,
+            name: 'ccsdaskdhajksbdajksdbakdbksadbsjdbkda',
+            item: {
+              age: 19,
+              remark: '备注',
+            },
+          }];
+          this.loading = false;
+        }, 300);
+      },
+    },
+  };
+</script>
+:::
+
+选中/编辑:
+
+::: demo[scope]
 <template>
   <div>
     <button @click="handleClear">clear</button>
@@ -51,8 +151,13 @@ $ yarn add @onemin-table/elem-table
     computed: {
       columns() {
         return [{
+          prop: 'expand',
+          type: 'expand',
+          render: (h, p) => h('h1', null, p.row.name),
+        }, {
           prop: 'selection',
           type: 'selection',
+          selectable: (row, index) => index,
         }, {
           label: '编号',
           prop: 'index',
@@ -60,7 +165,7 @@ $ yarn add @onemin-table/elem-table
         }, {
           label: '名称',
           prop: 'name',
-          headerSlotRender: (h) => <i class="el-icon-time el-input__icon" />,
+          headerSlotRender: (h) => h('i', { class: 'el-icon-time el-input__icon' }),
         }, {
           label: '图',
           prop: 'image',
@@ -143,8 +248,8 @@ $ yarn add @onemin-table/elem-table
 
       handleToggleAllSelection() {
         const ref = this.$refs.table;
+        this.selected = true;
         if (ref) ref.toggleAllSelection();
-        console.warn(this.selection);
       },
 
       handleSelect(e) {

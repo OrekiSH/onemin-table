@@ -2,7 +2,7 @@
  * 驼峰转中划线
  * camelcase to kebabcase
  */
- export function kebabCase(str) {
+export function kebabCase(str) {
   return str.replace(/(?!^)([A-Z\u00C0-\u00D6])/g, (match) => `-${match.toLowerCase()}`);
 }
 
@@ -18,7 +18,7 @@ export const CustomRender = {
       default: null,
     },
   },
-  render: (h, ctx) => typeof ctx.props.render === 'function' ? ctx.props.render(h) : '',
+  render: (h, ctx) => (typeof ctx.props.render === 'function' ? ctx.props.render(h) : ''),
 };
 
 /**

@@ -24,7 +24,7 @@
     "@rollup/plugin-babel": "^5.2.3",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
-    "@vuepress-dumi/vuepress-theme-dumi": "^0.3.6",
+    "@vuepress-dumi/vuepress-theme-dumi": "^0.3.7",
     "async-validator": "1.11.5",
     "babel-eslint": "^10.1.0",
     "element-ui": "^2.15.0",

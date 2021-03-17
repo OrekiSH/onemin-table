@@ -18,46 +18,24 @@
     >
       <!-- Builtin types, 内置类型 -->
       <el-table-column
-        v-if="['selection', 'index', 'expand'].includes(col.type)"
+        v-if="['selection', 'index'].includes(col.type)"
         :key="`${col.prop}_${index}`"
         v-bind="genColumnAttrs(col)"
       />
 
+      <!-- Other types with children, 其他类型带多级表头 -->
+      <elem-table-column-group
+        v-else-if="Array.isArray(col.children)"
+        :key="`${col.prop}_${index}`"
+        :col="col"
+      />
+
       <!-- Other types, 其他类型 -->
-      <el-table-column
+      <elem-table-column
         v-else
         :key="`${col.prop}_${index}`"
-        v-bind="genColumnAttrs(col)"
-      >
-        <template
-          v-if="col.headerSlotRender"
-          slot="header"
-        >
-          <custom-render :render="col.headerSlotRender" />
-        </template>
-
-        <template slot-scope="scope">
-          <!-- System component, 系统定义组件 -->
-          <component
-            v-if="COMPONENT_MAP[col.type]"
-            :is="COMPONENT_MAP[col.type]"
-            v-bind="genColumnItemAttrs(col, scope)"
-            v-on="genColumnItemListeners(col, scope)"
-          />
-
-          <!-- Custom render component, 用户自定义渲染组件 -->
-          <custom-cell-render
-            v-else-if="typeof col.render === 'function'"
-            :index="scope.$index"
-            :column="col"
-            :row="scope.row"
-            :render="col.render"
-          />
-
-          <!-- Default, 默认 -->
-          <template v-else>{{ get(scope.row, col.prop) }}</template>
-        </template>
-      </el-table-column>
+        :col="col"
+      />
     </template>
   </el-table>
 </template>
@@ -68,11 +46,9 @@ import camelCase from 'camelcase';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import kebabCase from 'lodash/kebabCase';
-import ElemSelect from '@onemin-table/elem-select';
-import ElemInput from '@onemin-table/elem-input';
-import { CustomRender, ELEM_DATE_TYPES } from '@onemin-table/shared';
-import CustomCellRender from './components/custom-cell-render';
-import ColumnImage from './components/column-image.vue';
+import { ELEM_DATE_TYPES } from '@onemin-table/shared';
+import ElemTableColumnGroup from './components/table-column-group.vue';
+import ElemTableColumn from './components/table-column.vue';
 
 const SELECTION_LISTENERS = ['select', 'select-all', 'selection-change'];
 const CELL_LISTENERS = [
@@ -91,12 +67,8 @@ export default {
   name: 'ElemTable',
 
   components: {
-    CustomCellRender,
-    ElemSelect,
-    ElemInput,
-
-    CustomRender,
-    ColumnImage,
+    ElemTableColumnGroup,
+    ElemTableColumn,
   },
 
   props: {
@@ -209,24 +181,17 @@ export default {
     },
   },
 
+  provide() {
+    return {
+      genColumnAttrs: this.genColumnAttrs,
+      genColumnItemAttrs: this.genColumnItemAttrs,
+      genColumnItemListeners: this.genColumnItemListeners,
+    };
+  },
+
   data() {
     return {
       cellAttrsMap: {},
-
-      COMPONENT_MAP: Object.freeze({
-        // input, 输入框
-        'input': 'elem-input',
-
-        // select, 选择器
-        'select': 'elem-select',
-        'single-select': 'elem-select',
-
-        // date-picker, 日期选择器
-        ...Object.fromEntries(ELEM_DATE_TYPES.map((e) => [e, 'elem-date-picker'])),
-
-        // iamge, 图片
-        'image': 'column-image',
-      }),
     };
   },
 
@@ -235,6 +200,7 @@ export default {
       return Object.keys(this.$listeners).reduce((a, key) => {
         // combine selection event, rewrite cell event, 合并选择事件, 重新封装单元格事件
         if (!SKIP_LISTENERS.includes(key)) {
+          // eslint-disable-next-line
           a[key] = this.$listeners[key];
         }
         return a;
@@ -273,9 +239,7 @@ export default {
 
   created() {
     CELL_LISTENERS.forEach((name) => {
-      this[camelCase(name)] = (...args) => {
-        return this.handleCellEvent(name, ...args);
-      };
+      this[camelCase(name)] = (...args) => this.handleCellEvent(name, ...args);
     });
   },
 
@@ -296,13 +260,17 @@ export default {
       // toggle row selection by rowIndex, 根据行索引触发列选中
       this.toggleRowSelection = (rowIndex, selected) => {
         const row = this.data[rowIndex];
+
         if (selected) {
           this.handleSelect([
             ...this.selection,
             row,
           ]);
         } else {
-          this.$emit('selection-change', cloneDeep(this.selection.filter((e) => e !== row)));
+          if (!this.checkSelectionKey()) return;
+          const d = this.selection
+            .filter((e) => get(e, this.selectionKey) !== get(row, this.selectionKey));
+          this.$emit('selection-change', cloneDeep(d));
         }
       };
     }
@@ -352,15 +320,15 @@ export default {
     handleSelect(rows) {
       if (!this.checkSelectionKey()) return;
 
-      const rowKeys = rows.map((e) => e[this.selectionKey]);
+      const rowKeys = rows.map((e) => get(e, this.selectionKey));
       // immutable prop, prop不可变
       const selection = cloneDeep(this.selection);
       const method = this.stackSelection ? 'unshift' : 'push';
 
       this.data.forEach((row) => {
-        const key = row[this.selectionKey];
+        const key = get(row, this.selectionKey);
         const indexInRow = rowKeys.indexOf(key);
-        const indexInSelection = selection.map((e) => e[this.selectionKey]).indexOf(key);
+        const indexInSelection = selection.map((e) => get(e, this.selectionKey)).indexOf(key);
 
         if (indexInSelection > -1 && indexInRow === -1) {
           selection.splice(indexInSelection, 1);
@@ -399,7 +367,8 @@ export default {
       if (!this.checkSelectionKey()) return;
 
       this.selection.forEach((row) => {
-        const current = this.data.find((e) => e[this.selectionKey] === row[this.selectionKey]);
+        const current = this.data
+          .find((e) => get(e, this.selectionKey) === get(row, this.selectionKey));
         const ref = this.$refs.table;
         if (current && ref) ref.toggleRowSelection(current, true);
       });
@@ -427,6 +396,7 @@ export default {
       // 兼容中划线与小驼峰, kebab case and camel case compatible
       const temp = {};
       Object.keys(col).forEach((k) => {
+        if (k === 'children') return; // 过滤children属性, filter children attr
         temp[k] = col[k];
         temp[kebabCase(k)] = col[k];
       });
@@ -449,7 +419,8 @@ export default {
     genColumnItemAttrs(col, scope) {
       const map = {
         image: {
-          col, scope,
+          col,
+          scope,
           'image-popover': this.imagePopover,
           'image-preview': this.imagePreview,
         },
@@ -461,7 +432,7 @@ export default {
 
         input: { value: get(scope.row, col.prop) },
 
-        ...Object.fromEntries(ELEM_DATE_TYPES.map((t) => [t, { value: get(scope.row, col.prop), }])),
+        ...Object.fromEntries(ELEM_DATE_TYPES.map((t) => [t, { value: get(scope.row, col.prop) }])),
       };
 
       // default, attrs set, user set

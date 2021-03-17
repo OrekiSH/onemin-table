@@ -205,7 +205,7 @@ export const inputMixin = {
  * 加载状态props
  * loading state props
  */
- export const loadingProps = {
+export const loadingProps = {
   /**
    * @language=zh
    * 选项加载中列表内容渲染函数

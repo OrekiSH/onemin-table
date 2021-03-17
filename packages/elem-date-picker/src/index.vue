@@ -43,7 +43,7 @@ export default {
      * 输入框绑定值
      */
     value: {
-      type: [String, Array],
+      type: [Number, String, Date, Array],
       default: null,
     },
 

@@ -26,22 +26,22 @@ function genConfig(input, format, {
         extensions: ['.js', '.vue'],
       }),
       useTerser ? terser({}) : false,
-      nodeResolve({
-        resolveOnly: [/^@onemin-table\/.*$/, 'clone-deep', 'lodash'],
-      }),
-    ],
+      format === 'umd' ? nodeResolve({
+        resolveOnly: [/^@onemin-table\/.*$/, 'lodash'],
+      }) : false,
+    ].filter(Boolean),
     watch: {
       include: 'packages/**',
     },
   };
 }
 
-const genSource = e => `./packages/${e}/src/index.vue`;
+const genSource = (e) => `./packages/${e}/src/index.vue`;
 
 const pkgs = fs.readdirSync('./packages')
   .filter((e) => fs.lstatSync(`${__dirname}/packages/${e}`).isDirectory());
 
-  const conf = pkgs.map((e) => (e === 'shared' || e.endsWith('utils')) ? [] : [
+const conf = pkgs.map((e) => ((e === 'shared' || e.endsWith('utils')) ? [] : [
   genConfig(genSource(e), 'cjs', { output: `./packages/${e}/lib` }),
   genConfig(genSource(e), 'es', { output: `./packages/${e}/es` }),
   genConfig(genSource(e), 'umd', {
@@ -53,6 +53,6 @@ const pkgs = fs.readdirSync('./packages')
     file: `./packages/${e}/dist/${e}.min.js`,
     useTerser: true,
   }),
-]).flat();
+])).flat();
 
 export default conf;

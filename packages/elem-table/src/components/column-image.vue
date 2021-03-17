@@ -40,7 +40,7 @@
 
 <script>
 import get from 'lodash/get';
-import ImageSlot from '../components/image-slot';
+import ImageSlot from './image-slot';
 
 export default {
   components: {
@@ -50,12 +50,12 @@ export default {
   props: {
     col: {
       type: Object,
-      default() { return {}; }
+      default() { return {}; },
     },
 
     scope: {
       type: Object,
-      default() { return {}; }
+      default() { return {}; },
     },
 
     /**
@@ -125,7 +125,7 @@ export default {
       };
 
       return result;
-    }
+    },
   },
 
   mounted() {
