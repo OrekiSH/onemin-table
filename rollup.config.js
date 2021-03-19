@@ -27,7 +27,7 @@ function genConfig(input, format, {
       }),
       useTerser ? terser({}) : false,
       format === 'umd' ? nodeResolve({
-        resolveOnly: [/^@onemin-table\/.*$/, 'lodash'],
+        resolveOnly: [/^@onemin-table\/.*$/, 'lodash', 'camelcase'],
       }) : false,
     ].filter(Boolean),
     watch: {

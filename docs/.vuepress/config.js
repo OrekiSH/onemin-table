@@ -8,6 +8,7 @@ module.exports = {
       ['/elem-select/', 'ElemSelect'],
       ['/elem-input/', 'ElemInput'],
       ['/elem-date-picker/', 'ElemDatePicker'],
+      ['/elem-cascader/', 'ElemCascader'],
     ],
   },
 };

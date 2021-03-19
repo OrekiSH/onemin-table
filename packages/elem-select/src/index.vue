@@ -9,6 +9,7 @@
     </template>
 
     <div
+      :style="`width: ${elWidth || '100%'}`"
       class="el-select"
       slot="reference"
     >
@@ -119,7 +120,6 @@ export default {
         clearable: def('clearable'),
         filterable: def('filterable'),
         placeholder: def('placeholder', '请选择'),
-        style: `width: ${this.elWidth || '100%'}`,
         'collapse-tags': def('collapseTags'),
         'popper-append-to-body': def('popperAppendToBody'),
         'data-prop': def('prop', ''),

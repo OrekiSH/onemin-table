@@ -9,6 +9,7 @@
     </template>
 
     <div
+      :style="`width: ${elWidth || '100%'}`"
       class="el-date-editor"
       slot="reference"
     >
@@ -98,7 +99,6 @@ export default {
       const def = this.genDefaultAttrs;
       return {
         placeholder: def('placeholder', '选择日期'),
-        style: `width: ${this.elWidth || '100%'}`,
         'range-separator': def('rangeSeparator', '~'),
         'start-placeholder': def('startPlaceholder', '开始日期'),
         'end-placeholder': def('endPlaceholder', '结束日期'),
