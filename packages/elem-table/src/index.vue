@@ -430,6 +430,11 @@ export default {
           value: get(scope.row, col.prop),
         },
 
+        cascader: {
+          options: col.options,
+          value: get(scope.row, col.prop),
+        },
+
         input: { value: get(scope.row, col.prop) },
 
         ...Object.fromEntries(ELEM_DATE_TYPES.map((t) => [t, { value: get(scope.row, col.prop) }])),

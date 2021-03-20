@@ -21,7 +21,7 @@
       >
         <select-slot
           :prefix-slot-render="prefixSlotRender"
-          :empty-slot-render="emptySlotRender"
+          :empty-slot-render="innerEmptySlotRender"
         />
 
         <template v-if="isGroup">

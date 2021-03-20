@@ -196,10 +196,29 @@ $ yarn add @onemin-table/elem-table
           label: '日期',
           type: 'date',
           prop: 'date',
-          minWidth: 160,
+          minWidth: 200,
           attrs: {
             disabledDateStart: 3,
           },
+        }, {
+          label: '类目',
+          type: 'cascader',
+          prop: 'category',
+          minWidth: 160,
+          attrs: {
+            multiple: true,
+          },
+          options: [{
+            label: '一级类目',
+            value: '1',
+            children: [{
+              label: '子类目1',
+              value: 's1',
+            }, {
+              label: '子类目2',
+              value: 's2',
+            }],
+          }],
         }, {
           label: '备注',
           prop: 'item.remark',
@@ -272,6 +291,7 @@ $ yarn add @onemin-table/elem-table
               remark: '',
             },
             date: '',
+            category: 's2',
           }, {
             id: 2,
             name: 'ccsdaskdhajksbdajksdbakdbksadbsjdbkda',
@@ -281,6 +301,7 @@ $ yarn add @onemin-table/elem-table
               remark: '备注',
             },
             date: '',
+            category: '',
           }, {
             id: 3,
             name: 'b',
@@ -290,6 +311,7 @@ $ yarn add @onemin-table/elem-table
               remark: '',
             },
             date: '',
+            category: '',
           }];
           this.selection = [this.data[1]];
           this.loading = false;

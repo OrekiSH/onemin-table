@@ -10,6 +10,8 @@ import upperFirst from 'lodash/upperFirst';
 function genConfig(input, format, {
   output, name, file, useTerser,
 }) {
+  const isUmd = format === 'umd';
+
   return {
     input,
     output: {
@@ -24,9 +26,10 @@ function genConfig(input, format, {
       babel({
         babelHelpers: 'bundled',
         extensions: ['.js', '.vue'],
+        plugins: isUmd ? ['babel-plugin-transform-dynamic-imports-to-static-imports'] : []
       }),
       useTerser ? terser({}) : false,
-      format === 'umd' ? nodeResolve({
+      isUmd ? nodeResolve({
         resolveOnly: [/^@onemin-table\/.*$/, 'lodash', 'camelcase'],
       }) : false,
     ].filter(Boolean),

@@ -36,12 +36,14 @@
 
 <script>
 import get from 'lodash/get';
-import ElemSelect from '@onemin-table/elem-select';
-import ElemInput from '@onemin-table/elem-input';
-import ElemDatePicker from '@onemin-table/elem-date-picker';
 import { CustomRender, ELEM_DATE_TYPES } from '@onemin-table/shared';
 import CustomCellRender from './custom-cell-render';
 import ColumnImage from './column-image.vue';
+
+const ElemSelect = () => import('@onemin-table/elem-select');
+const ElemInput = () => import('@onemin-table/elem-input');
+const ElemDatePicker = () => import('@onemin-table/elem-date-picker');
+const ElemCascader = () => import('@onemin-table/elem-cascader');
 
 export default {
   name: 'ElemTableColumn',
@@ -63,6 +65,7 @@ export default {
     ElemSelect,
     ElemInput,
     ElemDatePicker,
+    ElemCascader,
 
     CustomCellRender,
     CustomRender,
@@ -78,6 +81,9 @@ export default {
         // select, 选择器
         select: 'elem-select',
         'single-select': 'elem-select',
+
+        // cascader, 级联选择器
+        cascader: 'elem-cascader',
 
         // date-picker, 日期选择器
         ...Object.fromEntries(ELEM_DATE_TYPES.map((e) => [e, 'elem-date-picker'])),
