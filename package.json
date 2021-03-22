@@ -16,7 +16,8 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "build": "rollup -c",
-    "build:watch": "rollup -c --watch"
+    "build:watch": "rollup -c --watch",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",
@@ -28,6 +29,7 @@
     "async-validator": "1.11.5",
     "babel-eslint": "^10.1.0",
     "babel-plugin-transform-dynamic-imports-to-static-imports": "^0.3.0",
+    "conventional-changelog-cli": "^2.1.1",
     "element-ui": "^2.15.0",
     "eslint": "^7.19.0",
     "eslint-config-airbnb-base": "^14.2.1",

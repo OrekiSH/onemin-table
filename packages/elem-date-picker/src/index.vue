@@ -15,7 +15,7 @@
     >
       <el-date-picker
         ref="picker"
-        v-model="inputVal"
+        v-model="innerVal"
         v-bind="attrs"
         v-on="$listeners"
       >

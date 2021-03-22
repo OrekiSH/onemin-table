@@ -26,7 +26,7 @@ function genConfig(input, format, {
       babel({
         babelHelpers: 'bundled',
         extensions: ['.js', '.vue'],
-        plugins: isUmd ? ['babel-plugin-transform-dynamic-imports-to-static-imports'] : []
+        plugins: isUmd ? ['babel-plugin-transform-dynamic-imports-to-static-imports'] : [],
       }),
       useTerser ? terser({}) : false,
       isUmd ? nodeResolve({

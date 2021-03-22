@@ -29,7 +29,9 @@ $ yarn add @onemin-table/elem-input
       append=".com"
       prepend="https://"
       popover-content="content"
-      @input="handleChange"
+      split
+      placeholder="空格分隔"
+      @change="handleChange"
     />
   </div>
 </template>
@@ -38,10 +40,16 @@ $ yarn add @onemin-table/elem-input
   export default {
     data() {
       return {
-        foo: '1',
+        foo: ['a', 'b'],
 
         active: true,
       };
+    },
+
+    watch: {
+      foo() {
+        console.warn(this.foo);
+      },
     },
 
     methods: {
@@ -67,6 +75,9 @@ $ yarn add @onemin-table/elem-input
 | prepend-slot-render | 选择器前置内容渲染函数, 相当于`el-input`的prepend slot | Function |
 | append | 选择器后置内容字符串, 优先级低于`appendSlotRender` | String |
 | prepend | 选择器前置内容字符串, 优先级低于`prependSlotRender` | String |
+| split | 分隔模式，双向绑定值为根据`this.splitChar`分隔的数组, 默认值false | Boolean |
+| split-char | 分隔模式分隔字符串，默认值`" "` | Boolean |
+| convert-number | type="number"时, 输入字符串是否转换为number类型，默认值true | Boolean |
 | prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | width | 选择器宽度, 传入数字会被识别为像素值(px) | `String|Number` |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
