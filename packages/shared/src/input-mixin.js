@@ -133,7 +133,7 @@ export const inputMixin = {
   data() {
     return {
       // inner value, 内部绑定值
-      inputVal: this.value,
+      innerVal: this.value,
 
       // native input element, 元素输入框元素
       inputEl: null,
@@ -150,7 +150,7 @@ export const inputMixin = {
     value: {
       handler() {
         // outer value changed, 外部绑定值改变
-        this.inputVal = this.value;
+        this.innerVal = this.value;
       },
       deep: true,
     },
