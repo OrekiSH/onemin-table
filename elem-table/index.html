@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>onemin-table</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/onemin-table/assets/css/0.styles.3edc15b8.css" as="style"><link rel="preload" href="/onemin-table/assets/js/app.e2c16116.js" as="script"><link rel="preload" href="/onemin-table/assets/js/2.18f650e8.js" as="script"><link rel="preload" href="/onemin-table/assets/js/13.8ae46b95.js" as="script"><link rel="prefetch" href="/onemin-table/assets/js/10.4bae0289.js"><link rel="prefetch" href="/onemin-table/assets/js/11.a5703748.js"><link rel="prefetch" href="/onemin-table/assets/js/12.ceab0573.js"><link rel="prefetch" href="/onemin-table/assets/js/3.e5e10e34.js"><link rel="prefetch" href="/onemin-table/assets/js/4.03f94a96.js"><link rel="prefetch" href="/onemin-table/assets/js/5.80453111.js"><link rel="prefetch" href="/onemin-table/assets/js/6.851532bb.js"><link rel="prefetch" href="/onemin-table/assets/js/7.e0d6335f.js"><link rel="prefetch" href="/onemin-table/assets/js/8.16f5396c.js"><link rel="prefetch" href="/onemin-table/assets/js/9.a1427302.js">
+    <link rel="stylesheet" href="/onemin-table/assets/css/0.styles.3edc15b8.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/onemin-table/" class="home-link router-link-active"><!----> <span class="site-name">onemin-table</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><a href="/onemin-table/" aria-current="page" class="sidebar-link">组件总览</a></li><li><a href="/onemin-table/elem-form/" class="sidebar-link">ElemForm</a></li><li><a href="/onemin-table/elem-table/" aria-current="page" class="active sidebar-link">ElemTable</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/onemin-table/elem-table/#安装" class="sidebar-link">安装</a></li><li class="sidebar-sub-header"><a href="/onemin-table/elem-table/#用法" class="sidebar-link">用法</a></li><li class="sidebar-sub-header"><a href="/onemin-table/elem-table/#属性" class="sidebar-link">属性</a></li><li class="sidebar-sub-header"><a href="/onemin-table/elem-table/#事件" class="sidebar-link">事件</a></li><li class="sidebar-sub-header"><a href="/onemin-table/elem-table/#方法" class="sidebar-link">方法</a></li><li class="sidebar-sub-header"><a href="/onemin-table/elem-table/#column属性" class="sidebar-link">column属性</a></li></ul></li><li><a href="/onemin-table/elem-select/" class="sidebar-link">ElemSelect</a></li><li><a href="/onemin-table/elem-input/" class="sidebar-link">ElemInput</a></li><li><a href="/onemin-table/elem-date-picker/" class="sidebar-link">ElemDatePicker</a></li><li><a href="/onemin-table/elem-cascader/" class="sidebar-link">ElemCascader</a></li></ul> </aside> <main class="page"> <div class="theme-dumi-content content__default"><h1 align="center">elem-table</h1> <p>🚀 element-ui样式的schema-based表格模板组件, 内置了部分表单元素组件，并对选中状态和单元格事件的封装进行些许优化</p> <h2 id="安装"><a href="#安装" class="header-anchor">#</a> 安装</h2> <ul><li><p>首先安装 <a href="https://github.com/ElemeFE/element" target="_blank" rel="noopener noreferrer">Element v2.x<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p></li> <li><p>接着安装组件</p></li></ul> <div class="language-bash extra-class"><pre class="language-bash"><code>$ <span class="token function">npm</span> i @onemin-table/elem-table
+<span class="token comment"># OR</span>
+$ <span class="token function">yarn</span> <span class="token function">add</span> @onemin-table/elem-table
+</code></pre></div><h2 id="用法"><a href="#用法" class="header-anchor">#</a> 用法</h2> <h3 id="多级表头"><a href="#多级表头" class="header-anchor">#</a> 多级表头</h3> <section class="dumi-previewer"><div class="dumi-previewer-demo"><div><div class="el-table ot-table--elem el-table--fit el-table--enable-row-hover"><div class="hidden-columns"><div></div><div></div><div><!----> <div headerSlotRender="function () { [native code] }"> <div attrs="[object Object]" listeners="[object Object]"></div></div><div headerSlotRender="function () { [native code] }" render="(h, p) =&gt; h('h2', {
+              style: 'overflow: hidden;text-overflow: ellipsis;',
+            }, p.row.name)"></div></div></div><div class="el-table__header-wrapper"><table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width:;"><colgroup></colgroup><thead><tr></tr></thead></table></div><div class="el-table__body-wrapper is-scrolling-none"><table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width:;"><colgroup></colgroup><tbody><!----></tbody></table><div class="el-table__empty-block" style="width:;height:100%;"><span class="el-table__empty-text">暂无数据</span></div><!----></div><!----><!----><!----><!----><div class="el-table__column-resize-proxy" style="display:none;"></div></div></div></div> <div class="dumi-previewer-actions"><div></div> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="dumi-previewer-actions__icon"><path fill="none" d="M0 0h24v24H0z"></path><path d="M7 6V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1.001 1.001 0 0 1 3 21l.003-14c0-.552.45-1 1.007-1H7zM5.003 8L5 20h10V8H5.003zM9 6h8v10h2V4H9v2z"></path></svg> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="dumi-previewer-actions__icon"><path fill="none" d="M0 0h24v24H0z"></path><path d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM2.828 12l4.243 4.243-1.414 1.414L0 12l5.657-5.657L7.07 7.757 2.828 12zm6.96 9H7.66l6.552-18h2.128L9.788 21z"></path></svg></div></div> <div class="dumi-previewer-source" style="display:;"><div class="language-vue extra-class"><pre v-pre class="language-vue"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>elem-table</span>
+    <span class="token attr-name">:loading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>loading<span class="token punctuation">"</span></span>
+    <span class="token attr-name">:data</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>data<span class="token punctuation">"</span></span>
+    <span class="token attr-name">:columns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>columns<span class="token punctuation">"</span></span>
+    <span class="token attr-name">@on-change</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>onDataChange<span class="token punctuation">"</span></span>
+  <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+  <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+    <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        loading<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        data<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    computed<span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token function">columns</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'编号'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'index'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'index'</span><span class="token punctuation">,</span>
+          width<span class="token operator">:</span> <span class="token number">80</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'姓名'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'name'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          children<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+            headerAlign<span class="token operator">:</span> <span class="token string">'right'</span><span class="token punctuation">,</span>
+            headerSlotRender<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>headerSlotRender<span class="token punctuation">,</span>
+            children<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+              label<span class="token operator">:</span> <span class="token string">'备注'</span><span class="token punctuation">,</span>
+              prop<span class="token operator">:</span> <span class="token string">'item.remark'</span><span class="token punctuation">,</span>
+              type<span class="token operator">:</span> <span class="token string">'input'</span><span class="token punctuation">,</span>
+              attrs<span class="token operator">:</span> <span class="token punctuation">{</span>
+                type<span class="token operator">:</span> <span class="token string">'textarea'</span><span class="token punctuation">,</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              listeners<span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token function-variable function">input</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">rowIndex<span class="token punctuation">,</span> val</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+                  console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span>rowIndex<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            headerSlotRender<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>headerSlotRender<span class="token punctuation">,</span>
+            prop<span class="token operator">:</span> <span class="token string">'item.age'</span><span class="token punctuation">,</span>
+            <span class="token function-variable function">render</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">h<span class="token punctuation">,</span> p</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">'h2'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+              style<span class="token operator">:</span> <span class="token string">'overflow: hidden;text-overflow: ellipsis;'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span> p<span class="token punctuation">.</span>row<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token function">mounted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">fetchMockData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    methods<span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token function">onDataChange</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">headerSlotRender</span><span class="token punctuation">(</span><span class="token parameter">h</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">'i'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token keyword">class</span><span class="token operator">:</span> <span class="token string">'el-icon-time'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">fetchMockData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+            id<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            name<span class="token operator">:</span> <span class="token string">'a'</span><span class="token punctuation">,</span>
+            item<span class="token operator">:</span> <span class="token punctuation">{</span>
+              age<span class="token operator">:</span> <span class="token number">18</span><span class="token punctuation">,</span>
+              remark<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            id<span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+            name<span class="token operator">:</span> <span class="token string">'ccsdaskdhajksbdajksdbakdbksadbsjdbkda'</span><span class="token punctuation">,</span>
+            item<span class="token operator">:</span> <span class="token punctuation">{</span>
+              age<span class="token operator">:</span> <span class="token number">19</span><span class="token punctuation">,</span>
+              remark<span class="token operator">:</span> <span class="token string">'备注'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+</code></pre></div></div></section> <h3 id="选中-编辑"><a href="#选中-编辑" class="header-anchor">#</a> 选中/编辑</h3> <section class="dumi-previewer"><div class="dumi-previewer-demo"><div><div><button>clear</button> <button>select all</button> <button>select last row</button> <div class="el-table ot-table--elem el-table--fit el-table--enable-row-hover"><div class="hidden-columns"><div render="(h, p) =&gt; h('h1', null, p.row.name)"></div><div></div><div></div><div headerSlotRender="(h) =&gt; h('i', { class: 'el-icon-time el-input__icon' })"></div><div popoverAttrs="[object Object]"></div><div options="[object Object],[object Object],[object Object]" listeners="[object Object]"></div><div attrs="[object Object]"></div><div attrs="[object Object]" options="[object Object]"></div><div attrs="[object Object]" listeners="[object Object]"></div></div><div class="el-table__header-wrapper"><table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width:;"><colgroup></colgroup><thead><tr></tr></thead></table></div><div class="el-table__body-wrapper is-scrolling-none"><table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width:;"><colgroup></colgroup><tbody><!----></tbody></table><div class="el-table__empty-block" style="width:;height:100%;"><span class="el-table__empty-text">暂无数据</span></div><!----></div><!----><!----><!----><!----><div class="el-table__column-resize-proxy" style="display:none;"></div></div></div></div></div> <div class="dumi-previewer-actions"><div></div> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="dumi-previewer-actions__icon"><path fill="none" d="M0 0h24v24H0z"></path><path d="M7 6V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1.001 1.001 0 0 1 3 21l.003-14c0-.552.45-1 1.007-1H7zM5.003 8L5 20h10V8H5.003zM9 6h8v10h2V4H9v2z"></path></svg> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="dumi-previewer-actions__icon"><path fill="none" d="M0 0h24v24H0z"></path><path d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM2.828 12l4.243 4.243-1.414 1.414L0 12l5.657-5.657L7.07 7.757 2.828 12zm6.96 9H7.66l6.552-18h2.128L9.788 21z"></path></svg></div></div> <div class="dumi-previewer-source" style="display:;"><div class="language-vue extra-class"><pre v-pre class="language-vue"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>handleClear<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>clear<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>handleToggleAllSelection<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>select all<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>handleToggleLastRow<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>select last row<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>elem-table</span>
+      <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>table<span class="token punctuation">"</span></span>
+      <span class="token attr-name">:loading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>loading<span class="token punctuation">"</span></span>
+      <span class="token attr-name">:data</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>data<span class="token punctuation">"</span></span>
+      <span class="token attr-name">:columns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>columns<span class="token punctuation">"</span></span>
+      <span class="token attr-name">:selection</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>selection<span class="token punctuation">"</span></span>
+      <span class="token attr-name">selection-key</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>id<span class="token punctuation">"</span></span>
+      <span class="token attr-name">@selection-change</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>onSelectionChange<span class="token punctuation">"</span></span>
+      <span class="token attr-name">@cell-click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>handleCellClick<span class="token punctuation">"</span></span>
+      <span class="token attr-name">@on-change</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>onDataChange<span class="token punctuation">"</span></span>
+    <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+  <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+    <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        loading<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        data<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        selection<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+        selected<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    computed<span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token function">columns</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+          prop<span class="token operator">:</span> <span class="token string">'expand'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'expand'</span><span class="token punctuation">,</span>
+          <span class="token function-variable function">render</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">h<span class="token punctuation">,</span> p</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">'h1'</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> p<span class="token punctuation">.</span>row<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          prop<span class="token operator">:</span> <span class="token string">'selection'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'selection'</span><span class="token punctuation">,</span>
+          <span class="token function-variable function">selectable</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">row<span class="token punctuation">,</span> index</span><span class="token punctuation">)</span> <span class="token operator">=></span> index<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'编号'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'index'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'index'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'名称'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'name'</span><span class="token punctuation">,</span>
+          <span class="token function-variable function">headerSlotRender</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">h</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">'i'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token keyword">class</span><span class="token operator">:</span> <span class="token string">'el-icon-time el-input__icon'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'图'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'image'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'image'</span><span class="token punctuation">,</span>
+          popoverAttrs<span class="token operator">:</span> <span class="token punctuation">{</span>
+            placement<span class="token operator">:</span> <span class="token string">'left'</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'等级'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'item.level'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'select'</span><span class="token punctuation">,</span>
+          options<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">'A'</span><span class="token punctuation">,</span>
+            value<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">'B'</span><span class="token punctuation">,</span>
+            value<span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">'C'</span><span class="token punctuation">,</span>
+            value<span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          listeners<span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token string">'change'</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">rowIndex<span class="token punctuation">,</span> evt</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+              console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span>rowIndex<span class="token punctuation">,</span> evt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'日期'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'date'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'date'</span><span class="token punctuation">,</span>
+          minWidth<span class="token operator">:</span> <span class="token number">260</span><span class="token punctuation">,</span>
+          attrs<span class="token operator">:</span> <span class="token punctuation">{</span>
+            disabledDateStart<span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'类目'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'cascader'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'category'</span><span class="token punctuation">,</span>
+          minWidth<span class="token operator">:</span> <span class="token number">160</span><span class="token punctuation">,</span>
+          attrs<span class="token operator">:</span> <span class="token punctuation">{</span>
+            multiple<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          options<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">'一级类目'</span><span class="token punctuation">,</span>
+            value<span class="token operator">:</span> <span class="token string">'1'</span><span class="token punctuation">,</span>
+            children<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+              label<span class="token operator">:</span> <span class="token string">'子类目1'</span><span class="token punctuation">,</span>
+              value<span class="token operator">:</span> <span class="token string">'s1'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+              label<span class="token operator">:</span> <span class="token string">'子类目2'</span><span class="token punctuation">,</span>
+              value<span class="token operator">:</span> <span class="token string">'s2'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+          label<span class="token operator">:</span> <span class="token string">'备注'</span><span class="token punctuation">,</span>
+          prop<span class="token operator">:</span> <span class="token string">'item.remark'</span><span class="token punctuation">,</span>
+          type<span class="token operator">:</span> <span class="token string">'input'</span><span class="token punctuation">,</span>
+          minWidth<span class="token operator">:</span> <span class="token number">160</span><span class="token punctuation">,</span>
+          <span class="token comment">// 或者</span>
+          <span class="token comment">// 'min-width': 160,</span>
+          attrs<span class="token operator">:</span> <span class="token punctuation">{</span>
+            type<span class="token operator">:</span> <span class="token string">'textarea'</span><span class="token punctuation">,</span>
+            maxlength<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+            <span class="token string">'show-word-limit'</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            <span class="token comment">// 或者</span>
+            <span class="token comment">// showWordLimit: true,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          listeners<span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token function-variable function">input</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">rowIndex<span class="token punctuation">,</span> val</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+              console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span>rowIndex<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token keyword">const</span> ref <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$refs<span class="token punctuation">.</span>table<span class="token punctuation">;</span>
+              <span class="token keyword">if</span> <span class="token punctuation">(</span>ref <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>rowIndex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                ref<span class="token punctuation">.</span><span class="token function">setCellAttrs</span><span class="token punctuation">(</span><span class="token string">'item.remark'</span><span class="token punctuation">,</span> rowIndex<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+                  borderColor<span class="token operator">:</span> val<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">2</span> <span class="token operator">?</span> <span class="token string">'red'</span> <span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token function">mounted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">fetchMockData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    methods<span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token function">handleToggleLastRow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> ref <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$refs<span class="token punctuation">.</span>table<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>selected <span class="token operator">=</span> <span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>selected<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>ref<span class="token punctuation">)</span> ref<span class="token punctuation">.</span><span class="token function">toggleRowSelection</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>data<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>selected<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">handleClear</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> ref <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$refs<span class="token punctuation">.</span>table<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>ref<span class="token punctuation">)</span> ref<span class="token punctuation">.</span><span class="token function">clearSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>selection<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">handleToggleAllSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> ref <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$refs<span class="token punctuation">.</span>table<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>selected <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>ref<span class="token punctuation">)</span> ref<span class="token punctuation">.</span><span class="token function">toggleAllSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">handleSelect</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>e<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>selection<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">handleCellClick</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> colProp<span class="token punctuation">,</span> rowIndex <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span>colProp<span class="token punctuation">,</span> rowIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">fetchMockData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+            id<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            name<span class="token operator">:</span> <span class="token string">'a'</span><span class="token punctuation">,</span>
+            image<span class="token operator">:</span> <span class="token string">'https://static.zhihu.com/heifetz/assets/sign_bg.db29b0fb.png'</span><span class="token punctuation">,</span>
+            item<span class="token operator">:</span> <span class="token punctuation">{</span>
+              level<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+              remark<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            date<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+            category<span class="token operator">:</span> <span class="token string">'s2'</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            id<span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+            name<span class="token operator">:</span> <span class="token string">'ccsdaskdhajksbdajksdbakdbksadbsjdbkda'</span><span class="token punctuation">,</span>
+            image<span class="token operator">:</span> <span class="token string">'https://hbimg.huabanimg.com/89297c2da26b240448fd7aa7d884d9f57bd30ae21b90a-cj33e7_fw658/format/webp'</span><span class="token punctuation">,</span>
+            item<span class="token operator">:</span> <span class="token punctuation">{</span>
+              level<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+              remark<span class="token operator">:</span> <span class="token string">'备注'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            date<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+            category<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            id<span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+            name<span class="token operator">:</span> <span class="token string">'b'</span><span class="token punctuation">,</span>
+            image<span class="token operator">:</span> <span class="token string">'https://hbimg.huabanimg.com/89297c2da26b240448fd7aa7d884d9f57bd30ae21b90a-cj33e7_fw658/format/webp'</span><span class="token punctuation">,</span>
+            item<span class="token operator">:</span> <span class="token punctuation">{</span>
+              level<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+              remark<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            date<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+            category<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>selection <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>data<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">onSelectionChange</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>selection <span class="token operator">=</span> e<span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      <span class="token function">onDataChange</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> colProp<span class="token punctuation">,</span> rowIndex<span class="token punctuation">,</span> value <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> ref <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$refs<span class="token punctuation">.</span>table<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>ref<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>rowIndex <span class="token operator">===</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          ref<span class="token punctuation">.</span><span class="token function">setCellAttrs</span><span class="token punctuation">(</span>colProp<span class="token punctuation">,</span> rowIndex<span class="token punctuation">,</span> value<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token punctuation">{</span>
+            popoverVisible<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            popoverContent<span class="token operator">:</span> <span class="token string">'提示'</span><span class="token punctuation">,</span>
+            borderColor<span class="token operator">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span> <span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+</code></pre></div></div></section> <h2 id="属性"><a href="#属性" class="header-anchor">#</a> 属性</h2> <table><thead><tr><th>参数</th> <th>说明</th> <th>类型</th> <th>默认值</th></tr></thead> <tbody><tr><td>data(必填)</td> <td>双向绑定的表格数据值, 存在表单元素时会随其绑定数据值变化</td> <td>Array</td> <td>[]</td></tr> <tr><td>columns(必填)</td> <td>表格列schema</td> <td>Array</td> <td>[]</td></tr> <tr><td>loading</td> <td>表格是否加载中</td> <td>Boolean</td> <td>false</td></tr> <tr><td>selection</td> <td>表格全局选中列表</td> <td>Array</td> <td>[]</td></tr> <tr><td>selection-key(部分必填)</td> <td>表格全局选中列表主键, 当声明<code>selection</code>必需指定</td> <td>String</td> <td>''</td></tr> <tr><td>stack-selection</td> <td>为true时先选中的在全局选中列表的后面(栈)， 默认先选中的在全局选中列表的前面(队列)</td> <td>Boolean</td> <td>false</td></tr> <tr><td>align</td> <td>全局单元格对齐方式</td> <td>left/center/right</td> <td>'left'</td></tr> <tr><td>header-align</td> <td>全局表头对齐方式</td> <td>left/center/right</td> <td>'left'</td></tr> <tr><td>show-overflow-tooltip</td> <td>当内容过长被隐藏时显示 tooltip</td> <td>Boolean</td> <td>true</td></tr> <tr><td>min-width</td> <td>全局列最小宽度</td> <td>Number</td> <td>100</td></tr> <tr><td>image-preview</td> <td>图片类型的列是否启用预览</td> <td>Boolean</td> <td>true</td></tr> <tr><td>image-popover</td> <td>图片类型的列是否显示Popover</td> <td>Boolean</td> <td>true</td></tr></tbody></table> <p>其他继承自<code>el-table</code>的表格属性见<a href="https://element.eleme.cn/#/zh-CN/component/table#table-attributes" target="_blank" rel="noopener noreferrer">element-ui文档<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <h2 id="事件"><a href="#事件" class="header-anchor">#</a> 事件</h2> <table><thead><tr><th>参数</th> <th>说明</th> <th>参数</th></tr></thead> <tbody><tr><td>cell-mouse-enter</td> <td>当单元格 hover 进入时会触发该事件</td> <td>rowIndex, colProp, row, column, cell, event</td></tr> <tr><td>cell-mouse-leave</td> <td>当单元格 hover 退出时会触发该事件</td> <td>rowIndex, colProp, row, column, cell, event</td></tr> <tr><td>cell-click</td> <td>当某个单元格被点击时会触发该事件</td> <td>rowIndex, colProp, row, column, cell, event</td></tr> <tr><td>cell-dblclick</td> <td>当某个单元格被双击击时会触发该事件</td> <td>rowIndex, colProp, row, column, cell, event</td></tr></tbody></table> <p>其他继承自<code>el-table</code>的表格事件见<a href="https://element.eleme.cn/#/zh-CN/component/table#table-events" target="_blank" rel="noopener noreferrer">element-ui文档<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <h2 id="方法"><a href="#方法" class="header-anchor">#</a> 方法</h2> <table><thead><tr><th>参数</th> <th>说明</th> <th>参数</th></tr></thead> <tbody><tr><td>toggleRowSelection</td> <td>用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中）</td> <td>rowIndex, selected</td></tr></tbody></table> <p>其他继承自<code>el-table</code>的表格方法见<a href="https://element.eleme.cn/#/zh-CN/component/table#table-methods" target="_blank" rel="noopener noreferrer">element-ui文档<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <h2 id="column属性"><a href="#column属性" class="header-anchor">#</a> column属性</h2> <table><thead><tr><th>参数</th> <th>说明</th> <th>类型</th></tr></thead> <tbody><tr><td>type</td> <td>对应列的类型, 继承类型: selection/index/expand, 其他类型见下文</td> <td>String</td></tr> <tr><td>attrs</td> <td><code>&lt;elem-select&gt;</code>等内置类型组件的属性</td> <td>Object</td></tr> <tr><td>listeners</td> <td><code>&lt;elem-select&gt;</code>等内置类型组件的事件</td> <td>Object</td></tr> <tr><td>headerSlotRender</td> <td>自定义表头的内容渲染函数. 参数为 { column, $index }, 相当于<code>el-table-column</code>header slot</td> <td>Function</td></tr> <tr><td>errorSlotRender</td> <td><code>type</code>为<code>image</code>时, 加载失败的内容渲染函数</td> <td>Function</td></tr> <tr><td>placeholderSlotRender</td> <td><code>type</code>为<code>image</code>时, 图片未加载的占位内容渲染函数</td> <td>Function</td></tr></tbody></table> <p>其他继承自<code>el-table-column</code>的属性见<a href="https://element.eleme.cn/#/zh-CN/component/table#table-column-attributes" target="_blank" rel="noopener noreferrer">element-ui文档<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>, <strong>同时支持和中划线写法(kebab case)和小驼峰(camel case)写法</strong></p> <p><strong>支持的列的类型(type)</strong></p> <ul><li>image</li> <li>select/single-select: 属性和事件见<code>&lt;elem-select /&gt;</code></li> <li>input: 属性和事件见<code>&lt;elem-input /&gt;</code></li> <li>cascader: 属性和事件见<code>&lt;elem-cascader /&gt;</code></li> <li>year/month/date/week/datetime/dates/datetimerange/daterange/monthrange: 属性和事件见<code>&lt;elem-date-picker /&gt;</code></li></ul></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/onemin-table/elem-form/" class="prev">
+        ElemForm
+      </a></span> <span class="next"><a href="/onemin-table/elem-select/">
+        ElemSelect
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/onemin-table/assets/js/app.e2c16116.js" defer></script><script src="/onemin-table/assets/js/2.18f650e8.js" defer></script><script src="/onemin-table/assets/js/13.8ae46b95.js" defer></script>
+  </body>
+</html>
