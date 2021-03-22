@@ -11,9 +11,9 @@
     <el-input
       slot="reference"
       ref="input"
-      v-model="inputVal"
+      :value="inputVal"
       v-bind="attrs"
-      v-on="$listeners"
+      v-on="listeners"
     >
       <input-slot
         :prefix-slot-render="prefixSlotRender"
@@ -34,13 +34,15 @@ export default {
 
   mixins: [inputMixin],
 
+  inheritAttrs: false,
+
   props: {
     /**
      * @language=zh
      * 输入框绑定值
      */
     value: {
-      type: [String, Number],
+      type: [String, Number, Array],
       default: null,
     },
 
@@ -97,6 +99,33 @@ export default {
       type: String,
       default: '',
     },
+
+    /**
+     * @language=zh
+     * 分隔模式，双向绑定值为根据splitChar分隔的数组
+     */
+    split: {
+      type: Boolean,
+      default: false,
+    },
+
+    /**
+     * @language=zh
+     * 分隔字符串
+     */
+    splitChar: {
+      type: String,
+      default: ' ',
+    },
+
+    /**
+     * @language=zh
+     * type="number"时输入字符串是否转换为number类型
+     */
+    convertNumber: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   components: {
@@ -124,6 +153,36 @@ export default {
     innerPopoverAttrs() {
       return this.genDefaultPopoverAttrs('ot-input__popover--elem');
     },
+
+    listeners() {
+      return {
+        ...this.$listeners,
+        input: (val) => {
+          const input = this.$listeners?.input;
+          if (typeof input === 'function') input(this.genOuterVal(val));
+        },
+        change: (val) => {
+          const change = this.$listeners?.change;
+          if (typeof change === 'function') change(this.genOuterVal(val));
+        },
+      };
+    },
+  },
+
+  data() {
+    return {
+      // 数组合并为字符串, array join into string
+      inputVal: this.genInnerVal(),
+    };
+  },
+
+  watch: {
+    value: {
+      handler() {
+        this.inputVal = this.genInnerVal();
+      },
+      deep: true,
+    },
   },
 
   mounted() {
@@ -137,6 +196,26 @@ export default {
   },
 
   methods: {
+    /**
+     * 数组合并为字符串
+     * array join into string
+     */
+    genInnerVal() {
+      return (this.split && Array.isArray(this.value))
+        ? this.value.join(this.splitChar)
+        : this.value;
+    },
+
+    /**
+     * 字符串分隔为数组
+     * string split into array
+     */
+    genOuterVal(val) {
+      return this.split
+        ? val.split(this.splitChar)
+        : ((this.$attrs.type === 'number' && this.convertNumber) ? +val : val);
+    },
+
     innerAppendSlotRender(h) {
       if (!this.append && !this.appendSlotRender) return null;
       return this.appendSlotRender || h('div', null, this.append);
