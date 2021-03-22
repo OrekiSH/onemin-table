@@ -3,9 +3,12 @@ import commonjs from '@rollup/plugin-commonjs';
 import vue from 'rollup-plugin-vue';
 import { terser } from 'rollup-plugin-terser';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import css from 'rollup-plugin-css-only';
 import fs from 'fs';
 import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
+
+const genSource = (e) => `./packages/${e}/src/index.vue`;
 
 function genConfig(input, format, {
   output, name, file, useTerser,
@@ -13,7 +16,7 @@ function genConfig(input, format, {
   const isUmd = format === 'umd';
 
   return {
-    input,
+    input: genSource(input),
     output: {
       dir: output,
       format,
@@ -22,7 +25,8 @@ function genConfig(input, format, {
     },
     plugins: [
       commonjs(),
-      vue(),
+      css({ output: `${input}.css` }),
+      vue({ css: false }),
       babel({
         babelHelpers: 'bundled',
         extensions: ['.js', '.vue'],
@@ -39,19 +43,17 @@ function genConfig(input, format, {
   };
 }
 
-const genSource = (e) => `./packages/${e}/src/index.vue`;
-
 const pkgs = fs.readdirSync('./packages')
   .filter((e) => fs.lstatSync(`${__dirname}/packages/${e}`).isDirectory());
 
 const conf = pkgs.map((e) => ((e === 'shared' || e.endsWith('utils')) ? [] : [
-  genConfig(genSource(e), 'cjs', { output: `./packages/${e}/lib` }),
-  genConfig(genSource(e), 'es', { output: `./packages/${e}/es` }),
-  genConfig(genSource(e), 'umd', {
+  genConfig(e, 'cjs', { output: `./packages/${e}/lib` }),
+  genConfig(e, 'es', { output: `./packages/${e}/es` }),
+  genConfig(e, 'umd', {
     name: upperFirst(camelCase(e)),
     file: `./packages/${e}/dist/${e}.js`,
   }),
-  genConfig(genSource(e), 'umd', {
+  genConfig(e, 'umd', {
     name: upperFirst(camelCase(e)),
     file: `./packages/${e}/dist/${e}.min.js`,
     useTerser: true,

@@ -196,7 +196,7 @@ $ yarn add @onemin-table/elem-table
           label: '日期',
           type: 'date',
           prop: 'date',
-          minWidth: 200,
+          minWidth: 260,
           attrs: {
             disabledDateStart: 3,
           },
@@ -398,3 +398,5 @@ $ yarn add @onemin-table/elem-table
 - image
 - select/single-select: 属性和事件见`<elem-select />`
 - input: 属性和事件见`<elem-input />`
+- cascader: 属性和事件见`<elem-cascader />`
+- year/month/date/week/datetime/dates/datetimerange/daterange/monthrange: 属性和事件见`<elem-date-picker />`

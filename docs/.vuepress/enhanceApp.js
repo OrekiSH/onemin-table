@@ -6,6 +6,7 @@ import ElemSelect from '../../packages/elem-select/lib/index';
 import ElemInput from '../../packages/elem-input/lib/index';
 import ElemDatePicker from '../../packages/elem-date-picker/lib/index';
 import ElemCascader from '../../packages/elem-cascader/lib/index';
+import '../../packages/elem-table/lib/elem-table.css';
 
 export default ({ Vue }) => {
   Vue.use(ElementUI);

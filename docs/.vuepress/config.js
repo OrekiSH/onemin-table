@@ -1,8 +1,6 @@
 module.exports = {
   theme: '@vuepress-dumi/dumi',
-  head: [
-    ['title', 'onemin-table'],
-  ],
+  title: 'onemin-table',
   themeConfig: {
     sidebar: [
       ['/', '组件总览'],
