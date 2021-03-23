@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-input",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "@onemin-table/elem-input",
   "module": "es/index.js",
   "main": "lib/index.js",
@@ -37,8 +37,5 @@
   "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-input#readme",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@onemin-table/shared": "latest"
   }
 }

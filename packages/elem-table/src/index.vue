@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import { klona as cloneDeep } from 'klona';
-import camelCase from 'camelcase';
+import cloneDeep from 'lodash/cloneDeep';
+import camelCase from 'lodash/camelCase';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import kebabCase from 'lodash/kebabCase';

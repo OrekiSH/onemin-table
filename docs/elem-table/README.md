@@ -176,7 +176,7 @@ $ yarn add @onemin-table/elem-table
         }, {
           label: '等级',
           prop: 'item.level',
-          type: 'select',
+          type: 'single-select',
           options: [{
             label: 'A',
             value: 1,
@@ -207,6 +207,16 @@ $ yarn add @onemin-table/elem-table
           minWidth: 160,
           attrs: {
             multiple: true,
+            popoverVisible: true,
+            popoverSlotRender: (h) => {
+              return h('div', null, [
+                h('i', {
+                  style: 'color: #F46A6A;margin-right: 10px;',
+                  class: 'el-icon-error',
+                }),
+                '错误',
+              ]);
+            },
           },
           options: [{
             label: '一级类目',
@@ -287,7 +297,7 @@ $ yarn add @onemin-table/elem-table
             name: 'a',
             image: 'https://static.zhihu.com/heifetz/assets/sign_bg.db29b0fb.png',
             item: {
-              level: [1],
+              level: 1,
               remark: '',
             },
             date: '',
@@ -297,7 +307,7 @@ $ yarn add @onemin-table/elem-table
             name: 'ccsdaskdhajksbdajksdbakdbksadbsjdbkda',
             image: 'https://hbimg.huabanimg.com/89297c2da26b240448fd7aa7d884d9f57bd30ae21b90a-cj33e7_fw658/format/webp',
             item: {
-              level: [2, 3],
+              level: 2,
               remark: '备注',
             },
             date: '',
@@ -307,7 +317,7 @@ $ yarn add @onemin-table/elem-table
             name: 'b',
             image: 'https://hbimg.huabanimg.com/89297c2da26b240448fd7aa7d884d9f57bd30ae21b90a-cj33e7_fw658/format/webp',
             item: {
-              level: [],
+              level: null,
               remark: '',
             },
             date: '',

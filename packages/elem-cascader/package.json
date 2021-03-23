@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-cascader",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "@onemin-table/elem-cascader",
   "module": "es/index.js",
   "main": "lib/index.js",
@@ -37,9 +37,5 @@
   "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-cascader#readme",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@onemin-table/shared": "latest",
-    "camelcase": "^6.2.0"
   }
 }

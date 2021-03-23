@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-table",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "@onemin-table/elem-table",
   "module": "es/index.js",
   "main": "lib/index.js",
@@ -37,13 +37,5 @@
   "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-table#readme",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@onemin-table/elem-input": "latest",
-    "@onemin-table/elem-select": "latest",
-    "@onemin-table/elem-date-picker": "latest",
-    "@onemin-table/shared": "latest",
-    "camelcase": "^6.2.0",
-    "klona": "^2.0.4"
   }
 }

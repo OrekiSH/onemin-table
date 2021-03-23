@@ -31,7 +31,7 @@
 <script>
 import pick from 'lodash/pick';
 import omit from 'lodash/omit';
-import camelCase from 'camelcase';
+import camelCase from 'lodash/camelCase';
 import {
   inputMixin, CustomRender, TreeHelper,
 } from '@onemin-table/shared';
