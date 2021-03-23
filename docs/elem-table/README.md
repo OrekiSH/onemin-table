@@ -208,6 +208,10 @@ $ yarn add @onemin-table/elem-table
           attrs: {
             multiple: true,
             popoverVisible: true,
+            popoverAttrs: {
+              'append-to-body': false,
+              placement: 'bottom',
+            },
             popoverSlotRender: (h) => {
               return h('div', null, [
                 h('i', {
@@ -245,13 +249,15 @@ $ yarn add @onemin-table/elem-table
           },
           listeners: {
             input: (rowIndex, val) => {
-              console.warn(rowIndex, val);
-              const ref = this.$refs.table;
-              if (ref && !rowIndex) {
-                ref.setCellAttrs('item.remark', rowIndex, {
-                  borderColor: val.length > 2 ? 'red' : '',
-                });
-              }
+              this.$nextTick(() => {
+                console.warn(rowIndex, val);
+                const ref = this.$refs.table;
+                if (ref && !rowIndex) {
+                  ref.setCellAttrs('item.remark', rowIndex, {
+                    borderColor: val.length > 2 ? 'red' : '',
+                  });
+                }
+              });
             },
           },
         }];
@@ -378,6 +384,7 @@ $ yarn add @onemin-table/elem-table
 | cell-mouse-leave |当单元格 hover 退出时会触发该事件| rowIndex, colProp, row, column, cell, event |
 | cell-click |当某个单元格被点击时会触发该事件| rowIndex, colProp, row, column, cell, event |
 | cell-dblclick |当某个单元格被双击击时会触发该事件| rowIndex, colProp, row, column, cell, event |
+| scroll |表格滚动时会触发该事件| event |
 
 其他继承自`el-table`的表格事件见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-events)
 

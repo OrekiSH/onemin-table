@@ -192,6 +192,7 @@ export default {
   data() {
     return {
       cellAttrsMap: {},
+      scrollWrapper: null,
     };
   },
 
@@ -275,7 +276,23 @@ export default {
       };
     }
 
+    const el = this.$el.querySelector('.el-table__body-wrapper');
+    if (el) {
+      this.scrollWrapper = el;
+      this.handleScroll = (evt) => {
+        console.warn(evt.target.scrollLeft);
+        this.$emit('scroll', evt);
+      };
+      el.addEventListener('scroll', this.handleScroll);
+    }
+
     this.initCellAttrsMap();
+  },
+
+  beforeDestroy() {
+    if (this.scrollWrapper && this.handleScroll) {
+      this.scrollWrapper.removeEventListener('scroll', this.handleScroll);
+    }
   },
 
   methods: {
@@ -519,7 +536,7 @@ export default {
      * 设置单元格属性
      */
     setCellAttrs(colProp, rowIndex, attrs) {
-      this.cellAttrsMap[colProp][rowIndex] = attrs;
+      this.$set(this.cellAttrsMap[colProp], rowIndex, attrs);
     },
   },
 };
