@@ -425,15 +425,14 @@ export default {
           'image-preview': this.imagePreview,
         },
 
-        select: {
+        ...Object.fromEntries([
+          'select',
+          'single-select',
+          'cascader',
+        ].map((t) => [t, {
           options: col.options,
           value: get(scope.row, col.prop),
-        },
-
-        cascader: {
-          options: col.options,
-          value: get(scope.row, col.prop),
-        },
+        }])),
 
         input: { value: get(scope.row, col.prop) },
 
