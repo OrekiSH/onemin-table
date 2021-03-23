@@ -16,7 +16,7 @@ $ yarn add @onemin-table/elem-table
 
 ## 用法
 
-多级表头:
+### 多级表头
 
 ::: demo[scope]
 <template>
@@ -114,7 +114,7 @@ $ yarn add @onemin-table/elem-table
 </script>
 :::
 
-选中/编辑:
+### 选中/编辑
 
 ::: demo[scope]
 <template>
