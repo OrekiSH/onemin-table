@@ -298,8 +298,8 @@ export default {
      * 例如[[1], [10, 12]]拆分为[[1, 10], [1, 12]]
      */
     genInnerVal() {
-      return this.canMerge
-        ? this.value[this.value.length - 1].map((val) => this.leafPathMap[val])
+      return (this.canMerge && Array.isArray(this.value))
+        ? (this.value[this.value.length - 1] || []).map((val) => this.leafPathMap[val])
         : this.value;
     },
 
