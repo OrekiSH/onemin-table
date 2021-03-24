@@ -195,7 +195,7 @@ $ yarn add @onemin-table/elem-cascader
 | disabled-key | options中禁用状态的key, 优先级低于`props.disabled`, 默认值disabled | String |
 | multiple/... | `multiple`等`<el-cascader>`的[props属性](https://element.eleme.cn/#/zh-CN/component/cascader#props)中的值, 支持同时支持和中划线写法(kebab case)和小驼峰(camel case)写法  | String |
 | empty-slot-render | 选择器无选项时列表渲染函数, 相当于`el-cascader`的empty slot | Function |
-| prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
+| data-prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | width | 选择器宽度, 传入数字会被识别为像素值(px) | `String|Number` |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
 | background-color | 选择器背景颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |

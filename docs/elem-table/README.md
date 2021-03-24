@@ -154,6 +154,7 @@ $ yarn add @onemin-table/elem-table
           prop: 'expand',
           type: 'expand',
           render: (h, p) => h('h1', null, p.row.name),
+          fixed: true,
         }, {
           prop: 'selection',
           type: 'selection',

@@ -63,6 +63,8 @@ export default {
 
   mixins: [inputMixin],
 
+  inheritAttrs: false,
+
   components: {
     SelectSlot,
     CustomRender,
@@ -122,7 +124,6 @@ export default {
         placeholder: def('placeholder', '请选择'),
         'collapse-tags': def('collapseTags'),
         'popper-append-to-body': def('popperAppendToBody'),
-        'data-prop': def('prop', ''),
         ...this.$attrs,
       };
     },

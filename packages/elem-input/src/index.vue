@@ -145,7 +145,6 @@ export default {
         filterable: def('filterable'),
         placeholder: def('placeholder', '请输入'),
         style: `width: ${this.elWidth || '100%'}`,
-        'data-prop': def('prop', ''),
         ...this.$attrs,
       };
     },

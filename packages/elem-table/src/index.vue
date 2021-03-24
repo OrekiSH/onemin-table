@@ -63,6 +63,16 @@ const SKIP_LISTENERS = [
   ...CELL_LISTENERS,
 ];
 
+// 不绑定到<el-table-column>的列属性
+const SKIP_COLUMN_ATTRS = [
+  'children',
+  'attrs',
+  'listeners',
+  'headerSlotRender',
+  'errorSlotRender',
+  'placeholderSlotRender',
+];
+
 export default {
   name: 'ElemTable',
 
@@ -179,7 +189,19 @@ export default {
       type: Number,
       default: 100,
     },
+
+    /**
+     * @language=zh
+     * 固定列克隆的Popover实例是否移除
+     * 关联https://github.com/ElemeFE/element/issues/10588
+     */
+    noDuplicatePopover: {
+      type: Boolean,
+      default: false,
+    },
   },
+
+  inheritAttrs: false,
 
   provide() {
     return {
@@ -192,7 +214,7 @@ export default {
   data() {
     return {
       cellAttrsMap: {},
-      scrollWrapper: null,
+      clones: [],
     };
   },
 
@@ -206,6 +228,14 @@ export default {
         }
         return a;
       }, {});
+    },
+
+    /**
+     * 存在固定列
+     * some columns fixed
+     */
+    someFixed() {
+      return (this.columns ? this.columns : []).some((e) => e.fixed);
     },
   },
 
@@ -276,23 +306,7 @@ export default {
       };
     }
 
-    const el = this.$el.querySelector('.el-table__body-wrapper');
-    if (el) {
-      this.scrollWrapper = el;
-      this.handleScroll = (evt) => {
-        console.warn(evt.target.scrollLeft);
-        this.$emit('scroll', evt);
-      };
-      el.addEventListener('scroll', this.handleScroll);
-    }
-
     this.initCellAttrsMap();
-  },
-
-  beforeDestroy() {
-    if (this.scrollWrapper && this.handleScroll) {
-      this.scrollWrapper.removeEventListener('scroll', this.handleScroll);
-    }
   },
 
   methods: {
@@ -413,7 +427,7 @@ export default {
       // 兼容中划线与小驼峰, kebab case and camel case compatible
       const temp = {};
       Object.keys(col).forEach((k) => {
-        if (k === 'children') return; // 过滤children属性, filter children attr
+        if (SKIP_COLUMN_ATTRS.includes(k)) return; // 过滤children等属性, filter children attr
         temp[k] = col[k];
         temp[kebabCase(k)] = col[k];
       });
@@ -462,6 +476,7 @@ export default {
         ...map[col.type] || {},
         ...col.attrs,
         ...this.cellAttrsMap?.[col.prop]?.[scope.$index],
+        'data-prop': `${col.prop || ''}_${scope.$index}`,
       };
 
       if (col.type === 'select') result.multiple = true;
@@ -536,7 +551,39 @@ export default {
      * 设置单元格属性
      */
     setCellAttrs(colProp, rowIndex, attrs) {
+      // fixed column exists, 固定列存在
+      const duplicateRemove = this.someFixed
+        && attrs.popoverVisible
+        && this.noDuplicatePopover;
+
+      let popoverIds = [];
+      if (duplicateRemove) {
+        // related to https://github.com/ElemeFE/element/issues/10588
+        const nodes = this.$el?.querySelectorAll('[id^="el-popover-"]');
+        popoverIds = [...nodes].map((e) => e.id);
+      }
+
+      // set attrs, 设置属性
       this.$set(this.cellAttrsMap[colProp], rowIndex, attrs);
+
+      if (duplicateRemove && popoverIds?.length) {
+        // delete cloned popover, 删除克隆的列生成的popover.
+        this.$nextTick(() => {
+          const nodes = this.$el?.querySelectorAll('[id^="el-popover-"]');
+          const ids = [...nodes].map((e) => e.id);
+          const appended = popoverIds.filter((e) => !ids.includes(e));
+          appended.forEach((id) => {
+            const isClone = document.body.querySelector(`.is-hidden [aria-describedby="${id}"]`);
+            if (isClone && !this.clones.includes(id)) {
+              this.clones.push(id);
+            }
+          });
+
+          this.clones.forEach((id) => {
+            document.body.removeChild(document.body.querySelector(`#${id}`));
+          });
+        });
+      }
     },
   },
 };

@@ -188,7 +188,6 @@ export default {
         filterable: def('filterable'),
         'collapse-tags': def('collapseTags'),
         'popper-append-to-body': def('popperAppendToBody'),
-        'data-prop': def('prop', ''),
 
         // props
         props: {

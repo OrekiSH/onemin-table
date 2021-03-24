@@ -107,7 +107,7 @@ $ yarn add @onemin-table/elem-date-picker
 | disabled-date-start | 禁用状态的日期距离当前时间之后的天数(开区间), 天数计算包含当前日期 | Number |
 | disabled-date-end | 禁用状态的日期距离当前时间之前的天数(开区间), 天数计算不含当前日期 | Number |
 | disabled-date-range | 禁用状态的日期距离当前时间的天数区间(闭区间), [start, end], start的天数计算包含当前日期 | `Array<Number>` |
-| prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
+| data-prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | width | 选择器宽度, 传入数字会被识别为像素值(px) | `String|Number` |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
 | background-color | 选择器背景颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |

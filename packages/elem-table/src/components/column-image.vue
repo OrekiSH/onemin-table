@@ -47,6 +47,8 @@ export default {
     ImageSlot,
   },
 
+  inheritAttrs: false,
+
   props: {
     col: {
       type: Object,

@@ -37,6 +37,8 @@ import ElemTableColumn from './table-column.vue';
 export default {
   name: 'ElemTableColumnGroup',
 
+  inheritAttrs: false,
+
   props: {
     col: {
       type: Object,

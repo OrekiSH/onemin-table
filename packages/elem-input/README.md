@@ -113,7 +113,7 @@ $ yarn add @onemin-table/elem-input
 | prepend-slot-render | 选择器前置内容渲染函数, 相当于`el-input`的prepend slot | Function |
 | append | 选择器后置内容字符串, 优先级低于`appendSlotRender` | String |
 | prepend | 选择器前置内容字符串, 优先级低于`prependSlotRender` | String |
-| prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
+| data-prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
 | background-color | 选择器背景颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
 | color | 选择器字体颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |

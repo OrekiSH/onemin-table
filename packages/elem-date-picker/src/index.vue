@@ -38,6 +38,8 @@ export default {
 
   mixins: [inputMixin],
 
+  inheritAttrs: false,
+
   props: {
     /**
      * @language=zh
@@ -102,7 +104,6 @@ export default {
         'range-separator': def('rangeSeparator', '~'),
         'start-placeholder': def('startPlaceholder', '开始日期'),
         'end-placeholder': def('endPlaceholder', '结束日期'),
-        'data-prop': def('prop', ''),
         ...this.$attrs,
         'picker-options': {
           disabledDate: (date) => {

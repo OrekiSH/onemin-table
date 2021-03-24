@@ -48,6 +48,8 @@ const ElemCascader = () => import('@onemin-table/elem-cascader');
 export default {
   name: 'ElemTableColumn',
 
+  inheritAttrs: false,
+
   props: {
     col: {
       type: Object,
