@@ -127,7 +127,7 @@ $ yarn add @onemin-table/elem-cascader
 | same-level-merge | 同一层级选中合并, 仅在multiple: true + emitPath: true + checkStrictly: false时有效, 默认值false | Boolean |
 | multiple/... | `multiple`等`<el-cascader>`的[props属性](https://element.eleme.cn/#/zh-CN/component/cascader#props)中的值, 同时支持中划线写法(kebab case)和小驼峰(camel case)写法  | String |
 | empty-slot-render | 选择器无选项时列表渲染函数, 相当于`el-cascader`的empty slot | Function |
-| prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
+| data-prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | width | 选择器宽度, 传入数字会被识别为像素值(px) | `String|Number` |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
 | background-color | 选择器背景颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
@@ -137,6 +137,8 @@ $ yarn add @onemin-table/elem-cascader
 | popover-attrs | [`<el-popover>`的属性](https://element.eleme.cn/#/zh-CN/component/popover#attributes) | Object |
 | popover-listeners | [`<el-popover>`的事件](https://element.eleme.cn/#/zh-CN/component/popover#events) | Object |
 | popover-slot-render | 弹出框渲染函数, 相当于`el-popover`的default slot | Function |
+| scroll-wrapper | 滚动容器选择器, 用于解决`<el-popover>`不随目标元素滚动的问题, 滚动元素为window时传'window'字符串, 默认值空 | String |
+| scroll-debounce | 滚动容器滚动时更新`<el-popover>`的位置信息的延迟毫秒数, 仅当`scroll-wrapper`不为空时生效, 默认值0 | Number |
 
 其他继承自`el-cascader`的属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/cascader#cascader-attributes)
 

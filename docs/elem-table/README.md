@@ -129,6 +129,8 @@ $ yarn add @onemin-table/elem-table
       :columns="columns"
       :selection="selection"
       selection-key="id"
+      no-duplicate-popover
+      scroll-wrapper="window"
       @selection-change="onSelectionChange"
       @cell-click="handleCellClick"
       @on-change="onDataChange"
@@ -374,6 +376,8 @@ $ yarn add @onemin-table/elem-table
 | min-width | 全局列最小宽度 |  Number | 100 |
 | image-preview | 图片类型的列是否启用预览 | Boolean | true |
 | image-popover | 图片类型的列是否显示Popover | Boolean | true |
+| scroll-wrapper | 滚动容器选择器, 用于解决`<el-popover>`不随目标元素滚动的问题, 滚动元素为window时传'window'字符串, 默认值空, 优先级低于column属性中的`attrs.scrollWrapper` | String |
+| scroll-debounce | 滚动容器滚动时更新`<el-popover>`的位置信息的延迟毫秒数, 仅当`scroll-wrapper`不为空时生效, 默认值0, 优先级低于column属性中的`attrs.scrollDebounce` | Number |
 
 其他继承自`el-table`的表格属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-attributes)
 

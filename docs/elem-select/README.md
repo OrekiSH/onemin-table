@@ -132,7 +132,7 @@ $ yarn add @onemin-table/elem-select
 | loading | 选择器是否加载中 | Boolean |
 | loading-text | 选择器选项加载中列表提示文字 | String |
 | loading-slot-render | 选择器选项加载中列表内容渲染函数, 优先级高于`loading-text` | Function |
-| prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
+| data-prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | width | 选择器宽度, 传入数字会被识别为像素值(px) | `String|Number` |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
 | background-color | 选择器背景颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |
@@ -142,6 +142,8 @@ $ yarn add @onemin-table/elem-select
 | popover-attrs | [`<el-popover>`的属性](https://element.eleme.cn/#/zh-CN/component/popover#attributes) | Object |
 | popover-listeners | [`<el-popover>`的事件](https://element.eleme.cn/#/zh-CN/component/popover#events) | Object |
 | popover-slot-render | 弹出框渲染函数, 相当于`el-popover`的default slot | Function |
+| scroll-wrapper | 滚动容器选择器, 用于解决`<el-popover>`不随目标元素滚动的问题, 滚动元素为window时传'window'字符串, 默认值空 | String |
+| scroll-debounce | 滚动容器滚动时更新`<el-popover>`的位置信息的延迟毫秒数, 仅当`scroll-wrapper`不为空时生效, 默认值0 | Number |
 
 其他继承自`el-select`的属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)
 
