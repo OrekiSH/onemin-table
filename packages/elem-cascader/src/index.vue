@@ -223,10 +223,9 @@ export default {
     listeners() {
       return {
         ...this.$listeners,
-        input: (val) => {
-          this.$emit('input', this.genOuterVal(val));
-        },
         change: (val) => {
+          this.inputVal = val;
+          this.$emit('input', this.genOuterVal(val));
           this.$emit('change', this.genOuterVal(val));
         },
       };

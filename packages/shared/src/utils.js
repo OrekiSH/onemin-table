@@ -63,17 +63,21 @@ export class TreeHelper {
     const buildPath = (node, path) => {
       if (!node) return;
 
-      path.push(get(node, this.valueKey));
+      const val = get(node, this.valueKey);
+      // eslint-disable-next-line
+      path += val;
       const children = get(node, this.childrenKey);
       if (!children || !children.length) {
-        result[get(node, this.valueKey)] = path.slice();
+        result[val] = path.split(',');
       } else {
+        // eslint-disable-next-line
+        path += ',';
         for (let i = 0; i < children.length; i += 1) {
           buildPath(children[i], path);
         }
       }
     };
-    buildPath(root, []);
+    buildPath(root, '');
 
     return result;
   }

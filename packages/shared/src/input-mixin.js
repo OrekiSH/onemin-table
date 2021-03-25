@@ -114,7 +114,7 @@ export const popoverMixin = {
         this.scrollEl = el;
         this.handleUpdatePopover = debounce(() => {
           const ref = this.$refs.popover;
-          if (typeof ref?.updatePopper === 'function') ref.updatePopper();
+          if (ref && typeof ref.updatePopper === 'function') ref.updatePopper();
         }, this.scrollDebounce);
         el.addEventListener('scroll', this.handleUpdatePopover);
       }

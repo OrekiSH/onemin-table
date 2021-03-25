@@ -40,7 +40,7 @@ $ yarn add @onemin-table/elem-cascader
   export default {
     data() {
       return {
-        foo: [[11], [1]],
+        foo: [[12], [5], [6]],
 
         group: true,
         groupOptions: [],
