@@ -199,6 +199,24 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    /**
+     * @language=zh
+     * 滚动容器选择器(window直接使用window字符串), 指定时会在滚动时更新popover的位置信息
+     */
+    scrollWrapper: {
+      type: String,
+      default: '',
+    },
+
+    /**
+     * @language=zh
+     * 滚动debounce延迟时间
+     */
+    scrollDebounce: {
+      type: Number,
+      default: 0,
+    },
   },
 
   inheritAttrs: false,
@@ -473,6 +491,8 @@ export default {
       // default, attrs set, user set
       // 默认属性, 通过attrs设置的属性, 用户手动设置的属性
       const result = {
+        scrollWrapper: this.scrollWrapper,
+        scrollDebounce: this.scrollDebounce,
         ...map[col.type] || {},
         ...col.attrs,
         ...this.cellAttrsMap?.[col.prop]?.[scope.$index],

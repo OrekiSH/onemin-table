@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    ref="popover"
     :value="popoverVisible && mounted"
     v-bind="innerPopoverAttrs"
     v-on="popoverListeners"

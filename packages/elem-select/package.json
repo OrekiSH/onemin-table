@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-select",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "@onemin-table/elem-select",
   "module": "es/index.js",
   "main": "lib/index.js",

@@ -1,3 +1,30 @@
+export function debounce(fn, wait) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('Expected a function');
+  }
+  let result = null;
+  let timerId = null;
+
+  function debounced(...args) {
+    if (timerId) clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      result = fn.apply(this, args);
+    }, +wait);
+
+    return result;
+  }
+
+  return debounced;
+}
+
+/**
+ * if can addEventListener
+ * 是否是EventTarget
+ */
+export function isEventTarget() {
+  return el instanceof Element || el instanceof HTMLDocument || el instanceof Window;
+}
+
 export const popoverMixin = {
   props: {
     /**
@@ -44,18 +71,60 @@ export const popoverMixin = {
       type: Function,
       default: null,
     },
+
+    /**
+     * @language=zh
+     * 滚动容器选择器(window直接使用window字符串), 指定时会在滚动时更新popover的位置信息
+     */
+    scrollWrapper: {
+      type: String,
+      default: '',
+    },
+
+    /**
+     * @language=zh
+     * 滚动debounce延迟时间
+     */
+    scrollDebounce: {
+      type: Number,
+      default: 0,
+    },
   },
 
   data() {
     return {
       // if mounted, 是否已挂载
       mounted: false,
+      // scroll container, 滚动容器
+      scrollEl: null,
     };
   },
 
   mounted() {
     // corrent popover placement, 纠正<el-popover>的位置
     this.mounted = true;
+
+    if (this.scrollWrapper) {
+      // 滚动元素, scroll elment
+      const el = this.scrollWrapper === 'window'
+        ? window
+        : document.querySelector(this.scrollWrapper);
+
+      if (el) {
+        this.scrollEl = el;
+        this.handleUpdatePopover = debounce(() => {
+          const ref = this.$refs.popover;
+          if (typeof ref?.updatePopper === 'function') ref.updatePopper();
+        }, this.scrollDebounce);
+        el.addEventListener('scroll', this.handleUpdatePopover);
+      }
+    }
+  },
+
+  beforeDestroy() {
+    if (this.scrollEl && this.handleUpdatePopover) {
+      this.scrollEl.removeEventListener('scroll', this.handleUpdatePopover);
+    }
   },
 
   methods: {
