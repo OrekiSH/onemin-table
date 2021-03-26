@@ -129,10 +129,8 @@ $ yarn add @onemin-table/elem-table
       :columns="columns"
       :selection="selection"
       selection-key="id"
-      no-duplicate-popover
       scroll-wrapper="window"
       @selection-change="onSelectionChange"
-      @cell-click="handleCellClick"
       @on-change="onDataChange"
     />
   </div>
@@ -263,6 +261,11 @@ $ yarn add @onemin-table/elem-table
               });
             },
           },
+        }, {
+          label: '操作',
+          render: (h, p) => h('button', { on: {
+            click: this.handleDelete(p),
+          } }, '删除'),
         }];
       },
     },
@@ -272,6 +275,12 @@ $ yarn add @onemin-table/elem-table
     },
 
     methods: {
+      handleDelete(p) {
+        return () => {
+          this.data.splice(p.index, 1);
+        };
+      },
+
       handleToggleLastRow() {
         const ref = this.$refs.table;
         this.selected = !this.selected;
@@ -281,21 +290,12 @@ $ yarn add @onemin-table/elem-table
       handleClear() {
         const ref = this.$refs.table;
         if (ref) ref.clearSelection();
-        console.warn(this.selection);
       },
 
       handleToggleAllSelection() {
         const ref = this.$refs.table;
         this.selected = true;
         if (ref) ref.toggleAllSelection();
-      },
-
-      handleSelect(e) {
-        console.error(e, this.selection);
-      },
-
-      handleCellClick({ colProp, rowIndex }) {
-        console.warn(colProp, rowIndex);
       },
 
       fetchMockData() {
@@ -339,21 +339,17 @@ $ yarn add @onemin-table/elem-table
 
       onSelectionChange(e) {
         this.selection = e;
-        console.warn(e);
       },
 
       onDataChange({ colProp, rowIndex, value }) {
         const ref = this.$refs.table;
         if (!ref) return;
-        console.warn(this.data);
 
-        if (rowIndex === 2) {
-          ref.setCellAttrs(colProp, rowIndex, value.includes(1) ? {
-            popoverVisible: true,
-            popoverContent: '提示',
-            borderColor: 'red',
-          } : {});
-        }
+        ref.setCellAttrs(colProp, rowIndex, value?.includes(1) ? {
+          popoverVisible: true,
+          popoverContent: '提示',
+          borderColor: 'red',
+        } : {});
       },
     },
   };
@@ -376,8 +372,11 @@ $ yarn add @onemin-table/elem-table
 | min-width | 全局列最小宽度 |  Number | 100 |
 | image-preview | 图片类型的列是否启用预览 | Boolean | true |
 | image-popover | 图片类型的列是否显示Popover | Boolean | true |
-| scroll-wrapper | 滚动容器选择器, 用于解决`<el-popover>`不随目标元素滚动的问题, 滚动元素为window时传'window'字符串, 默认值空, 优先级低于column属性中的`attrs.scrollWrapper` | String |
+| scroll-wrapper | 滚动容器选择器, 用于解决`<el-popover>`不随目标元素滚动的问题, 滚动元素为window/document/body时传'window/document/body'字符串, 其他传入CSS选择器, 默认值为空字符串, 优先级低于column属性中的`attrs.scrollWrapper` | String |
 | scroll-debounce | 滚动容器滚动时更新`<el-popover>`的位置信息的延迟毫秒数, 仅当`scroll-wrapper`不为空时生效, 默认值0, 优先级低于column属性中的`attrs.scrollDebounce` | Number |
+| no-duplicate-popover | 固定列克隆的Popover实例是否移除, 每次设置`popoverVisible`都会执行节点删除操作 | Boolean | true |
+| lock-scroll-x | 存在popover时, 禁止滚动容器x轴滚动, 仅对于setCellAttrs设置的`popoverVisible`有效 | Boolean | false |
+| lock-scroll-y | 存在popover时, 禁止滚动容器y轴滚动, 仅对于setCellAttrs设置的`popoverVisible`有效 | Boolean | false |
 
 其他继承自`el-table`的表格属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-attributes)
 
@@ -389,7 +388,6 @@ $ yarn add @onemin-table/elem-table
 | cell-mouse-leave |当单元格 hover 退出时会触发该事件| rowIndex, colProp, row, column, cell, event |
 | cell-click |当某个单元格被点击时会触发该事件| rowIndex, colProp, row, column, cell, event |
 | cell-dblclick |当某个单元格被双击击时会触发该事件| rowIndex, colProp, row, column, cell, event |
-| scroll |表格滚动时会触发该事件| event |
 
 其他继承自`el-table`的表格事件见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-events)
 
@@ -398,6 +396,7 @@ $ yarn add @onemin-table/elem-table
 | 参数        | 说明           | 参数  |
 | ------------- |---------------| ------|
 | toggleRowSelection |用于多选表格，切换某一行的选中状态，如果使用了第二个参数，则是设置这一行选中与否（selected 为 true 则选中）| rowIndex, selected |
+| setCellAttrs | 设置单元格中表单元素的属性, attrs等同于column属性的attrs参数(常用参数有`popoverVisible`, `borderColor`, `popoverSlotRender`, `popoverContent`) | colProp, rowIndex, attrs |
 
 其他继承自`el-table`的表格方法见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-methods)
 

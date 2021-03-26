@@ -20,6 +20,7 @@ $ yarn add @onemin-table/elem-date-picker
 <template>
   <div>
     <button @click="active = !active">切换</button>
+    <button @click="foo = []">清空</button>
     <elem-date-picker
       v-model="foo"
       type="daterange"

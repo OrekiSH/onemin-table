@@ -192,12 +192,12 @@ export default {
 
     /**
      * @language=zh
-     * 固定列克隆的Popover实例是否移除
-     * 关联https://github.com/ElemeFE/element/issues/10588
+     * 固定列克隆的Popover实例是否移除, 每次设置都会进行节点删除操作
+     * 关联issue: https://github.com/ElemeFE/element/issues/10588
      */
     noDuplicatePopover: {
       type: Boolean,
-      default: false,
+      default: true,
     },
 
     /**
@@ -217,6 +217,24 @@ export default {
       type: Number,
       default: 0,
     },
+
+    /**
+     * @language=zh
+     * 存在popover时, 禁止滚动容器x轴滚动
+     */
+    lockScrollX: {
+      type: Boolean,
+      default: false,
+    },
+
+    /**
+     * @language=zh
+     * 存在popover时, 禁止滚动容器y轴滚动
+     */
+    lockScrollY: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   inheritAttrs: false,
@@ -233,6 +251,9 @@ export default {
     return {
       cellAttrsMap: {},
       clones: [],
+
+      // cache scroll body warpper, 缓存表头滚动容器元素
+      scrollEl: null,
     };
   },
 
@@ -576,31 +597,37 @@ export default {
         && attrs.popoverVisible
         && this.noDuplicatePopover;
 
-      let popoverIds = [];
-      if (duplicateRemove) {
-        // related to https://github.com/ElemeFE/element/issues/10588
-        const nodes = this.$el?.querySelectorAll('[id^="el-popover-"]');
-        popoverIds = [...nodes].map((e) => e.id);
-      }
-
       // set attrs, 设置属性
       this.$set(this.cellAttrsMap[colProp], rowIndex, attrs);
 
-      if (duplicateRemove && popoverIds?.length) {
+      // lock scroll when popover shows, 存在popover时锁定表格滚动
+      if (this.lockScrollX || this.lockScrollY) {
+        if (!this.scrollEl) this.scrollEl = this.$el.querySelector('.el-table__body-wrapper');
+        // popover exists, 存在popover
+        const somePopoverVisible = Object.values(this.cellAttrsMap)
+          .flat().some((e) => e.popoverVisible);
+        if (this.scrollEl && this.lockScrollX) {
+          this.scrollEl.style.overflowX = somePopoverVisible ? 'hidden' : 'scroll';
+        }
+        if (this.scrollEl && this.lockScrollY) {
+          this.scrollEl.style.overflowY = somePopoverVisible ? 'hidden' : 'scroll';
+        }
+      }
+
+      // related to https://github.com/ElemeFE/element/issues/10588
+      if (duplicateRemove) {
         // delete cloned popover, 删除克隆的列生成的popover.
         this.$nextTick(() => {
-          const nodes = this.$el?.querySelectorAll('[id^="el-popover-"]');
-          const ids = [...nodes].map((e) => e.id);
-          const appended = popoverIds.filter((e) => !ids.includes(e));
-          appended.forEach((id) => {
-            const isClone = document.body.querySelector(`.is-hidden [aria-describedby="${id}"]`);
-            if (isClone && !this.clones.includes(id)) {
-              this.clones.push(id);
-            }
-          });
+          const clonedColumns = document.body.querySelectorAll(`.is-hidden [aria-describedby^="el-popover"]`);
+          if (this.clones.length !== clonedColumns.length) {
+            this.clones = [...clonedColumns]
+              .map((e) => e?.getAttribute('aria-describedby'))
+              .filter(Boolean);
+          }
 
           this.clones.forEach((id) => {
-            document.body.removeChild(document.body.querySelector(`#${id}`));
+            const node = document.body.querySelector(`#${id}`);
+            if (node && node.parentNode === document.body) document.body.removeChild(node);
           });
         });
       }
