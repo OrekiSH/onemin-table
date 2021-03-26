@@ -29,10 +29,11 @@ $ yarn add @onemin-table/elem-cascader
       :options="group ? groupOptions : options"
       :border-color="group ? '' : 'red'"
       :popover-slot-render="popoverSlotRender"
+      :same-level-merge="group"
       multiple
-      same-level-merge
       @change="handleChange"
     />
+    <button @click="foo = []">清空</button>
   </div>
 </template>
 

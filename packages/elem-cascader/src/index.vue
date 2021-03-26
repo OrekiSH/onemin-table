@@ -269,6 +269,13 @@ export default {
       },
       deep: true,
     },
+
+    value: {
+      handler() {
+        this.inputVal = this.genInnerVal();
+      },
+      deep: true,
+    },
   },
 
   created() {
