@@ -144,6 +144,7 @@ $ yarn add @onemin-table/elem-select
 | popover-slot-render | 弹出框渲染函数, 相当于`el-popover`的default slot | Function |
 | scroll-wrapper | 滚动容器选择器, 用于解决`<el-popover>`不随目标元素滚动的问题, 滚动元素为window时传'window'字符串, 默认值空 | String |
 | scroll-debounce | 滚动容器滚动时更新`<el-popover>`的位置信息的延迟毫秒数, 仅当`scroll-wrapper`不为空时生效, 默认值0 | Number |
+| duration | popover显示时间, 毫秒。设为 0 则不会自动关闭 | Number | 3000 |
 
 其他继承自`el-select`的属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)
 

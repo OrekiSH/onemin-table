@@ -89,6 +89,15 @@ export const popoverMixin = {
       type: Number,
       default: 0,
     },
+
+    /**
+     * @language=zh
+     * 显示时间, 毫秒。设为 0 则不会自动关闭
+     */
+    duration: {
+      type: Number,
+      default: 3000,
+    },
   },
 
   data() {
@@ -97,7 +106,18 @@ export const popoverMixin = {
       mounted: false,
       // scroll container, 滚动容器
       scrollEl: null,
+      // timer id for hide popover, 隐藏popover的定时器id
+      timerId: null,
+      // popover if visible, popover是否可见
+      innerVisible: false,
     };
+  },
+
+  watch: {
+    popoverVisible() {
+      this.innerVisible = this.popoverVisible;
+      this.delayHidePopover();
+    },
   },
 
   mounted() {
@@ -119,15 +139,31 @@ export const popoverMixin = {
         el.addEventListener('scroll', this.handleUpdatePopover);
       }
     }
+
+    this.delayHidePopover();
   },
 
   beforeDestroy() {
     if (this.scrollEl && this.handleUpdatePopover) {
       this.scrollEl.removeEventListener('scroll', this.handleUpdatePopover);
     }
+
+    if (this.timerId) clearTimeout(this.timerId);
   },
 
   methods: {
+    /**
+     * duration毫秒后隐藏popover
+     * hide popover after duration ms
+     */
+    delayHidePopover() {
+      if (this.duration && this.innerVisible) {
+        this.timerId = setTimeout(() => {
+          this.innerVisible = false;
+        }, this.duration);
+      }
+    },
+
     /**
      * default <el-popover> attributes
      * 默认 <el-popover>属性

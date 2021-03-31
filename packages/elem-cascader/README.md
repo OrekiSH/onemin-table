@@ -95,7 +95,7 @@ $ yarn add @onemin-table/elem-cascader
     <elem-cascader
       ref="cascader"
       v-model="foo"
-      :popoverVisible="!group"
+      :popover-visible="!group"
       :options="group ? groupOptions : options"
       :border-color="group ? '' : 'red'"
       :width="300"

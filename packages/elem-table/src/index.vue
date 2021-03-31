@@ -251,9 +251,6 @@ export default {
     return {
       cellAttrsMap: {},
       clones: [],
-
-      // cache scroll body warpper, 缓存表头滚动容器元素
-      scrollEl: null,
     };
   },
 
@@ -501,7 +498,7 @@ export default {
           'cascader',
         ].map((t) => [t, {
           options: col.options,
-          value: get(scope.row, col.prop),
+          value: get(scope.row, col.prop)
         }])),
 
         input: { value: get(scope.row, col.prop) },
@@ -521,6 +518,7 @@ export default {
       };
 
       if (col.type === 'select') result.multiple = true;
+      if (this.$attrs.duration !== undefined) result.duration = this.$attrs.duration;
 
       return result;
     },
@@ -602,7 +600,6 @@ export default {
 
       // lock scroll when popover shows, 存在popover时锁定表格滚动
       if (this.lockScrollX || this.lockScrollY) {
-        if (!this.scrollEl) this.scrollEl = this.$el.querySelector('.el-table__body-wrapper');
         // popover exists, 存在popover
         const somePopoverVisible = Object.values(this.cellAttrsMap)
           .flat().some((e) => e.popoverVisible);

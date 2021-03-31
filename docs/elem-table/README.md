@@ -128,6 +128,7 @@ $ yarn add @onemin-table/elem-table
       :data="data"
       :columns="columns"
       :selection="selection"
+      :duration="1000"
       selection-key="id"
       scroll-wrapper="window"
       @selection-change="onSelectionChange"
@@ -345,7 +346,7 @@ $ yarn add @onemin-table/elem-table
         const ref = this.$refs.table;
         if (!ref) return;
 
-        ref.setCellAttrs(colProp, rowIndex, value?.includes(1) ? {
+        ref.setCellAttrs(colProp, rowIndex, value && value.includes(1) ? {
           popoverVisible: true,
           popoverContent: '提示',
           borderColor: 'red',
@@ -377,6 +378,7 @@ $ yarn add @onemin-table/elem-table
 | no-duplicate-popover | 固定列克隆的Popover实例是否移除, 每次设置`popoverVisible`都会执行节点删除操作 | Boolean | true |
 | lock-scroll-x | 存在popover时, 禁止滚动容器x轴滚动, 仅对于setCellAttrs设置的`popoverVisible`有效 | Boolean | false |
 | lock-scroll-y | 存在popover时, 禁止滚动容器y轴滚动, 仅对于setCellAttrs设置的`popoverVisible`有效 | Boolean | false |
+| duration | 全局popover显示时间, 毫秒。设为 0 则不会自动关闭，优先级低于column属性中的`attrs.duration` | Number | 3000 |
 
 其他继承自`el-table`的表格属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-attributes)
 
@@ -417,7 +419,8 @@ $ yarn add @onemin-table/elem-table
 **支持的列的类型(type)**
 
 - image
-- select/single-select: 属性和事件见`<elem-select />`
-- input: 属性和事件见`<elem-input />`
-- cascader: 属性和事件见`<elem-cascader />`
-- year/month/date/week/datetime/dates/datetimerange/daterange/monthrange: 属性和事件见`<elem-date-picker />`
+- [select](/elem-select/): 选择器(多选), 默认属性: `{ multiple: true, collapseTags: true }`
+- [single-select](/elem-select/): 选择器(单选)
+- [cascader](/elem-cascader/): 级联选择器(多选), 默认属性: `{ props: { multiple: true, collapseTags: true }, }`
+- [year/month/date/week/datetime/dates/datetimerange/daterange/monthrange](/elem-date-picker/): 日期选择器
+- [input](/elem-input/): 输入框

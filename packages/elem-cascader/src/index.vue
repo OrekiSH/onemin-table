@@ -1,7 +1,7 @@
 <template>
   <el-popover
     ref="popover"
-    :value="popoverVisible && mounted"
+    :value="innerVisible && mounted"
     v-bind="innerPopoverAttrs"
     v-on="popoverListeners"
   >
