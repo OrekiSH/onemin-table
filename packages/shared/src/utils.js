@@ -82,3 +82,34 @@ export class TreeHelper {
     return result;
   }
 }
+
+/**
+ * 防抖函数
+ * debounce function
+ */
+export function debounce(fn, wait) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('Expected a function');
+  }
+  let result = null;
+  let timerId = null;
+
+  function debounced(...args) {
+    if (timerId) clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      result = fn.apply(this, args);
+    }, +wait);
+
+    return result;
+  }
+
+  return debounced;
+}
+
+/**
+ * if can addEventListener
+ * 是否是EventTarget
+ */
+export function isEventTarget() {
+  return el instanceof Element || el instanceof HTMLDocument || el instanceof Window;
+}

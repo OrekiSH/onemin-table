@@ -1,29 +1,5 @@
-export function debounce(fn, wait) {
-  if (typeof fn !== 'function') {
-    throw new TypeError('Expected a function');
-  }
-  let result = null;
-  let timerId = null;
-
-  function debounced(...args) {
-    if (timerId) clearTimeout(timerId);
-    timerId = setTimeout(() => {
-      result = fn.apply(this, args);
-    }, +wait);
-
-    return result;
-  }
-
-  return debounced;
-}
-
-/**
- * if can addEventListener
- * 是否是EventTarget
- */
-export function isEventTarget() {
-  return el instanceof Element || el instanceof HTMLDocument || el instanceof Window;
-}
+import { genCustomSlotRenderFunc } from './custom-render';
+import { debounce } from './utils';
 
 export const popoverMixin = {
   props: {
@@ -114,9 +90,11 @@ export const popoverMixin = {
   },
 
   watch: {
-    popoverVisible() {
-      this.innerVisible = this.popoverVisible;
-      this.delayHidePopover();
+    popoverVisible(val) {
+      this.innerVisible = val;
+
+      if (!val && this.timerId) clearTimeout(this.timerId);
+      if (val) this.delayHidePopover();
     },
   },
 
@@ -307,34 +285,33 @@ export const inputMixin = {
 };
 
 /**
- * 加载状态props
- * loading state props
+ * 输入框 Slot函数组件
+ * input slot functional component.
  */
-export const loadingProps = {
-  /**
-   * @language=zh
-   * 选项加载中列表内容渲染函数
-   */
-  loadingSlotRender: {
-    type: Function,
-    default: null,
+export const InputSlot = {
+  functional: true,
+
+  props: {
+    prefixSlotRender: {
+      type: Function,
+      default: null,
+    },
+
+    suffixSlotRender: {
+      type: Function,
+      default: null,
+    },
+
+    prependSlotRender: {
+      type: Function,
+      default: null,
+    },
+
+    appendSlotRender: {
+      type: Function,
+      default: null,
+    },
   },
 
-  /**
-   * @language=zh
-   * 选项加载中列表内容
-   */
-  loadingText: {
-    type: String,
-    default: '加载中...',
-  },
-
-  /**
-   * @language=zh
-   * 选项加载中
-   */
-  loading: {
-    type: Boolean,
-    default: false,
-  },
+  render: genCustomSlotRenderFunc,
 };
