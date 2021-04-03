@@ -19,7 +19,7 @@
       />
 
       <column-image
-        v-if="col.type === 'image'"
+        v-else-if="col.type === 'image'"
         v-bind="genColumnItemAttrs(col, scope)"
         v-on="genColumnItemListeners(col, scope)"
       />
