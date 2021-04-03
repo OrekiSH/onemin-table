@@ -424,3 +424,4 @@ $ yarn add @onemin-table/elem-table
 - [cascader](/elem-cascader/): 级联选择器(多选), 默认属性: `{ props: { multiple: true, collapseTags: true }, }`
 - [year/month/date/week/datetime/dates/datetimerange/daterange/monthrange](/elem-date-picker/): 日期选择器
 - [input](/elem-input/): 输入框
+- [autocomplete](/elem-autocomplete/): 输入匹配框

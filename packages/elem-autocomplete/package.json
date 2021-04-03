@@ -1,7 +1,7 @@
 {
-  "name": "@onemin-table/elem-table",
-  "version": "0.9.2",
-  "description": "@onemin-table/elem-table",
+  "name": "@onemin-table/elem-autocomplete",
+  "version": "0.1.0",
+  "description": "@onemin-table/elem-autocomplete",
   "module": "es/index.js",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",
@@ -34,7 +34,7 @@
   ],
   "license": "MIT",
   "bugs": "https://github.com/OrekiSH/onemin-table/issues",
-  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-table#readme",
+  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-autocomplete#readme",
   "publishConfig": {
     "access": "public"
   }

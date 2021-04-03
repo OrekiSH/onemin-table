@@ -461,7 +461,11 @@ export default {
      */
     genColumnAttrs(col) {
       // 兼容中划线与小驼峰, kebab case and camel case compatible
-      const temp = {};
+      const temp = {
+        // 可编辑列show-overflow-tooltip默认false
+        // editable columns show-overflow-tooltip default false
+        'show-overflow-tooltip': col.type === undefined,
+      };
       Object.keys(col).forEach((k) => {
         if (SKIP_COLUMN_ATTRS.includes(k)) return; // 过滤children等属性, filter children attr
         temp[k] = col[k];

@@ -126,9 +126,10 @@ $ yarn add @onemin-table/elem-select
 
 | 参数        | 说明           | 类型  |
 | ------------- |---------------| ------|
-| options(必填) | 选择器下拉列表数据, 含有children的列表自动分组展示 | Array<{ label: string, value?: any, disabled?: boolean, children?: Array }> |
+| options(必填) | 选择器下拉列表数据, 含有children的列表自动分组展示 | Array<{ label: string, value?: any, disabled?: boolean, children?: Array, optionSlotRender?: function }> |
 | prefix-slot-render | 选择器头部内容渲染函数, 相当于`el-select`的prefix slot | Function |
 | empty-slot-render | 选择器无选项时列表渲染函数, 相当于`el-select`的empty slot | Function |
+| option-slot-render | 选择器列表自定义备选项渲染函数, 相当于`el-option`的default slot, 参数为传入的options中的行 | Function |
 | loading | 选择器是否加载中 | Boolean |
 | loading-text | 选择器选项加载中列表提示文字 | String |
 | loading-slot-render | 选择器选项加载中列表内容渲染函数, 优先级高于`loading-text` | Function |

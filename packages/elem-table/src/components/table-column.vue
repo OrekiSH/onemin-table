@@ -44,6 +44,7 @@ const ElemSelect = () => import('@onemin-table/elem-select');
 const ElemInput = () => import('@onemin-table/elem-input');
 const ElemDatePicker = () => import('@onemin-table/elem-date-picker');
 const ElemCascader = () => import('@onemin-table/elem-cascader');
+const ElemAutocomplete = () => import('@onemin-table/elem-autocomplete');
 
 export default {
   name: 'ElemTableColumn',
@@ -68,6 +69,7 @@ export default {
     ElemInput,
     ElemDatePicker,
     ElemCascader,
+    ElemAutocomplete,
 
     CustomCellRender,
     CustomRender,
@@ -86,6 +88,9 @@ export default {
 
         // cascader, 级联选择器
         cascader: 'elem-cascader',
+
+        // autocomplete, 输入匹配框
+        autocomplete: 'elem-autocomplete',
 
         // date-picker, 日期选择器
         ...Object.fromEntries(ELEM_DATE_TYPES.map((e) => [e, 'elem-date-picker'])),

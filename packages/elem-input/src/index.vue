@@ -27,8 +27,9 @@
 </template>
 
 <script>
-import { inputMixin, CustomRender } from '@onemin-table/shared';
-import InputSlot from './components/input-slot';
+import {
+  inputMixin, CustomRender, InputSlot, inputProps,
+} from '@onemin-table/shared';
 
 export default {
   name: 'ElemInput',
@@ -47,59 +48,7 @@ export default {
       default: null,
     },
 
-    /**
-     * @language=zh
-     * 头部内容渲染函数
-     */
-    prefixSlotRender: {
-      type: Function,
-      default: null,
-    },
-
-    /**
-     * @language=zh
-     * 尾部内容渲染函数
-     */
-    suffixSlotRender: {
-      type: Function,
-      default: null,
-    },
-
-    /**
-     * @language=zh
-     * 前置内容渲染函数
-     */
-    prependSlotRender: {
-      type: Function,
-      default: null,
-    },
-
-    /**
-     * @language=zh
-     * 后置内容渲染函数
-     */
-    appendSlotRender: {
-      type: Function,
-      default: null,
-    },
-
-    /**
-     * @language=zh
-     * 前置内容字符串
-     */
-    prepend: {
-      type: String,
-      default: '',
-    },
-
-    /**
-     * @language=zh
-     * 后置内容字符串
-     */
-    append: {
-      type: String,
-      default: '',
-    },
+    ...inputProps,
 
     /**
      * @language=zh

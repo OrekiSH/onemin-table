@@ -1,8 +1,4 @@
-/**
- * 输入框与Autocomplete的共有props
- * input and Autocomplete shared props
- */
-export const inputProps = {
+export const inputSlotRenderProps = {
   /**
    * @language=zh
    * 头部内容渲染函数
@@ -38,6 +34,14 @@ export const inputProps = {
     type: Function,
     default: null,
   },
+};
+
+/**
+ * 输入框与Autocomplete的共有props
+ * input and Autocomplete shared props
+ */
+export const inputProps = {
+  ...inputSlotRenderProps,
 
   /**
    * @language=zh

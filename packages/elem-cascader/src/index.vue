@@ -24,6 +24,14 @@
         <cascader-slot
           :empty-slot-render="emptySlotRender"
         />
+
+        <template slot-scope="{ node, data }">
+          <option-slot
+            :render="optionSlotRender"
+            :node="node"
+            :data="data"
+          />
+        </template>
       </el-cascader>
     </div>
   </el-popover>
@@ -37,6 +45,7 @@ import {
   inputMixin, CustomRender, TreeHelper,
 } from '@onemin-table/shared';
 import CascaderSlot from './components/cascader-slot';
+import OptionSlot from './components/option-slot';
 
 // 被代理到顶层属性的props属性, attrs proxy to top level.
 const PROP_ATTRS = [
@@ -150,11 +159,21 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    /**
+     * @language=zh
+     * 列表备选项渲染函数
+     */
+    optionSlotRender: {
+      type: Function,
+      default: null,
+    },
   },
 
   components: {
     CustomRender,
     CascaderSlot,
+    OptionSlot,
   },
 
   data() {

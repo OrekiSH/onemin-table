@@ -30,6 +30,7 @@ $ yarn add @onemin-table/elem-cascader
       :border-color="group ? '' : 'red'"
       :popover-slot-render="popoverSlotRender"
       :same-level-merge="group"
+      :option-slot-render="optionSlotRender"
       multiple
       @change="handleChange"
     />
@@ -108,6 +109,15 @@ $ yarn add @onemin-table/elem-cascader
           </div>
         );
       },
+
+      optionSlotRender(h, { data }) {
+        return (
+          <div>
+            <span>{ data.label }</span>
+            { data.children && <span> ({ data.children.length }) </span> }
+          </div>
+        );
+      },
     },
   };
 </script>
@@ -128,6 +138,7 @@ $ yarn add @onemin-table/elem-cascader
 | same-level-merge | 同一层级选中合并, 仅在multiple: true + emitPath: true + checkStrictly: false时有效, 默认值false | Boolean |
 | multiple/... | `multiple`等`<el-cascader>`的[props属性](https://element.eleme.cn/#/zh-CN/component/cascader#props)中的值, 同时支持中划线写法(kebab case)和小驼峰(camel case)写法  | String |
 | empty-slot-render | 选择器无选项时列表渲染函数, 相当于`el-cascader`的empty slot | Function |
+| option-slot-render | 选择器自定义备选项渲染函数, 相当于`el-cascader`的scoped slot, 参数为`{ node, data }` | Function |
 | data-prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | width | 选择器宽度, 传入数字会被识别为像素值(px) | `String|Number` |
 | border-color | 选择器边框颜色, 可用于校验不通过的提示，设为空字符串可还原 | String |

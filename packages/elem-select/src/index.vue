@@ -31,23 +31,17 @@
             :key="i"
             :label="option.label"
           >
-            <el-option
-              v-for="(item, index) in option.children"
-              :key="index"
-              :label="item.label"
-              :value="item.value"
-              :disabled="item.disabled"
+            <elem-option
+              :options="option.children"
+              :option-slot-render="optionSlotRender"
             />
           </el-option-group>
         </template>
 
         <template v-else>
-          <el-option
-            v-for="(item, i) in (options || [])"
-            :key="i"
-            :label="item.label"
-            :value="item.value"
-            :disabled="item.disabled"
+          <elem-option
+            :options="options"
+            :option-slot-render="optionSlotRender"
           />
         </template>
       </el-select>
@@ -58,6 +52,7 @@
 <script>
 import { inputMixin, CustomRender, loadingProps } from '@onemin-table/shared';
 import SelectSlot from './components/select-slot';
+import ElemOption from './components/elem-option';
 
 export default {
   name: 'ElemSelect',
@@ -69,6 +64,7 @@ export default {
   components: {
     SelectSlot,
     CustomRender,
+    ElemOption,
   },
 
   props: {
@@ -105,6 +101,15 @@ export default {
      * 无选项时列表渲染函数
      */
     emptySlotRender: {
+      type: Function,
+      default: null,
+    },
+
+    /**
+     * @language=zh
+     * 列表备选项渲染函数
+     */
+    optionSlotRender: {
       type: Function,
       default: null,
     },

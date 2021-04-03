@@ -1,4 +1,3 @@
-import { genCustomSlotRenderFunc } from './custom-render';
 import { debounce } from './utils';
 
 export const popoverMixin = {
@@ -85,7 +84,7 @@ export const popoverMixin = {
       // timer id for hide popover, 隐藏popover的定时器id
       timerId: null,
       // popover if visible, popover是否可见
-      innerVisible: false,
+      innerVisible: this.popoverVisible,
     };
   },
 
@@ -282,36 +281,4 @@ export const inputMixin = {
       return this.$attrs[prop] === undefined ? defaultVal : this.$attrs[prop];
     },
   },
-};
-
-/**
- * 输入框 Slot函数组件
- * input slot functional component.
- */
-export const InputSlot = {
-  functional: true,
-
-  props: {
-    prefixSlotRender: {
-      type: Function,
-      default: null,
-    },
-
-    suffixSlotRender: {
-      type: Function,
-      default: null,
-    },
-
-    prependSlotRender: {
-      type: Function,
-      default: null,
-    },
-
-    appendSlotRender: {
-      type: Function,
-      default: null,
-    },
-  },
-
-  render: genCustomSlotRenderFunc,
 };
