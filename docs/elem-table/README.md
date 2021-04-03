@@ -379,6 +379,7 @@ $ yarn add @onemin-table/elem-table
 | lock-scroll-x | 存在popover时, 禁止滚动容器x轴滚动, 仅对于setCellAttrs设置的`popoverVisible`有效 | Boolean | false |
 | lock-scroll-y | 存在popover时, 禁止滚动容器y轴滚动, 仅对于setCellAttrs设置的`popoverVisible`有效 | Boolean | false |
 | duration | 全局popover显示时间, 毫秒。设为 0 则不会自动关闭，优先级低于column属性中的`attrs.duration` | Number | 3000 |
+| lite | 是否不使用内置组件，仅使用文字/自定义渲染模式(type="image"除外) | Boolean | false |
 
 其他继承自`el-table`的表格属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-attributes)
 

@@ -12,8 +12,14 @@
     <template slot-scope="scope">
       <!-- System component, 系统定义组件 -->
       <component
-        v-if="COMPONENT_MAP[col.type]"
+        v-if="COMPONENT_MAP[col.type] && !lite"
         :is="COMPONENT_MAP[col.type]"
+        v-bind="genColumnItemAttrs(col, scope)"
+        v-on="genColumnItemListeners(col, scope)"
+      />
+
+      <column-image
+        v-if="col.type === 'image'"
         v-bind="genColumnItemAttrs(col, scope)"
         v-on="genColumnItemListeners(col, scope)"
       />
@@ -62,6 +68,7 @@ export default {
     'genColumnAttrs',
     'genColumnItemAttrs',
     'genColumnItemListeners',
+    'lite',
   ],
 
   components: {
@@ -94,9 +101,6 @@ export default {
 
         // date-picker, 日期选择器
         ...Object.fromEntries(ELEM_DATE_TYPES.map((e) => [e, 'elem-date-picker'])),
-
-        // iamge, 图片
-        image: 'column-image',
       }),
     };
   },

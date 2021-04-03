@@ -235,6 +235,15 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    /**
+     * @language=zh
+     * 是否不使用内置组件，仅使用文字/自定义渲染模式(type="image"除外)
+     */
+    lite: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   inheritAttrs: false,
@@ -244,6 +253,7 @@ export default {
       genColumnAttrs: this.genColumnAttrs,
       genColumnItemAttrs: this.genColumnItemAttrs,
       genColumnItemListeners: this.genColumnItemListeners,
+      lite: this.lite,
     };
   },
 
