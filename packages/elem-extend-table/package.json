@@ -1,7 +1,7 @@
 {
-  "name": "@onemin-table/elem-extendtable",
-  "version": "0.1.0",
-  "description": "@onemin-table/elem-extendtable",
+  "name": "@onemin-table/elem-extend-table",
+  "version": "0.2.0",
+  "description": "@onemin-table/elem-extend-table",
   "module": "es/index.js",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",
@@ -34,7 +34,7 @@
   ],
   "license": "MIT",
   "bugs": "https://github.com/OrekiSH/onemin-table/issues",
-  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-extendtable#readme",
+  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-extend-table#readme",
   "publishConfig": {
     "access": "public"
   }

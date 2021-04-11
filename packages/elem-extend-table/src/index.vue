@@ -116,7 +116,7 @@ export default {
      */
     defaultSort: {
       type: Object,
-      default: null,
+      default() { return {}; },
     },
 
     /**
