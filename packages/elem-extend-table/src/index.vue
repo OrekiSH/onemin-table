@@ -121,6 +121,15 @@ export default {
 
     /**
      * @language=zh
+     * 默认的排序列的 prop 和顺序
+     */
+    summaryMethod: {
+      type: Function,
+      default: null,
+    },
+
+    /**
+     * @language=zh
      * 翻页不从服务端获取数据
      */
     offline: {
@@ -182,6 +191,12 @@ export default {
       // 前端分页, use frontend pagination
       if (this.offline) {
         attrs.data = this.pageData;
+      }
+      if (typeof this.summaryMethod === 'function') {
+        attrs['summary-method'] = this.offline
+          ? ({ columns }) => this.summaryMethod({ columns, data: this.innerData })
+          : this.summaryMethod;
+        attrs['show-summary'] = true;
       }
 
       return attrs;

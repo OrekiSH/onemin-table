@@ -23,6 +23,7 @@ $ yarn add @onemin-table/elem-extend-table
     :columns="columns"
     :default-sort="{ prop: 'name', order: 'descending' }"
     :pagination-left-slot-render="leftSlot"
+    :summary-method="summaryMethod"
     @current-change="handleCurrentChange"
   />
 </template>
@@ -59,6 +60,10 @@ $ yarn add @onemin-table/elem-extend-table
 
       leftSlot(h) {
         return h('i', { class: 'el-icon-time' });
+      },
+
+      summaryMethod({ data }) {
+        return [data.reduce((a, c) => a + c.index, 0)];
       },
     },
   };
