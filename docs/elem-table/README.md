@@ -365,7 +365,7 @@ $ yarn add @onemin-table/elem-table
 | columns(必填) | 表格列schema | Array | [] |
 | loading | 表格是否加载中 |  Boolean | false |
 | selection | 表格全局选中列表 |  Array | [] |
-| selection-key(部分必填) | 表格全局选中列表主键, 当声明`selection`必需指定 |  String | '' |
+| selection-key(部分必填) | 表格全局选中列表主键, 当声明`selection`必需指定 | String | '' |
 | stack-selection | 为true时先选中的在全局选中列表的后面(栈)， 默认先选中的在全局选中列表的前面(队列) |  Boolean | false |
 | align | 全局单元格对齐方式 |  left/center/right | 'left' |
 | header-align | 全局表头对齐方式 |  left/center/right | 'left' |

@@ -474,7 +474,8 @@ export default {
       const temp = {
         // 可编辑列show-overflow-tooltip默认false
         // editable columns show-overflow-tooltip default false
-        'show-overflow-tooltip': col.type === undefined,
+        'show-overflow-tooltip': col.type === undefined
+          || typeof col.render === 'function',
       };
       Object.keys(col).forEach((k) => {
         if (SKIP_COLUMN_ATTRS.includes(k)) return; // 过滤children等属性, filter children attr
@@ -486,6 +487,7 @@ export default {
         'min-width': this.minWidth,
         'show-overflow-tooltip': this.showOverflowTooltip,
         'header-align': this.headerAlign,
+        'column-key': col.prop || '',
         align: this.align,
         ...temp,
       };

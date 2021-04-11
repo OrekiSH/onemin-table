@@ -7,6 +7,7 @@ module.exports = {
       ['/', '组件总览'],
       ['/elem-form/', 'ElemForm'],
       ['/elem-table/', 'ElemTable'],
+      ['/elem-extend-table/', 'ElemExtendTable'],
       ['/elem-select/', 'ElemSelect'],
       ['/elem-input/', 'ElemInput'],
       ['/elem-date-picker/', 'ElemDatePicker'],
