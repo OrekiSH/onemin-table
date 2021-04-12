@@ -6,6 +6,7 @@
     />
 
     <elem-table
+      ref="table"
       v-bind="tableAttrs"
       v-on="tableListeners"
     />
@@ -219,6 +220,19 @@ export default {
     this.genInnerData();
     this.genPageData();
 
+    const ref = this.$refs.table;
+    // Proxy <elem-table> methods, 代理<elem-table>的方法
+    if (ref) {
+      [
+        'toggleRowExpansion', 'setCurrentRow',
+        'clearSort', 'clearFilter', 'doLayout', 'sort',
+        'clearSelection', 'toggleAllSelection', 'toggleRowSelection',
+        'setCellAttrs',
+      ].forEach((key) => {
+        this[key] = ref[key];
+      });
+    }
+
     if (this.offline) {
       // 监听data变化, watch data change
       this.$watch('$attrs.data', {
@@ -230,7 +244,14 @@ export default {
       });
 
       // 默认排序
-      if (this.defaultSort) this.handleSortChange(this.defaultSort);
+      const prop = this.defaultSort?.prop;
+      if (prop) {
+        const curr = (this.$attrs.columns || []).find((e) => e.prop === prop);
+        // 不可编辑可排序, if not editable can be sorted
+        if (curr && [undefined, 'text'].includes(curr.type)) {
+          this.handleSortChange(this.defaultSort);
+        }
+      }
     }
 
     // 分页器事件
@@ -312,6 +333,7 @@ export default {
 
     // 表格排序, sort table
     handleSortChange({ prop, order }) {
+      console.warn(prop, order);
       if (order) {
         this.innerData.sort((a, b) => {
           const av = get(a, prop);

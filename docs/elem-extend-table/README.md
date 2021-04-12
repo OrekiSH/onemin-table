@@ -19,6 +19,7 @@ $ yarn add @onemin-table/elem-extend-table
 ::: demo
 <template>
   <elem-extend-table
+    ref="table"
     :data="data"
     :columns="columns"
     :default-sort="{ prop: 'name', order: 'descending' }"
@@ -49,6 +50,17 @@ $ yarn add @onemin-table/elem-extend-table
           label: '名称',
           prop: 'name',
           sortable: true,
+          type: 'input',
+          listeners: {
+            input: (index) => {
+              const ref = this.$refs.table;
+              if (ref) {
+                ref.setCellAttrs('name', index, {
+                  borderColor: 'red',
+                });
+              }
+            },
+          },
         }];
       },
     },
@@ -87,3 +99,6 @@ $ yarn add @onemin-table/elem-extend-table
 | pagination-top-slot-render | 分页上方内容渲染函数 | Function |
 | pagination-bottom-slot-render | 分页下方内容渲染函数 | Function |
 | offline | 翻页不从服务端获取数据, 默认值true | Boolean |
+| defaultSort | 默认的排序列的 prop 和顺序, 当该列可编辑时不默认排序 | Object |
+
+其余继承的属性/事件/方法见[elem-table文档](/onemin-table/elem-table)
