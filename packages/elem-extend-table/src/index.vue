@@ -254,6 +254,20 @@ export default {
       }
     }
 
+    // 添加page手动修改
+    this.setCurrentPage = (page) => {
+      if (!this.offline) return;
+      this.page = page;
+      this.genPageData({ page });
+    };
+
+    // 添加pageSize手动修改
+    this.setPageSize = (size) => {
+      if (!this.offline) return;
+      this.size = size;
+      this.genPageData({ size });
+    };
+
     // 分页器事件
     this.genPaginationListeners();
     // 表格事件

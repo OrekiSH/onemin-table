@@ -18,15 +18,18 @@ $ yarn add @onemin-table/elem-extend-table
 
 ::: demo
 <template>
-  <elem-extend-table
-    ref="table"
-    :data="data"
-    :columns="columns"
-    :default-sort="{ prop: 'name', order: 'descending' }"
-    :pagination-left-slot-render="leftSlot"
-    :summary-method="summaryMethod"
-    @current-change="handleCurrentChange"
-  />
+  <div>
+    <elem-extend-table
+      ref="table"
+      :data="data"
+      :columns="columns"
+      :default-sort="{ prop: 'name', order: 'descending' }"
+      :pagination-left-slot-render="leftSlot"
+      :summary-method="summaryMethod"
+      @current-change="handleCurrentChange"
+    />
+    <button @click="handleResetPage">reset</button>
+  </div>
 </template>
 
 <script>
@@ -71,6 +74,11 @@ $ yarn add @onemin-table/elem-extend-table
         console.warn(page);
       },
 
+      handleResetPage() {
+        const ref = this.$refs.table;
+        if (ref) ref.setCurrentPage(1);
+      },
+
       leftSlot(h) {
         return h('i', { class: 'el-icon-time' });
       },
@@ -102,4 +110,17 @@ $ yarn add @onemin-table/elem-extend-table
 | offline | 翻页不从服务端获取数据, 默认值true | Boolean |
 | defaultSort | 默认的排序列的 prop 和顺序, 当该列可编辑时不默认排序 | Object |
 
-其余继承的属性/事件/方法见[elem-table文档](/onemin-table/elem-table)
+其他继承自`elem-table`的属性见[elem-table文档](/onemin-table/elem-table/#属性)
+
+## 事件
+
+继承自`elem-table`的事件见[elem-table文档](/onemin-table/elem-table/#事件)
+
+## 方法
+
+| 参数        | 说明           | 参数  |
+| ------------- |---------------| ------|
+| setCurrentPage | 手动修改当前页数, 仅在`offline`为true时可用 | page |
+| setPageSize | 手动修改每页显示条目个数, 仅在`offline`为true时可用 | size |
+
+其他继承自`elem-table`的方法见[elem-table文档](/onemin-table/elem-table/#方法)
