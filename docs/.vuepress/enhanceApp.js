@@ -8,6 +8,7 @@ import ElemInput from '../../packages/elem-input/lib/index';
 import ElemDatePicker from '../../packages/elem-date-picker/lib/index';
 import ElemCascader from '../../packages/elem-cascader/lib/index';
 import ElemAutocomplete from '../../packages/elem-autocomplete/lib/index';
+import ElemInputNumber from '../../packages/elem-input-number/lib/index';
 import '../../packages/elem-table/lib/elem-table.css';
 
 export default ({ Vue }) => {
@@ -20,4 +21,5 @@ export default ({ Vue }) => {
   Vue.component('elem-date-picker', ElemDatePicker);
   Vue.component('elem-cascader', ElemCascader);
   Vue.component('elem-autocomplete', ElemAutocomplete);
+  Vue.component('elem-input-number', ElemInputNumber);
 }

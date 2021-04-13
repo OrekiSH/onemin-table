@@ -485,7 +485,7 @@ export default {
     },
 
     initResizeObserver() {
-      if (typeof ResizeObserver === undefined) return;
+      if (typeof ResizeObserver === 'undefined') return;
       if (this.resizeObserver) return;
 
       const handler = debounce(() => {
@@ -544,7 +544,7 @@ export default {
     },
 
     genDefaultProp(filter, key, defaultVal = true) {
-      return filter[key] === undefined ? defaultVal : filter[key];
+      return (typeof filter[key] === 'undefined') ? defaultVal : filter[key];
     },
 
     handleSetCollapsed(val) {

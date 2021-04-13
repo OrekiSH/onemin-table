@@ -474,7 +474,7 @@ export default {
       const temp = {
         // 可编辑列show-overflow-tooltip默认false
         // editable columns show-overflow-tooltip default false
-        'show-overflow-tooltip': col.type === undefined
+        'show-overflow-tooltip': typeof col.type === 'undefined'
           || typeof col.render === 'function',
       };
       Object.keys(col).forEach((k) => {
@@ -517,9 +517,11 @@ export default {
           value: get(scope.row, col.prop)
         }])),
 
-        input: { value: get(scope.row, col.prop) },
-
-        ...Object.fromEntries(ELEM_DATE_TYPES.map((t) => [t, { value: get(scope.row, col.prop) }])),
+        ...Object.fromEntries([
+          ...ELEM_DATE_TYPES,
+          'input',
+          'input-number',
+        ].map((t) => [t, { value: get(scope.row, col.prop) }])),
       };
 
       // default, attrs set, user set
@@ -534,7 +536,9 @@ export default {
       };
 
       if (col.type === 'select') result.multiple = true;
-      if (this.$attrs.duration !== undefined) result.duration = this.$attrs.duration;
+      if (typeof this.$attrs.duration !== 'undefined') {
+        result.duration = this.$attrs.duration;
+      }
 
       return result;
     },
@@ -546,8 +550,10 @@ export default {
     genColumnItemListeners(col, scope) {
       const isSystemTypes = [
         'input',
+        'input-number',
         'select',
         'single-select',
+        'cascader',
         ...ELEM_DATE_TYPES,
       ].includes(col.type);
 

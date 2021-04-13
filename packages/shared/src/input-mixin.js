@@ -278,7 +278,7 @@ export const inputMixin = {
      * 组件默认属性值
      */
     genDefaultAttrs(prop, defaultVal = true) {
-      return this.$attrs[prop] === undefined ? defaultVal : this.$attrs[prop];
+      return (typeof this.$attrs[prop] === 'undefined') ? defaultVal : this.$attrs[prop];
     },
   },
 };

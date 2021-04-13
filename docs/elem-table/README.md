@@ -203,6 +203,20 @@ $ yarn add @onemin-table/elem-table
             disabledDateStart: 3,
           },
         }, {
+          label: '计数',
+          type: 'input-number',
+          minWidth: 260,
+          prop: 'num',
+          listeners: {
+            change: (index, val, oldVal) => {
+              console.warn(index, val, oldVal);
+              if (val > 10) {
+                const ref = this.$refs.table;
+                if (ref) ref.setCellAttrs('num', index, { borderColor: 'red' });
+              }
+            },
+          },
+        }, {
           label: '类目',
           type: 'cascader',
           prop: 'category',
@@ -312,6 +326,7 @@ $ yarn add @onemin-table/elem-table
             },
             date: '',
             category: 's2',
+            num: 0,
           }, {
             id: 2,
             name: 'ccsdaskdhajksbdajksdbakdbksadbsjdbkda',
@@ -322,6 +337,7 @@ $ yarn add @onemin-table/elem-table
             },
             date: '',
             category: '',
+            num: 0,
           }, {
             id: 3,
             name: 'b',
@@ -332,6 +348,7 @@ $ yarn add @onemin-table/elem-table
             },
             date: '',
             category: '',
+            num: 2,
           }];
           this.selection = [this.data[1]];
           this.loading = false;
@@ -346,7 +363,7 @@ $ yarn add @onemin-table/elem-table
         const ref = this.$refs.table;
         if (!ref) return;
 
-        ref.setCellAttrs(colProp, rowIndex, value && value.includes(1) ? {
+        ref.setCellAttrs(colProp, rowIndex, typeof value === 'string' && value.includes(1) ? {
           popoverVisible: true,
           popoverContent: '提示',
           borderColor: 'red',
@@ -425,4 +442,5 @@ $ yarn add @onemin-table/elem-table
 - [cascader](/elem-cascader/): 级联选择器(多选), 默认属性: `{ props: { multiple: true, collapseTags: true }, }`
 - [year/month/date/week/datetime/dates/datetimerange/daterange/monthrange](/elem-date-picker/): 日期选择器
 - [input](/elem-input/): 输入框
+- [input-number](/elem-input-number/): 计数器
 - [autocomplete](/elem-autocomplete/): 输入匹配框

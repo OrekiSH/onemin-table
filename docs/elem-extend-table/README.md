@@ -46,6 +46,7 @@ $ yarn add @onemin-table/elem-extend-table
           label: '编号',
           prop: 'index',
           filters: [{ text: '98', value: 98 }, { text: '24', value: 24 }],
+          type: 'input',
         }, {
           label: '名称',
           prop: 'name',
@@ -75,7 +76,7 @@ $ yarn add @onemin-table/elem-extend-table
       },
 
       summaryMethod({ data }) {
-        return [data.reduce((a, c) => a + c.index, 0)];
+        return [data.reduce((a, c) => a + (+c.index), 0)];
       },
     },
   };

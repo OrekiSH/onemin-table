@@ -13,6 +13,7 @@ module.exports = {
       ['/elem-date-picker/', 'ElemDatePicker'],
       ['/elem-cascader/', 'ElemCascader'],
       ['/elem-autocomplete/', 'ElemAutocomplete'],
+      ['/elem-input-number/', 'ElemInputNumber'],
       ['/faq/', '常见问题'],
     ],
   },

@@ -48,6 +48,7 @@ import ColumnImage from './column-image.vue';
 
 const ElemSelect = () => import('@onemin-table/elem-select');
 const ElemInput = () => import('@onemin-table/elem-input');
+const ElemInputNumber = () => import('@onemin-table/elem-input-number');
 const ElemDatePicker = () => import('@onemin-table/elem-date-picker');
 const ElemCascader = () => import('@onemin-table/elem-cascader');
 const ElemAutocomplete = () => import('@onemin-table/elem-autocomplete');
@@ -74,6 +75,7 @@ export default {
   components: {
     ElemSelect,
     ElemInput,
+    ElemInputNumber,
     ElemDatePicker,
     ElemCascader,
     ElemAutocomplete,
@@ -88,6 +90,9 @@ export default {
       COMPONENT_MAP: Object.freeze({
         // input, 输入框
         input: 'elem-input',
+
+        // input-number, 计数器
+        'input-number': 'elem-input-number',
 
         // select, 选择器
         select: 'elem-select',

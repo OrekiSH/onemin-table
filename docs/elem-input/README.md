@@ -92,7 +92,7 @@ $ yarn add @onemin-table/elem-input
 | scroll-debounce | 滚动容器滚动时更新`<el-popover>`的位置信息的延迟毫秒数, 仅当`scroll-wrapper`不为空时生效, 默认值0 | Number |
 | duration | popover显示时间, 毫秒。设为 0 则不会自动关闭 | Number | 3000 |
 
-其他继承自`el-input`的属性见[element-ui文档](hhttps://element.eleme.cn/#/zh-CN/component/input#input-attributes)
+其他继承自`el-input`的属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/input#input-attributes)
 
 ## 事件
 
