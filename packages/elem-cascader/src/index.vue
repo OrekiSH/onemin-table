@@ -195,7 +195,7 @@ export default {
       const temp = {};
       const attrs = pick(this.$attrs, PROP_ATTRS);
       Object.keys(attrs).forEach((k) => {
-        if (attrs[k] !== undefined) {
+        if (typeof attrs[k] !== 'undefined') {
           temp[camelCase(k)] = BOOL_ATTRS.includes(k)
             ? (attrs[k] === '' ? true : attrs[k])
             : attrs[k];
@@ -324,7 +324,8 @@ export default {
      */
     genInnerVal() {
       return (this.canMerge && Array.isArray(this.value))
-        ? (this.value[this.value.length - 1] || []).map((val) => this.leafPathMap[val])
+        // all level can be leaf node, 所有层级都可能是叶子节点
+        ? (this.value || []).flat().map((val) => this.leafPathMap[val])
         : this.value;
     },
 

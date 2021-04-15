@@ -93,6 +93,9 @@ $ yarn add @onemin-table/elem-cascader
                 value: 7,
               }],
             }],
+          }, {
+            label: '分组3',
+            value: 31,
           }];
         }, 200);
       },
