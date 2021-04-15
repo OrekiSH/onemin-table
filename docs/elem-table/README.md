@@ -129,6 +129,7 @@ $ yarn add @onemin-table/elem-table
       :columns="columns"
       :selection="selection"
       :duration="1000"
+      :image-src-transformer="imageSrcTransformer"
       selection-key="id"
       scroll-wrapper="window"
       @selection-change="onSelectionChange"
@@ -171,9 +172,13 @@ $ yarn add @onemin-table/elem-table
         }, {
           label: '图',
           prop: 'image',
+          previewProp: 'img',
           type: 'image',
           popoverAttrs: {
             placement: 'left',
+          },
+          attrs: {
+            zIndex: 888,
           },
         }, {
           label: '等级',
@@ -290,6 +295,11 @@ $ yarn add @onemin-table/elem-table
     },
 
     methods: {
+      imageSrcTransformer(url) {
+        if (url.startsWith('http')) return url;
+        return `https://hbimg.huabanimg.com/${url}`;
+      },
+
       handleDelete(p) {
         return () => {
           this.data.splice(p.index, 1);
@@ -330,7 +340,8 @@ $ yarn add @onemin-table/elem-table
           }, {
             id: 2,
             name: 'ccsdaskdhajksbdajksdbakdbksadbsjdbkda',
-            image: 'https://hbimg.huabanimg.com/89297c2da26b240448fd7aa7d884d9f57bd30ae21b90a-cj33e7_fw658/format/webp',
+            image: '89297c2da26b240448fd7aa7d884d9f57bd30ae21b90a-cj33e7_fw658/format/webp',
+            img: 'https://static.zhihu.com/heifetz/assets/sign_bg.db29b0fb.png',
             item: {
               level: 2,
               remark: '备注',
@@ -397,6 +408,7 @@ $ yarn add @onemin-table/elem-table
 | lock-scroll-y | 存在popover时, 禁止滚动容器y轴滚动, 仅对于setCellAttrs设置的`popoverVisible`有效 | Boolean | false |
 | duration | 全局popover显示时间, 毫秒。设为 0 则不会自动关闭，优先级低于column属性中的`attrs.duration` | Number | 3000 |
 | lite | 是否不使用内置组件，仅使用文字/自定义渲染模式(type="image"除外) | Boolean | false |
+| image-src-transformer | 图片类型的列图片地址转换函数 | Function | null |
 
 其他继承自`el-table`的表格属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-attributes)
 

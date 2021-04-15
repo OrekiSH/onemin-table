@@ -37,7 +37,7 @@ $ yarn add @onemin-table/elem-extend-table
     data() {
       return {
         data: new Array(100).fill(0).map((e, i) => ({
-          index: i,
+          index: 0,
           name: `name_${Math.random(10)}_${i}`,
         })),
       };
@@ -50,6 +50,9 @@ $ yarn add @onemin-table/elem-extend-table
           prop: 'index',
           filters: [{ text: '98', value: 98 }, { text: '24', value: 24 }],
           type: 'input',
+          attrs: {
+            type: 'number',
+          },
         }, {
           label: '名称',
           prop: 'name',
@@ -72,6 +75,12 @@ $ yarn add @onemin-table/elem-extend-table
     methods: {
       handleCurrentChange(page) {
         console.warn(page);
+        if (page === 3) {
+          const ref = this.$refs.table;
+          ref.setCellAttrs('index', 32, {
+            borderColor: 'red',
+          });
+        }
       },
 
       handleResetPage() {

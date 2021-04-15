@@ -252,6 +252,11 @@ export default {
           this.handleSortChange(this.defaultSort);
         }
       }
+
+      // 修改setCellAttrs参数
+      this.setCellAttrs = (colProp, rowIndex, attrs) => {
+        ref.setCellAttrs(colProp, rowIndex % this.size, attrs);
+      };
     }
 
     // 添加page手动修改

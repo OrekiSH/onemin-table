@@ -27,7 +27,7 @@
       :preview-src-list="genPreviewSrcList(scope.row, col)"
       :data-prop="col.prop"
       class="ot-table__image--elem"
-      v-bind="col.attrs"
+      v-bind="attrs"
       v-on="listeners"
     >
       <image-slot
@@ -40,6 +40,7 @@
 
 <script>
 import get from 'lodash/get';
+import kebabCase from 'lodash/kebabCase';
 import ImageSlot from './image-slot';
 
 export default {
@@ -86,6 +87,15 @@ export default {
       type: Boolean,
       default: true,
     },
+
+    /**
+     * @language=zh
+     * 图片类型的列图片地址转换函数
+     */
+    imageSrcTransformer: {
+      type: Function,
+      default: null,
+    },
   },
 
   data() {
@@ -111,12 +121,22 @@ export default {
 
       return {
         ...result,
-        ...this.attrs,
+        ...this.col?.popoverAttrs,
       };
     },
 
     attrs() {
-      return this?.col?.attrs || {};
+      const temp = {};
+      const attrs = this?.col?.attrs || {};
+      Object.keys(attrs).forEach((k) => {
+        temp[k] = attrs[k];
+        temp[kebabCase(k)] = attrs[k];
+      });
+
+      return {
+        'z-index': 9999,
+        ...temp,
+      };
     },
 
     listeners() {
@@ -142,8 +162,12 @@ export default {
      */
     genImageSrc(row, prop) {
       const data = get(row, prop);
+      const url = Array.isArray(data) && data.length ? data[0] : data;
+      if (typeof this.imageSrcTransformer === 'function') {
+        return this.imageSrcTransformer(url);
+      }
 
-      return Array.isArray(data) && data.length ? data[0] : data;
+      return url;
     },
 
     /**
@@ -152,14 +176,20 @@ export default {
      */
     genPreviewSrcList(row, col) {
       if (!this.imagePreview) return [];
+
+      const isFunc = typeof this.imageSrcTransformer === 'function';
       // previewProp
-      const previewData = get(row, col.previewProp);
+      let previewData = get(row, col.previewProp);
       // Array<string> or string, 默认传入的为字符串数组或字符串
-      if (previewData) return Array.isArray(previewData) ? previewData : [list];
+      if (previewData) {
+        const previewSrcList = Array.isArray(previewData) ? previewData : [previewData];
+        return isFunc ? previewSrcList.map(this.imageSrcTransformer) : previewSrcList
+      }
 
       // prop
       const data = get(row, col.prop);
-      return Array.isArray(data) ? data : [data];
+      const srcList = Array.isArray(data) ? data : [data];
+      return isFunc ?  srcList.map(this.imageSrcTransformer) : srcList;
     },
   },
 };

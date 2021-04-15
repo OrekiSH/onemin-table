@@ -156,6 +156,15 @@ export default {
 
     /**
      * @language=zh
+     * 图片类型的列数据转换函数
+     */
+    imageSrcTransformer: {
+      type: Function,
+      default: null,
+    },
+
+    /**
+     * @language=zh
      * 全局单元格对齐方式, left/center/right
      */
     align: {
@@ -452,20 +461,6 @@ export default {
     },
 
     /**
-     * image type column <el-popover>'s attrs
-     * 图片类型列<el-popover>的属性
-     */
-    genImagePopoverAttrs(col) {
-      return {
-        trigger: 'hover',
-        width: '200',
-        placement: 'right',
-        disabled: !this.imagePopover,
-        ...col.popoverAttrs,
-      };
-    },
-
-    /**
      * column default attrs
      * 列默认属性
      */
@@ -506,6 +501,7 @@ export default {
           scope,
           'image-popover': this.imagePopover,
           'image-preview': this.imagePreview,
+          'image-src-transformer': this.imageSrcTransformer,
         },
 
         ...Object.fromEntries([
