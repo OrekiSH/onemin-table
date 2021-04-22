@@ -212,6 +212,7 @@ $ yarn add @onemin-table/elem-table
           type: 'input-number',
           minWidth: 260,
           prop: 'num',
+          enterChangeLine: true,
           listeners: {
             change: (index, val, oldVal) => {
               console.warn(index, val, oldVal);
@@ -259,6 +260,7 @@ $ yarn add @onemin-table/elem-table
           prop: 'item.remark',
           type: 'input',
           minWidth: 160,
+          enterChangeLine: true,
           // 或者
           // 'min-width': 160,
           attrs: {
@@ -442,6 +444,7 @@ $ yarn add @onemin-table/elem-table
 | headerSlotRender | 自定义表头的内容渲染函数. 参数为 { column, $index }, 相当于`el-table-column`header slot | Function |
 | errorSlotRender | `type`为`image`时, 加载失败的内容渲染函数 | Function |
 | placeholderSlotRender | `type`为`image`时, 图片未加载的占位内容渲染函数 | Function |
+| enterChangeLine | 回车是否激活下一行的元素, 只支持input和input-number | Boolean | false |
 
 
 其他继承自`el-table-column`的属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/table#table-column-attributes), **同时支持和中划线写法(kebab case)和小驼峰(camel case)写法**

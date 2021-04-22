@@ -33,7 +33,6 @@ $ yarn add @onemin-table/elem-input
       split
       placeholder="空格分隔"
       @change="handleChange"
-      @blur="handleChange"
     />
   </div>
 </template>

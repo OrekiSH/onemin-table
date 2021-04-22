@@ -16,6 +16,7 @@
         :is="COMPONENT_MAP[col.type]"
         v-bind="genColumnItemAttrs(col, scope)"
         v-on="genColumnItemListeners(col, scope)"
+        @keypress.native="genColumnEnterChangeLine(col, scope, $event)"
       />
 
       <column-image
@@ -70,6 +71,7 @@ export default {
     'genColumnItemAttrs',
     'genColumnItemListeners',
     'lite',
+    'genColumnEnterChangeLine',
   ],
 
   components: {

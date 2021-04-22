@@ -253,6 +253,15 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    /**
+     * @language=zh
+     * 可输入组件是否回车换行
+     */
+    enterChangeLine: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   inheritAttrs: false,
@@ -263,6 +272,7 @@ export default {
       genColumnItemAttrs: this.genColumnItemAttrs,
       genColumnItemListeners: this.genColumnItemListeners,
       lite: this.lite,
+      genColumnEnterChangeLine: this.genColumnEnterChangeLine,
     };
   },
 
@@ -647,6 +657,25 @@ export default {
         });
       }
     },
+
+    /**
+     * enter change line handler
+     * 回车换行处理函数
+     */
+    genColumnEnterChangeLine(col, scope, evt) {
+      console.warn(col.enterChangeLine);
+      if (!col.enterChangeLine) return;
+      const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+
+      if (isEnter && evt.target) {
+        const nextDataProp = `${col.prop}_${scope.$index + 1}`;
+        console.warn(nextDataProp);
+        const nextEl = this.$el.querySelector(`[data-prop="${nextDataProp}"] input`);
+        if (nextEl?.focus) {
+          nextEl.focus();
+        }
+      }
+    }
   },
 };
 </script>
