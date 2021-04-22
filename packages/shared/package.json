@@ -1,8 +1,9 @@
 {
   "name": "@onemin-table/shared",
-  "version": "0.8.4",
+  "version": "0.8.6",
   "description": "@onemin-table/shared",
-  "main": "src/index.js",
+  "main": "lib/index.js",
+  "module": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/OrekiSH/onemin-table"

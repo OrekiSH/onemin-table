@@ -2,7 +2,7 @@
  * datetime range picker types
  * 日期时间区间选择类型
  */
- export const ELEM_DATE_RANGE_TYPES = [
+export const ELEM_DATE_RANGE_TYPES = [
   'dates',
   'datetimerange',
   'daterange',

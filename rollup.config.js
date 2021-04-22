@@ -43,6 +43,27 @@ function genConfig(input, format, {
   };
 }
 
+function genSharedConfig() {
+  const dir = './packages/shared';
+
+  return {
+    input: `${dir}/src/index.js`,
+    output: {
+      dir: `${dir}/lib`,
+      format: 'cjs',
+    },
+    plugins: [
+      babel({
+        babelHelpers: 'bundled',
+        extensions: ['.js'],
+      }),
+    ],
+    watch: {
+      include: `${dir}/src/**`,
+    },
+  };
+}
+
 const pkgs = fs.readdirSync('./packages')
   .filter((e) => fs.lstatSync(`${__dirname}/packages/${e}`).isDirectory());
 
@@ -58,6 +79,7 @@ const conf = pkgs.map((e) => ((e === 'shared' || e.endsWith('utils')) ? [] : [
     file: `./packages/${e}/dist/${e}.min.js`,
     useTerser: true,
   }),
+  genSharedConfig(),
 ])).flat();
 
 export default conf;

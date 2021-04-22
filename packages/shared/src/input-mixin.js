@@ -282,3 +282,44 @@ export const inputMixin = {
     },
   },
 };
+
+/**
+ * 输入框 首/尾部内容 相关
+ * input prefix/suffix content related.
+ */
+export const inputSlotMixin = {
+  computed: {
+    slotRenders() {
+      return {
+        append: this.innerAppendSlotRender,
+        prepend: this.innerPrependSlotRender,
+        suffix: this.innerSuffixSlotRender,
+        prefix: this.innerPrefixSlotRender,
+      };
+    },
+  },
+
+  methods: {
+    innerAppendSlotRender(h) {
+      if (!this.append && !this.appendSlotRender) return null;
+      return this.appendSlotRender || h('div', null, this.append);
+    },
+
+    innerPrependSlotRender(h) {
+      if (!this.prepend && !this.prependSlotRender) return null;
+      return this.prependSlotRender || h('div', null, this.prepend);
+    },
+
+    innerSuffixSlotRender(h) {
+      if (!this.suffixIcon && !this.suffixSlotRender) return null;
+      return this.suffixSlotRender
+        || h('i', { class: `el-input__icon el-icon-${this.suffixIcon}` });
+    },
+
+    innerPrefixSlotRender(h) {
+      if (!this.prefixIcon && !this.prefixSlotRender) return null;
+      return this.prefixSlotRender
+        || h('i', { class: `el-input__icon el-icon-${this.prefixIcon}` });
+    },
+  },
+};

@@ -60,6 +60,24 @@ export const inputProps = {
     type: String,
     default: '',
   },
+
+  /**
+   * @language=zh
+   * 尾部图标类名
+   */
+  suffixIcon: {
+    type: String,
+    default: '',
+  },
+
+  /**
+   * @language=zh
+   * 首部图标类名
+   */
+  prefixIcon: {
+    type: String,
+    default: '',
+  },
 };
 
 /**
