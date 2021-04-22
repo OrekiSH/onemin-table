@@ -17,8 +17,8 @@
       v-on="$listeners"
     >
       <input-slot
-        :prefix-slot-render="prefixSlotRender"
-        :suffix-slot-render="suffixSlotRender"
+        :prefix-slot-render="innerPrefixSlotRender"
+        :suffix-slot-render="innerSuffixSlotRender"
         :prepend-slot-render="innerPrependSlotRender"
         :append-slot-render="innerAppendSlotRender"
       />
@@ -39,13 +39,14 @@
 <script>
 import {
   inputMixin, CustomRender, InputSlot, inputProps,
+  inputSlotMixin,
 } from '@onemin-table/shared';
 import OptionSlot from './components/option-slot';
 
 export default {
   name: 'ElemAutocomplete',
 
-  mixins: [inputMixin],
+  mixins: [inputMixin, inputSlotMixin],
 
   inheritAttrs: false,
 
@@ -105,18 +106,6 @@ export default {
         this[key] = ref[key];
       });
     }
-  },
-
-  methods: {
-    innerAppendSlotRender(h) {
-      if (!this.append && !this.appendSlotRender) return null;
-      return this.appendSlotRender || h('div', null, this.append);
-    },
-
-    innerPrependSlotRender(h) {
-      if (!this.prepend && !this.prependSlotRender) return null;
-      return this.prependSlotRender || h('div', null, this.prepend);
-    },
   },
 };
 </script>

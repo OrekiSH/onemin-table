@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    v-if="!lite"
     ref="popover"
     :value="innerVisible && mounted"
     v-bind="innerPopoverAttrs"
@@ -9,32 +10,37 @@
       <custom-render :render="popoverSlotRender" />
     </template>
 
-    <el-input
+    <input-fragment
       slot="reference"
       ref="input"
       :value="inputVal"
-      v-bind="attrs"
-      v-on="listeners"
-    >
-      <input-slot
-        :prefix-slot-render="prefixSlotRender"
-        :suffix-slot-render="suffixSlotRender"
-        :prepend-slot-render="innerPrependSlotRender"
-        :append-slot-render="innerAppendSlotRender"
-      />
-    </el-input>
+      :attrs="attrs"
+      :listeners="listeners"
+      :slot-renders="slotRenders"
+    />
   </el-popover>
+
+  <input-fragment
+    v-else
+    ref="input"
+    :value="inputVal"
+    :attrs="attrs"
+    :listeners="listeners"
+    :slot-renders="slotRenders"
+  />
 </template>
 
 <script>
 import {
   inputMixin, CustomRender, InputSlot, inputProps,
+  inputSlotMixin,
 } from '@onemin-table/shared';
+import InputFragment from './components/input-fragment.vue';
 
 export default {
   name: 'ElemInput',
 
-  mixins: [inputMixin],
+  mixins: [inputMixin, inputSlotMixin],
 
   inheritAttrs: false,
 
@@ -46,6 +52,15 @@ export default {
     value: {
       type: [String, Number, Array],
       default: null,
+    },
+
+    /**
+     * @language=zh
+     * 是否添加Popover
+     */
+    lite: {
+      type: Boolean,
+      default: false,
     },
 
     ...inputProps,
@@ -81,6 +96,8 @@ export default {
   components: {
     CustomRender,
     InputSlot,
+
+    InputFragment,
   },
 
   computed: {
@@ -136,8 +153,8 @@ export default {
 
   mounted() {
     const ref = this.$refs.input;
-    // Proxy <el-input> methods, 代理<el-input>的方法
     if (ref) {
+      // Proxy <el-input> methods, 代理<el-input>的方法
       ['focus', 'blur', 'select'].forEach((key) => {
         this[key] = ref[key];
       });
@@ -163,16 +180,6 @@ export default {
       return this.split
         ? val.split(this.splitChar)
         : ((this.$attrs.type === 'number' && this.convertNumber) ? +val : val);
-    },
-
-    innerAppendSlotRender(h) {
-      if (!this.append && !this.appendSlotRender) return null;
-      return this.appendSlotRender || h('div', null, this.append);
-    },
-
-    innerPrependSlotRender(h) {
-      if (!this.prepend && !this.prependSlotRender) return null;
-      return this.prependSlotRender || h('div', null, this.prepend);
     },
   },
 };

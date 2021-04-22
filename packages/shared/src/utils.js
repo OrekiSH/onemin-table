@@ -110,6 +110,6 @@ export function debounce(fn, wait) {
  * if can addEventListener
  * 是否是EventTarget
  */
-export function isEventTarget() {
+export function isEventTarget(el) {
   return el instanceof Element || el instanceof HTMLDocument || el instanceof Window;
 }

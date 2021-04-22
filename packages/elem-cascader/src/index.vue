@@ -335,11 +335,12 @@ export default {
      */
     genOuterVal(val) {
       if (this.canMerge && Array.isArray(val)) {
+        const value = val.filter(Array.isArray);
         // longest path, 最长路径
-        const levelCount = Math.max(...val.map((e) => e.length));
+        const levelCount = Math.max(...value.map((e) => e.length));
         const result = [];
         for (let i = 0; i < levelCount; i += 1) {
-          const temp = val.map((e) => e[i]).filter(Boolean);
+          const temp = value.map((e) => e[i]).filter(Boolean);
           result.push([...new Set(temp)]);
         }
 

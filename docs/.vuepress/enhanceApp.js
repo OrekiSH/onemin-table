@@ -13,13 +13,13 @@ import '../../packages/elem-table/lib/elem-table.css';
 
 export default ({ Vue }) => {
   Vue.use(ElementUI);
-  Vue.component('elem-form', ElemForm);
-  Vue.component('elem-table', ElemTable);
-  Vue.component('elem-extend-table', ElemExtendTable);
   Vue.component('elem-select', ElemSelect);
   Vue.component('elem-input', ElemInput);
   Vue.component('elem-date-picker', ElemDatePicker);
   Vue.component('elem-cascader', ElemCascader);
   Vue.component('elem-autocomplete', ElemAutocomplete);
   Vue.component('elem-input-number', ElemInputNumber);
+  Vue.component('elem-form', ElemForm);
+  Vue.component('elem-table', ElemTable);
+  Vue.component('elem-extend-table', ElemExtendTable);
 }

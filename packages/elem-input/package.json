@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-input",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "@onemin-table/elem-input",
   "module": "es/index.js",
   "main": "lib/index.js",

@@ -25,9 +25,9 @@ export default {
           disabled: item.disabled,
         },
         scopedSlots: {
-          default: () => typeof slotRender === 'function' ? slotRender(h, item) : null,
+          default: () => (typeof slotRender === 'function' ? slotRender(h, item) : null),
         },
       });
     });
-  }
+  },
 };

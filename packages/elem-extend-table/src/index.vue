@@ -380,10 +380,9 @@ export default {
       const hasVal = Object.values(filterMap).some((e) => e.length);
       if (hasVal) {
         const keys = Object.keys(filterMap);
-        this.innerData = (this.$attrs.data || []).filter((row) => {
+        this.innerData = (this.$attrs.data || []).filter((row) =>
           // 在选中列表中, in selected
-          return keys.every((key) => get(filterMap, key).indexOf(get(row, key)) > -1);
-        });
+          keys.every((key) => get(filterMap, key).indexOf(get(row, key)) > -1));
       } else {
         this.genInnerData();
       }

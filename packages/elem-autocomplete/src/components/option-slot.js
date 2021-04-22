@@ -18,5 +18,5 @@ export default {
     return typeof render === 'function'
       ? render(h, item)
       : '';
-  }
+  },
 };

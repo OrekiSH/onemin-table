@@ -179,17 +179,17 @@ export default {
 
       const isFunc = typeof this.imageSrcTransformer === 'function';
       // previewProp
-      let previewData = get(row, col.previewProp);
+      const previewData = get(row, col.previewProp);
       // Array<string> or string, 默认传入的为字符串数组或字符串
       if (previewData) {
         const previewSrcList = Array.isArray(previewData) ? previewData : [previewData];
-        return isFunc ? previewSrcList.map(this.imageSrcTransformer) : previewSrcList
+        return isFunc ? previewSrcList.map(this.imageSrcTransformer) : previewSrcList;
       }
 
       // prop
       const data = get(row, col.prop);
       const srcList = Array.isArray(data) ? data : [data];
-      return isFunc ?  srcList.map(this.imageSrcTransformer) : srcList;
+      return isFunc ? srcList.map(this.imageSrcTransformer) : srcList;
     },
   },
 };

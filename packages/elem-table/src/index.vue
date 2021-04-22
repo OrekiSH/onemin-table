@@ -510,7 +510,7 @@ export default {
           'cascader',
         ].map((t) => [t, {
           options: col.options,
-          value: get(scope.row, col.prop)
+          value: get(scope.row, col.prop),
         }])),
 
         ...Object.fromEntries([
@@ -633,7 +633,7 @@ export default {
       if (duplicateRemove) {
         // delete cloned popover, 删除克隆的列生成的popover.
         this.$nextTick(() => {
-          const clonedColumns = document.body.querySelectorAll(`.is-hidden [aria-describedby^="el-popover"]`);
+          const clonedColumns = document.body.querySelectorAll('.is-hidden [aria-describedby^="el-popover"]');
           if (this.clones.length !== clonedColumns.length) {
             this.clones = [...clonedColumns]
               .map((e) => e?.getAttribute('aria-describedby'))

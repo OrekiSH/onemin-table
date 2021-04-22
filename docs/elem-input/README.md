@@ -26,12 +26,14 @@ $ yarn add @onemin-table/elem-input
       :popoverVisible="active"
       :border-color="active ? 'red' : ''"
       :prefix-slot-render="prefixSlotRender"
+      suffix-icon="date"
       append=".com"
       prepend="https://"
       popover-content="content"
       split
       placeholder="空格分隔"
       @change="handleChange"
+      @blur="handleChange"
     />
   </div>
 </template>
