@@ -100,7 +100,7 @@ $ yarn add @onemin-table/elem-extend-table
 </script>
 
 <style>
-.elem-pagination {
+.ot-pagination--elem {
   display: flex;
 }
 </style>

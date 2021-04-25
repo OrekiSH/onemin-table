@@ -46,7 +46,7 @@ import camelCase from 'lodash/camelCase';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import kebabCase from 'lodash/kebabCase';
-import { ELEM_DATE_TYPES } from '@onemin-table/shared';
+import { ELEM_DATE_TYPES, EL_TABLE_METHODS } from '@onemin-table/shared';
 import ElemTableColumnGroup from './components/table-column-group.vue';
 import ElemTableColumn from './components/table-column.vue';
 
@@ -343,7 +343,7 @@ export default {
     const ref = this.$refs.table;
     // Proxy <el-table> methods, 代理<el-table>的方法
     if (ref) {
-      ['toggleRowExpansion', 'setCurrentRow', 'clearSort', 'clearFilter', 'doLayout', 'sort'].forEach((key) => {
+      EL_TABLE_METHODS.forEach((key) => {
         this[key] = ref[key];
       });
 
@@ -675,7 +675,7 @@ export default {
           nextEl.focus();
         }
       }
-    }
+    },
   },
 };
 </script>

@@ -1,10 +1,10 @@
 <template>
-  <div class="elem-pagination-wrapper">
+  <div class="ot-pagination-wrapper--elem">
     <template v-if="$attrs.top">
       <custom-render :render="$attrs.top" />
     </template>
 
-    <div class="elem-pagination">
+    <div class="ot-pagination--elem">
       <template v-if="$attrs.left">
         <custom-render :render="$attrs.left" />
       </template>

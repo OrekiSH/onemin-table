@@ -9,6 +9,7 @@ import ElemDatePicker from '../../packages/elem-date-picker/lib/index';
 import ElemCascader from '../../packages/elem-cascader/lib/index';
 import ElemAutocomplete from '../../packages/elem-autocomplete/lib/index';
 import ElemInputNumber from '../../packages/elem-input-number/lib/index';
+import ElemTablePage from '../../packages/elem-table-page/lib/index';
 import '../../packages/elem-table/lib/elem-table.css';
 
 export default ({ Vue }) => {
@@ -22,4 +23,6 @@ export default ({ Vue }) => {
   Vue.component('elem-form', ElemForm);
   Vue.component('elem-table', ElemTable);
   Vue.component('elem-extend-table', ElemExtendTable);
+
+  Vue.component('elem-table-page', ElemTablePage);
 }

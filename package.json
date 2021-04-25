@@ -30,6 +30,7 @@
     "@vue/test-utils": "^1.1.4",
     "@vuepress-dumi/vuepress-theme-dumi": "^0.3.7",
     "async-validator": "1.11.5",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "babel-plugin-transform-dynamic-imports-to-static-imports": "^0.3.0",

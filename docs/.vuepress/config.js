@@ -8,6 +8,7 @@ module.exports = {
       ['/elem-form/', 'ElemForm'],
       ['/elem-table/', 'ElemTable'],
       ['/elem-extend-table/', 'ElemExtendTable'],
+      ['/elem-table-page/', 'ElemTablePage'],
       ['/elem-select/', 'ElemSelect'],
       ['/elem-input/', 'ElemInput'],
       ['/elem-date-picker/', 'ElemDatePicker'],

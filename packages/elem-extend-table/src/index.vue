@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ot-extend-table--elem">
     <elem-pagination
       v-if="paginationPosition === 'top'"
       v-bind="paginationAttrProps"
@@ -22,22 +22,24 @@
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
+import kebabCase from 'lodash/kebabCase';
+import { ELEM_TABLE_METHODS } from '@onemin-table/shared';
 import ElemPagination from './components/elem-pagination.vue';
 
 const PAGINATION_ATTRS = [
   'small',
   'background',
   'total',
-  'pageCount',
-  'pagerCount',
-  'currentPage',
+  'page-count',
+  'pager-count',
+  'current-page',
   'layout',
-  'pageSizes',
-  'popperClass',
-  'prevText',
-  'nextText',
+  'page-sizes',
+  'popper-class',
+  'prev-text',
+  'next-text',
   'disabled',
-  'hideOnSinglePage',
+  'hide-on-single-page',
 ];
 
 const PAGINATION_LISTENERS = [
@@ -158,12 +160,17 @@ export default {
   computed: {
     // 分页器属性
     defaultPaginationAttrs() {
+      const attrs = this.$attrs;
+      Object.keys(attrs).forEach((key) => {
+        attrs[kebabCase(key)] = attrs[key];
+      });
+
       return {
         'hide-on-single-page': true,
         'pager-count': 5,
         'page-size': this.pageSize,
         layout: 'sizes, total, prev, pager, next',
-        ...pick(this.$attrs, PAGINATION_ATTRS),
+        ...pick(attrs, PAGINATION_ATTRS),
       };
     },
 
@@ -181,9 +188,14 @@ export default {
 
     // 表格属性
     defaultTableAttrs() {
+      const attrs = this.$attrs;
+      Object.keys(attrs).forEach((key) => {
+        attrs[kebabCase(key)] = attrs[key];
+      });
+
       return {
         'default-sort': this.defaultSort,
-        ...omit(this.$attrs, PAGINATION_ATTRS),
+        ...omit(attrs, PAGINATION_ATTRS),
       };
     },
 
@@ -193,6 +205,7 @@ export default {
       if (this.offline) {
         attrs.data = this.pageData;
       }
+      // 总计, summary
       if (typeof this.summaryMethod === 'function') {
         attrs['summary-method'] = this.offline
           ? ({ columns }) => this.summaryMethod({ columns, data: this.innerData })
@@ -217,24 +230,23 @@ export default {
   },
 
   mounted() {
-    this.genInnerData();
-    this.genPageData();
-
     const ref = this.$refs.table;
     // Proxy <elem-table> methods, 代理<elem-table>的方法
     if (ref) {
-      [
-        'toggleRowExpansion', 'setCurrentRow',
-        'clearSort', 'clearFilter', 'doLayout', 'sort',
-        'clearSelection', 'toggleAllSelection', 'toggleRowSelection',
-        'setCellAttrs',
-      ].forEach((key) => {
+      ELEM_TABLE_METHODS.forEach((key) => {
         this[key] = ref[key];
       });
     }
 
+    // offline模式下可用/可见的函数
     if (this.offline) {
-      // 监听data变化, watch data change
+      this.initOfflineMethods();
+
+      // init data, 初始化数据
+      this.genInnerData();
+      this.genPageData();
+
+      // watch origin data change, 监听源数据变化
       this.$watch('$attrs.data', {
         handler(val, oldVal) {
           this.genInnerData();
@@ -243,30 +255,30 @@ export default {
         deep: true,
       });
 
-      // 默认排序
+      // default sort, 默认排序
       const prop = this.defaultSort?.prop;
       if (prop) {
         const curr = (this.$attrs.columns || []).find((e) => e.prop === prop);
-        // 不可编辑可排序, if not editable can be sorted
+        // if not editable can be sorted, 不可编辑可排序
         if (curr && [undefined, 'text'].includes(curr.type)) {
           this.handleSortChange(this.defaultSort);
         }
       }
 
-      // 修改setCellAttrs参数
+      // modify row index, 修改行索引
       this.setCellAttrs = (colProp, rowIndex, attrs) => {
         ref.setCellAttrs(colProp, rowIndex % this.size, attrs);
       };
     }
 
-    // 添加page手动修改
+    // add setCurrentPage(available when offline true), 添加page手动修改(offline模式下可用)
     this.setCurrentPage = (page) => {
       if (!this.offline) return;
       this.page = page;
       this.genPageData({ page });
     };
 
-    // 添加pageSize手动修改
+    // add setPageSize(available when offline true), 添加pageSize手动修改(offline模式下可用)
     this.setPageSize = (size) => {
       if (!this.offline) return;
       this.size = size;
@@ -280,11 +292,62 @@ export default {
   },
 
   methods: {
-    genInnerData() {
-      this.innerData = (this.$attrs.data || []).concat();
+    initOfflineMethods() {
+      // shallow clone origin data, 浅拷贝列表数据
+      this.genInnerData = () => {
+        this.innerData = (this.$attrs.data || []).concat();
+      };
+
+      // table current page data, 表格当前页数据
+      this.genPageData = ({ page, size } = {}) => {
+        const d = this.innerData;
+        if (typeof page !== 'undefined') this.page = page;
+        if (typeof size !== 'undefined') this.size = size;
+
+        this.total = d.length;
+        this.pageData = d.slice((this.page - 1) * this.size, this.page * this.size);
+      };
+
+      // sort table, 表格排序
+      this.handleSortChange = ({ prop, order }) => {
+        if (order) {
+          this.innerData.sort((a, b) => {
+            const av = get(a, prop);
+            const bv = get(b, prop);
+
+            // eslint-disable-next-line
+            if (!isNaN(av) && !isNaN(bv)) {
+              return order === 'ascending' ? av - bv : bv - av;
+            }
+
+            if (av > bv) return order === 'ascending' ? 1 : -1;
+            if (bv > av) return order === 'ascending' ? -1 : 1;
+
+            return 0;
+          });
+        } else {
+          this.genInnerData();
+        }
+
+        this.genPageData({ page: 1 });
+      };
+
+      // filter table, 表格筛选
+      this.handleFilterChange = (filterMap) => {
+        const hasVal = Object.values(filterMap).some((e) => e.length);
+        if (hasVal) {
+          const keys = Object.keys(filterMap);
+          this.innerData = (this.$attrs.data || []).filter((row) =>
+            // in selected, 在选中列表中
+            keys.every((key) => get(filterMap, key).indexOf(get(row, key)) > -1));
+        } else {
+          this.genInnerData();
+        }
+
+        this.genPageData({ page: 1 });
+      };
     },
 
-    // 表格事件
     genTableListeners() {
       const listeners = omit(this.$listeners, PAGINATION_LISTENERS);
       // 前端分页, use frontend pagination
@@ -305,6 +368,7 @@ export default {
           if (typeof filterChange === 'function') {
             filterChange(filterMap);
           }
+
           this.handleFilterChange(filterMap);
         };
       }
@@ -312,7 +376,6 @@ export default {
       this.tableListeners = listeners;
     },
 
-    // 分页器事件
     genPaginationListeners() {
       const listeners = pick(this.$listeners, PAGINATION_LISTENERS);
       // 前端分页, use frontend pagination
@@ -338,56 +401,6 @@ export default {
       }
 
       this.paginationListeners = listeners;
-    },
-
-    // 表格当前页数据, table current page data
-    genPageData({ page, size } = {}) {
-      const d = this.innerData;
-      if (page !== undefined) this.page = page;
-      if (size !== undefined) this.size = size;
-
-      this.total = d.length;
-      this.pageData = d.slice((this.page - 1) * this.size, this.page * this.size);
-    },
-
-    // 表格排序, sort table
-    handleSortChange({ prop, order }) {
-      console.warn(prop, order);
-      if (order) {
-        this.innerData.sort((a, b) => {
-          const av = get(a, prop);
-          const bv = get(b, prop);
-
-          // eslint-disable-next-line
-          if (!isNaN(av) && !isNaN(bv)) {
-            return order === 'ascending' ? av - bv : bv - av;
-          }
-
-          if (av > bv) return order === 'ascending' ? 1 : -1;
-          if (bv > av) return order === 'ascending' ? -1 : 1;
-
-          return 0;
-        });
-      } else {
-        this.genInnerData();
-      }
-
-      this.genPageData({ page: 1 });
-    },
-
-    // 表格筛选, filter table
-    handleFilterChange(filterMap) {
-      const hasVal = Object.values(filterMap).some((e) => e.length);
-      if (hasVal) {
-        const keys = Object.keys(filterMap);
-        this.innerData = (this.$attrs.data || []).filter((row) =>
-          // 在选中列表中, in selected
-          keys.every((key) => get(filterMap, key).indexOf(get(row, key)) > -1));
-      } else {
-        this.genInnerData();
-      }
-
-      this.genPageData({ page: 1 });
     },
   },
 };
