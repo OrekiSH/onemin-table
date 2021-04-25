@@ -24,6 +24,8 @@ $ yarn add @onemin-table/elem-table-page
       :columns="columns"
       :current-page="0"
       :pagination-left-slot-render="leftSlot"
+      :on-response="onResponse"
+      :on-error="onError"
       data-key="programs"
       total-key="count"
       page-key="offset"
@@ -58,6 +60,12 @@ $ yarn add @onemin-table/elem-table-page
       leftSlot(h) {
         return h('i', { class: 'el-icon-time' });
       },
+
+      onResponse(err, response) {
+        console.warn(err, response);
+      },
+
+      onError(err) { console.warn(err); }
     },
   };
 </script>

@@ -24,6 +24,21 @@ const DATA_KEYS = [
   'url',
 ];
 
+function onCallback(cb, rejected) {
+  // config/error/response
+  return (data) => {
+    try {
+      if (typeof cb === 'function') {
+        cb(rejected ? data : null, rejected ? null : data);
+      }
+    } catch (err) {
+      // log execption in onRequest/onResponse
+      console.error(err);
+    }
+    return rejected ? Promise.reject(data) : data;
+  };
+}
+
 export default {
   inheritAttrs: false,
 
@@ -84,18 +99,27 @@ export default {
 
     /**
      * @language=zh
-     * axios拦截器设置
+     * axios请求拦截器
      */
-    interceptors: {
-      type: Object,
+    onRequest: {
+      type: Function,
       default: null,
     },
 
     /**
      * @language=zh
-     * axios4xx/5xx响应时的回调函数
+     * axios响应拦截器
      */
-    onResponseError: {
+    onResponse: {
+      type: Function,
+      default: null,
+    },
+
+    /**
+     * @language=zh
+     * 请求过程中出现错误时的回调函数
+     */
+    onError: {
       type: Function,
       default: null,
     },
@@ -128,9 +152,17 @@ export default {
     }
 
     // register interceptors, 注册拦截器
-    const { request, response } = this.interceptors || {};
-    if (request && response) {
-      axios.interceptors = interceptors;
+    if (typeof this.onRequest === 'function') {
+      axios.interceptors.request.use(
+        onCallback(this.onRequest, false), // resolve
+        onCallback(this.onRequest, true), // reject
+      );
+    }
+    if (typeof this.onResponse === 'function') {
+      axios.interceptors.response.use(
+        onCallback(this.onResponse, false),
+        onCallback(this.onResponse, true),
+      );
     }
 
     this.fetchTableData();
@@ -236,7 +268,7 @@ export default {
         const t = get(data, this.totalKey);
         this.total = +t || 0;
       } catch (err) {
-        if (typeof this.onResponseError === 'function') this.onResponseError(err);
+        if (typeof this.onError === 'function') this.onError(err);
       }
       this.loading = false;
     },
