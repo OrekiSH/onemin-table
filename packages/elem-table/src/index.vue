@@ -201,6 +201,15 @@ export default {
 
     /**
      * @language=zh
+     * 当单元格的值为空字符串/`null`/`undefined`时的后备渲染内容
+     */
+    placeholder: {
+      type: String,
+      default: '',
+    },
+
+    /**
+     * @language=zh
      * 固定列克隆的Popover实例是否移除, 每次设置都会进行节点删除操作
      * 关联issue: https://github.com/ElemeFE/element/issues/10588
      */
@@ -272,6 +281,7 @@ export default {
       genColumnItemAttrs: this.genColumnItemAttrs,
       genColumnItemListeners: this.genColumnItemListeners,
       lite: this.lite,
+      placeholder: this.placeholder,
       genColumnEnterChangeLine: this.genColumnEnterChangeLine,
     };
   },

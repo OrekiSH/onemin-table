@@ -24,6 +24,7 @@ $ yarn add @onemin-table/elem-table
     :loading="loading"
     :data="data"
     :columns="columns"
+    placeholder="/"
     @on-change="onDataChange"
   />
 </template>
@@ -93,7 +94,7 @@ $ yarn add @onemin-table/elem-table
         setTimeout(() => {
           this.data = [{
             id: 1,
-            name: 'a',
+            name: '',
             item: {
               age: 18,
               remark: '',
@@ -401,6 +402,7 @@ $ yarn add @onemin-table/elem-table
 | header-align | 全局表头对齐方式 |  left/center/right | 'left' |
 | show-overflow-tooltip | 当内容过长被隐藏时显示 tooltip |  Boolean | true |
 | min-width | 全局列最小宽度 |  Number | 100 |
+| placeholder | 全局设置当单元格的值为空字符串/`null`/`undefined`时的后备渲染内容 | String |
 | image-preview | 图片类型的列是否启用预览 | Boolean | true |
 | image-popover | 图片类型的列是否显示Popover | Boolean | true |
 | scroll-wrapper | 滚动容器选择器, 用于解决`<el-popover>`不随目标元素滚动的问题, 滚动元素为window/document/body时传'window/document/body'字符串, 其他传入CSS选择器, 默认值为空字符串, 优先级低于column属性中的`attrs.scrollWrapper` | String |
@@ -439,6 +441,7 @@ $ yarn add @onemin-table/elem-table
 | 参数        | 说明           | 类型  |
 | ------------- |---------------| ------|
 | type | 对应列的类型, 继承类型: selection/index/expand, 其他类型见下文 | String |
+| placeholder | 当单元格的值为空字符串/`null`/`undefined`时的后备渲染内容 | String |
 | attrs | `<elem-select>`等内置类型组件的属性 | Object |
 | listeners | `<elem-select>`等内置类型组件的事件 | Object |
 | headerSlotRender | 自定义表头的内容渲染函数. 参数为 { column, $index }, 相当于`el-table-column`header slot | Function |

@@ -36,7 +36,7 @@
       />
 
       <!-- Default, 默认 -->
-      <template v-else>{{ get(scope.row, col.prop) }}</template>
+      <template v-else>{{ genTextColumn(col, scope) }}</template>
     </template>
   </el-table-column>
 </template>
@@ -72,6 +72,7 @@ export default {
     'genColumnItemListeners',
     'lite',
     'genColumnEnterChangeLine',
+    'placeholder',
   ],
 
   components: {
@@ -113,7 +114,14 @@ export default {
   },
 
   methods: {
-    get,
+    genTextColumn(col, scope) {
+      const placeholder = (col.placeholder || this.placeholder);
+      const text = get(scope.row, col.prop);
+
+      return (text == null || text === '') && typeof placeholder === 'string'
+        ? placeholder
+        : text;
+    },
   },
 };
 </script>
