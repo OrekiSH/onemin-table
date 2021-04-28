@@ -345,6 +345,7 @@ export default {
 
   created() {
     CELL_LISTENERS.forEach((name) => {
+      /* istanbul ignore next */
       this[camelCase(name)] = (...args) => this.handleCellEvent(name, ...args);
     });
   },
@@ -673,13 +674,11 @@ export default {
      * 回车换行处理函数
      */
     genColumnEnterChangeLine(col, scope, evt) {
-      console.warn(col.enterChangeLine);
       if (!col.enterChangeLine) return;
       const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
 
       if (isEnter && evt.target) {
         const nextDataProp = `${col.prop}_${scope.$index + 1}`;
-        console.warn(nextDataProp);
         const nextEl = this.$el.querySelector(`[data-prop="${nextDataProp}"] input`);
         if (nextEl?.focus) {
           nextEl.focus();

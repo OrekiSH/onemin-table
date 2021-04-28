@@ -1,15 +1,15 @@
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import ElemForm from '../../packages/elem-form/lib/index';
-import ElemTable from '../../packages/elem-table/lib/index';
-import ElemExtendTable from '../../packages/elem-extend-table/lib/index';
-import ElemSelect from '../../packages/elem-select/lib/index';
-import ElemInput from '../../packages/elem-input/lib/index';
-import ElemDatePicker from '../../packages/elem-date-picker/lib/index';
-import ElemCascader from '../../packages/elem-cascader/lib/index';
-import ElemAutocomplete from '../../packages/elem-autocomplete/lib/index';
-import ElemInputNumber from '../../packages/elem-input-number/lib/index';
-import ElemTablePage from '../../packages/elem-table-page/lib/index';
+import ElemForm from '../../packages/elem-form/es/index';
+import ElemTable from '../../packages/elem-table/es/index';
+import ElemExtendTable from '../../packages/elem-extend-table/es/index';
+import ElemSelect from '../../packages/elem-select/es/index';
+import ElemInput from '../../packages/elem-input/es/index';
+import ElemDatePicker from '../../packages/elem-date-picker/es/index';
+import ElemCascader from '../../packages/elem-cascader/es/index';
+import ElemAutocomplete from '../../packages/elem-autocomplete/es/index';
+import ElemInputNumber from '../../packages/elem-input-number/es/index';
+import ElemTablePage from '../../packages/elem-table-page/es/index';
 import '../../packages/elem-table/lib/elem-table.css';
 
 export default ({ Vue }) => {

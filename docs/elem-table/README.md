@@ -131,6 +131,7 @@ $ yarn add @onemin-table/elem-table
       :selection="selection"
       :duration="1000"
       :image-src-transformer="imageSrcTransformer"
+      height="123"
       selection-key="id"
       scroll-wrapper="window"
       @selection-change="onSelectionChange"

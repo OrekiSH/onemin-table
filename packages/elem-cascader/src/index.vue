@@ -240,6 +240,7 @@ export default {
     },
 
     listeners() {
+      /* istanbul ignore next */
       return {
         ...this.$listeners,
         change: (val) => {
@@ -264,6 +265,7 @@ export default {
      * leaf node's path value map
      */
     leafPathMap() {
+      /* istanbul ignore next */
       if (Array.isArray(this.options)) {
         let result = {};
         this.options.forEach((root) => {
@@ -277,6 +279,7 @@ export default {
         return result;
       }
 
+      /* istanbul ignore next */
       return {};
     },
   },
@@ -334,6 +337,7 @@ export default {
      * 例如[[1, 10], [1, 12]]合并为[[1], [10, 12]]
      */
     genOuterVal(val) {
+      /* istanbul ignore next */
       if (this.canMerge && Array.isArray(val)) {
         const value = val.filter(Array.isArray);
         // longest path, 最长路径
@@ -347,6 +351,7 @@ export default {
         return result;
       }
 
+      /* istanbul ignore next */
       return val;
     },
   },

@@ -160,7 +160,8 @@ export default {
   computed: {
     // 分页器属性
     defaultPaginationAttrs() {
-      const attrs = this.$attrs;
+      console.warn(this.$attrs);
+      const attrs = this.$attrs || {};
       Object.keys(attrs).forEach((key) => {
         attrs[kebabCase(key)] = attrs[key];
       });
@@ -188,7 +189,7 @@ export default {
 
     // 表格属性
     defaultTableAttrs() {
-      const attrs = this.$attrs;
+      const attrs = this.$attrs || {};
       Object.keys(attrs).forEach((key) => {
         attrs[kebabCase(key)] = attrs[key];
       });

@@ -498,7 +498,7 @@ export default {
 
     appendButtonGroup(result) {
       // 最后一行
-      const last = result[result.length - 1];
+      const last = result?.[result.length - 1] || [];
       const sum = last.map((e) => e.span).reduce((a, c) => a + c, 0);
 
       // 按钮组

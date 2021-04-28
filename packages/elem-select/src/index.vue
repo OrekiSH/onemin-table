@@ -158,8 +158,9 @@ export default {
 
   mounted() {
     const ref = this.$refs.select;
-    // Proxy <el-select> methods, 代理<el-select>的方法
+
     if (ref) {
+      // Proxy <el-select> methods, 代理<el-select>的方法
       ['focus', 'blur'].forEach((key) => {
         this[key] = ref[key];
       });

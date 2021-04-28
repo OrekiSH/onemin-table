@@ -56,3 +56,11 @@ export const defineGetter = (obj, prop, value, defaultValue) => {
     });
   };
 };
+
+export function genInputElm(wrapper) {
+  const input = wrapper.find('input');
+  const { vm } = wrapper;
+  const inputElm = input.element;
+
+  return { vm, input, inputElm };
+}

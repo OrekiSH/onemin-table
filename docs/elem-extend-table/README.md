@@ -117,7 +117,7 @@ $ yarn add @onemin-table/elem-extend-table
 | pagination-top-slot-render | 分页上方内容渲染函数 | Function |
 | pagination-bottom-slot-render | 分页下方内容渲染函数 | Function |
 | offline | 翻页不从服务端获取数据, 默认值true | Boolean |
-| defaultSort | 默认的排序列的 prop 和顺序, 当该列可编辑时不默认排序 | Object |
+| default-sort | 默认的排序列的 prop 和顺序, 当该列可编辑时不默认排序 | Object |
 
 其他继承自`elem-table`的属性见[elem-table文档](/onemin-table/elem-table/#属性)
 
@@ -129,7 +129,7 @@ $ yarn add @onemin-table/elem-extend-table
 
 | 参数        | 说明           | 参数  |
 | ------------- |---------------| ------|
-| setCurrentPage | 手动修改当前页数, 仅在`offline`为true时可用 | page |
-| setPageSize | 手动修改每页显示条目个数, 仅在`offline`为true时可用 | size |
+| setCurrentPage | 通过代码1修改当前页数, 仅在`offline`为true时可用 | page |
+| setPageSize | 通过代码修改每页显示条目个数, 仅在`offline`为true时可用 | size |
 
 其他继承自`elem-table`的方法见[elem-table文档](/onemin-table/elem-table/#方法)

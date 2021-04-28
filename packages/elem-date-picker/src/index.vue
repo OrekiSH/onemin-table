@@ -108,14 +108,18 @@ export default {
         ...this.$attrs,
         'picker-options': {
           disabledDate: (date) => {
+            /* istanbul ignore next */
             const now = Date.now();
             const pickerTime = date.getTime();
 
             // 小于当前时间xx天的开区间， xx day early than now.
+            /* istanbul ignore next */
             const startRange = typeof this.disabledDateStart === 'number'
               ? pickerTime < now - (this.disabledDateStart * DAY_MS)
               : false;
+
             // 大于当前时间xx天的开区间， xx day later than now.
+            /* istanbul ignore next */
             const endRange = typeof this.disabledDateEnd === 'number'
               ? pickerTime > now + (this.disabledDateEnd * DAY_MS)
               : false;
@@ -124,11 +128,13 @@ export default {
             // xx day early than now and yy day later than now.
             let midRange = false;
             const [start, end] = this.disabledDateRange || [];
+            /* istanbul ignore next */
             if (typeof start === 'number' && typeof end === 'number') {
               midRange = (pickerTime > now - (start * DAY_MS))
                 && (pickerTime < now + (end * DAY_MS));
             }
 
+            /* istanbul ignore next */
             return startRange || endRange || midRange;
           },
           ...this.$attrs?.['picker-options'],

@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
-import ElemInput from '../lib';
+import { genInputElm, sleep } from '../../../tests/utils';
+import ElemInput from '../src/index.vue';
 
 const createVue = (options) => mount({
   components: {
@@ -27,42 +28,65 @@ describe('ElemInput', () => {
       },
     });
 
-    const inputElm = wrapper.find('input');
-    const { vm } = wrapper;
-    const nativeInput = inputElm.element;
+    const { vm, input, inputElm } = genInputElm(wrapper);
+    await input.trigger('focus');
 
-    await inputElm.trigger('focus');
-
-    expect(inputElm.exists()).toBe(true);
-    expect(nativeInput.placeholder).toBe('请输入内容');
-    expect(nativeInput.value).toBe('foo');
-    expect(nativeInput.minLength).toBe(3);
-    expect(nativeInput.maxLength).toBe(5);
+    expect(input.exists()).toBe(true);
+    expect(inputElm.placeholder).toBe('请输入内容');
+    expect(inputElm.value).toBe('foo');
+    expect(inputElm.minLength).toBe(3);
+    expect(inputElm.maxLength).toBe(5);
 
     vm.input = 'text';
     await sleep();
-    expect(inputElm.element.value).toBe('text');
+    expect(inputElm.value).toBe('text');
   });
 
   test('default to empty', () => {
     const wrapper = createVue({
       template: '<elem-input />',
     });
-    const inputElm = wrapper.find('input');
-    expect(inputElm.element.value).toBe('');
+    const { inputElm } = genInputElm(wrapper);
+    expect(inputElm.value).toBe('');
   });
 
   test('disabled', () => {
     const wrapper = createVue({
       template: '<elem-input disabled />',
     });
-    const inputElm = wrapper.find('input');
-    expect(inputElm.element.disabled).not.toBeNull();
+    const { inputElm } = genInputElm(wrapper);
+    expect(inputElm.disabled).not.toBeNull();
+  });
+
+  test('borderColor', () => {
+    const wrapper = createVue({
+      template: '<elem-input border-color="red" />',
+    });
+
+    const { inputElm } = genInputElm(wrapper);
+    expect(inputElm.style.borderColor).toBe('red');
+  });
+
+  test('data-prop', () => {
+    const wrapper = createVue({
+      template: '<elem-input data-prop="foo" />',
+    });
+
+    const { inputElm } = genInputElm(wrapper);
+    expect(inputElm.getAttribute('data-prop')).toBe('foo');
   });
 
   test('suffixIcon', () => {
     const wrapper = createVue({
       template: '<elem-input suffix-icon="time" />',
+    });
+    const icon = wrapper.find('.el-input__icon');
+    expect(icon.exists()).toBe(true);
+  });
+
+  test('prefixIcon', () => {
+    const wrapper = createVue({
+      template: '<elem-input prefix-icon="time" />',
     });
     const icon = wrapper.find('.el-input__icon');
     expect(icon.exists()).toBe(true);
@@ -206,37 +230,35 @@ describe('ElemInput', () => {
     expect(inputElm4.classList.contains('is-exceed')).toBe(false);
   });
 
-  describe('Input Methods', () => {
-    test('method:select', async () => {
-      const testContent = 'test';
-      const wrapper = createVue({
-        template: '<elem-input v-model="text" />',
-        data() {
-          return {
-            text: testContent,
-          };
-        },
-      });
-
-      const input = wrapper.find('input').element;
-      // mock selectionRange behaviour, due to jsdom's reason this case cannot run well, may be fixed later using headlesschrome or puppeteer
-      let selected = false;
-      defineGetter(input, 'selectionStart', function () {
-        return selected ? 0 : this.value.length;
-      });
-      defineGetter(input, 'selectionEnd', function () {
-        return this.value.length;
-      });
-
-      expect(input.selectionStart).toEqual(testContent.length);
-      expect(input.selectionEnd).toEqual(testContent.length);
-
-      input.select();
-      selected = true;
-      await sleep();
-      expect(input.selectionStart).toEqual(0);
-      expect(input.selectionEnd).toEqual(testContent.length);
+  test('method:select', async () => {
+    const testContent = 'test';
+    const wrapper = createVue({
+      template: '<elem-input v-model="text" />',
+      data() {
+        return {
+          text: testContent,
+        };
+      },
     });
+
+    const input = wrapper.find('input').element;
+    // mock selectionRange behaviour, due to jsdom's reason this case cannot run well, may be fixed later using headlesschrome or puppeteer
+    let selected = false;
+    defineGetter(input, 'selectionStart', function () {
+      return selected ? 0 : this.value.length;
+    });
+    defineGetter(input, 'selectionEnd', function () {
+      return this.value.length;
+    });
+
+    expect(input.selectionStart).toEqual(testContent.length);
+    expect(input.selectionEnd).toEqual(testContent.length);
+
+    input.select();
+    selected = true;
+    await sleep();
+    expect(input.selectionStart).toEqual(0);
+    expect(input.selectionEnd).toEqual(testContent.length);
   });
 
   test('event:change', async () => {
@@ -244,8 +266,8 @@ describe('ElemInput', () => {
     const wrapper = createVue({
       template: `
         <elem-input
-          placeholder="请输入内容"
           v-model="input"
+          placeholder="请输入内容"
           @change="handleChange"
         />
       `,
@@ -278,22 +300,62 @@ describe('ElemInput', () => {
     expect(vm.val).toBe('2');
   });
 
-  describe('Textarea Events', () => {
-    test('event:keydown', async () => {
-      const handleKeydown = jest.fn();
-      const wrapper = createVue({
-        template: `<el-input
-          type="textarea"
-          :value="val"
-          @keydown.native="handleKeydown"
-        />`,
-        methods: {
-          handleKeydown,
-        },
-      });
-
-      await wrapper.find('textarea').trigger('keydown');
-      expect(handleKeydown).toBeCalledTimes(1);
+  test('event:keydown', async () => {
+    const handleKeydown = jest.fn();
+    const wrapper = createVue({
+      template: `<elem-input
+        type="textarea"
+        :value="val"
+        @keydown.native="handleKeydown"
+      />`,
+      methods: {
+        handleKeydown,
+      },
     });
+
+    await wrapper.find('textarea').trigger('keydown');
+    expect(handleKeydown).toBeCalledTimes(1);
+  });
+
+  test('split', () => {
+    const wrapper = createVue({
+      template: '<elem-input v-model="foo" split />',
+      data() {
+        return {
+          foo: ['a', 'b'],
+        };
+      },
+    });
+
+    const { inputElm } = genInputElm(wrapper);
+    expect(inputElm.value).toBe('a b');
+  });
+
+  test('split-char', () => {
+    const wrapper = createVue({
+      template: '<elem-input v-model="foo" split split-char="@" />',
+      data() {
+        return {
+          foo: ['a', 'b'],
+        };
+      },
+    });
+
+    const { inputElm } = genInputElm(wrapper);
+    expect(inputElm.value).toBe('a@b');
+  });
+
+  test('prepend', async () => {
+    const wrapper = createVue({
+      template: '<elem-input prepend="https://" />',
+    });
+    expect(wrapper.find('.el-input-group__prepend').exists()).toBe(true);
+  });
+
+  test('append', async () => {
+    const wrapper = createVue({
+      template: '<elem-input append="https://" />',
+    });
+    expect(wrapper.find('.el-input-group__append').exists()).toBe(true);
   });
 });

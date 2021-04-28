@@ -162,7 +162,7 @@ export default {
      */
     genImageSrc(row, prop) {
       const data = get(row, prop);
-      const url = Array.isArray(data) && data.length ? data[0] : data;
+      const url = (Array.isArray(data) && data.length) ? data[0] : data;
       if (typeof this.imageSrcTransformer === 'function') {
         return this.imageSrcTransformer(url);
       }
