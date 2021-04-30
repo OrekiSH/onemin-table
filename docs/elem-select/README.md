@@ -22,8 +22,17 @@ $ yarn add @onemin-table/elem-select
     <button @click="group = !group">切换</button>
     <span>{{ !group ? '单选' : '分组' }}</span>
     <elem-select
-      v-model="value"
-      :options="options"
+      ref="select"
+      v-model="foo"
+      :popoverVisible="!group"
+      :options="group ? groupOptions : options"
+      :prefix-slot-render="prefixSlotRender"
+      :border-color="group ? '' : 'red'"
+      :width="300"
+      :popover-slot-render="popoverSlotRender"
+      :loading="loading"
+      multiple
+      @change="handleChange"
     />
   </div>
 </template>
@@ -32,7 +41,6 @@ $ yarn add @onemin-table/elem-select
   export default {
     data() {
       return {
-        value: '',
         foo: [1],
 
         group: true,
