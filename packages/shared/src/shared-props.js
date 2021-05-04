@@ -112,3 +112,54 @@ export const loadingProps = {
     default: false,
   },
 };
+
+/**
+ * 搜索重置按钮组props
+ * Search & Reset Button Group props,
+ */
+export const searchResetProps = {
+  /**
+   * @language=zh
+   * 搜索按钮文本
+   */
+  searchButtonText: {
+    type: String,
+    default: '查 询',
+  },
+
+  /**
+   * @language=zh
+   * 重置按钮文本
+   */
+  resetButtonText: {
+    type: String,
+    default: '重 置',
+  },
+
+  /**
+   * @language=zh
+   * 收起按钮文本
+   */
+  collapseButtonText: {
+    type: String,
+    default: '收起',
+  },
+
+  /**
+   * @language=zh
+   * 展开按钮文本
+   */
+  expandButtonText: {
+    type: String,
+    default: '展开',
+  },
+
+  /**
+   * @language=zh
+   * 搜索&重置按钮组是否加载中
+   */
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+};

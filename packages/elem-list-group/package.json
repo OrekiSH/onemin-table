@@ -1,9 +1,17 @@
 {
-  "name": "@onemin-table/shared",
-  "version": "0.8.8",
-  "description": "@onemin-table/shared",
+  "name": "@onemin-table/elem-list-group",
+  "version": "0.1.2",
+  "description": "@onemin-table/elem-list-group",
+  "module": "es/index.js",
   "main": "lib/index.js",
-  "module": "src/index.js",
+  "unpkg": "dist/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "dist",
+    "es"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/OrekiSH/onemin-table"
@@ -26,7 +34,7 @@
   ],
   "license": "MIT",
   "bugs": "https://github.com/OrekiSH/onemin-table/issues",
-  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/shared#readme",
+  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-list-group#readme",
   "publishConfig": {
     "access": "public"
   }

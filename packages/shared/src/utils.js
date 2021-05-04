@@ -113,3 +113,18 @@ export function debounce(fn, wait) {
 export function isEventTarget(el) {
   return el instanceof Element || el instanceof HTMLDocument || el instanceof Window;
 }
+
+/**
+ * proxy methods from reference component
+ * 代理目标组件的方法到当前组件
+ */
+export function proxyMethods(ctx, refname, methods) {
+  const ref = ctx.$refs[refname];
+  if (ref && Array.isArray(methods)) {
+    methods.forEach((key) => {
+      if (typeof ref[key] === 'function') {
+        ctx[key] = ref[key];
+      }
+    });
+  }
+}

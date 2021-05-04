@@ -210,6 +210,15 @@ export const inputMixin = {
       type: [String, Number],
       default: '',
     },
+
+    /**
+     * @language=zh
+     * 是否添加Popover
+     */
+    lite: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
