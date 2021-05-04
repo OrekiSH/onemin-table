@@ -1,6 +1,6 @@
 <h1 align="center">elem-autocomplete</h1>
 
-🚀 element-ui样式的schema-based输入匹配框模板组件, 集成`el-popover`组件，实现关注点集中的反馈模式.
+🚀 schema-based输入匹配框模板组件, 集成`el-popover`组件，实现关注点集中的反馈模式.
 
 ## 安装
 
@@ -32,6 +32,7 @@ $ yarn add @onemin-table/elem-autocomplete
       prepend="https://"
       popover-content="content"
       @change="handleChange"
+      lite
     />
   </div>
 </template>

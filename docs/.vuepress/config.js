@@ -5,17 +5,23 @@ module.exports = {
   themeConfig: {
     sidebar: [
       ['/', '组件总览'],
+      ['/elem-input/', 'ElemInput'],
+      ['/elem-input-number/', 'ElemInputNumber'],
+      ['/elem-autocomplete/', 'ElemAutocomplete'],
+      ['/elem-select/', 'ElemSelect'],
+      ['/elem-cascader/', 'ElemCascader'],
+      ['/elem-date-picker/', 'ElemDatePicker'],
+      ['/elem-list-group/', 'ElemListGroup'],
+
       ['/elem-form/', 'ElemForm'],
       ['/elem-table/', 'ElemTable'],
       ['/elem-extend-table/', 'ElemExtendTable'],
+
       ['/elem-table-page/', 'ElemTablePage'],
-      ['/elem-select/', 'ElemSelect'],
-      ['/elem-input/', 'ElemInput'],
-      ['/elem-date-picker/', 'ElemDatePicker'],
-      ['/elem-cascader/', 'ElemCascader'],
-      ['/elem-autocomplete/', 'ElemAutocomplete'],
-      ['/elem-input-number/', 'ElemInputNumber'],
       ['/faq/', '常见问题'],
     ],
+  },
+  markdown: {
+    plugins: ['task-lists'],
   },
 };

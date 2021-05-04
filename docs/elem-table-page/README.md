@@ -1,6 +1,6 @@
 <h1 align="center">elem-table-page</h1>
 
-🚀 element-ui样式的schema-based组合表单和表格并封装请求的模板组件
+🚀 schema-based组合表单和表格并封装请求的模板组件
 
 ## 安装
 

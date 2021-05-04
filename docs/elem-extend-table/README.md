@@ -1,6 +1,6 @@
 <h1 align="center">elem-extend-table</h1>
 
-🚀 element-ui样式的schema-based带分页表格模板组件, 内置了部分表单元素组件，并对选中状态和单元格事件的封装进行些许优化, 若无需分页请使用elem-table
+🚀 schema-based带分页表格模板组件, 内置了部分表单元素组件，并对选中状态和单元格事件的封装进行些许优化, 若无需分页请使用elem-table
 
 ## 安装
 

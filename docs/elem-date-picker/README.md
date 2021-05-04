@@ -1,6 +1,6 @@
 <h1 align="center">elem-date-picker</h1>
 
-🚀 element-ui样式的schema-based日期时间选择器模板组件, 集成`el-popover`组件，实现关注点集中的反馈模式.
+🚀 schema-based日期时间选择器模板组件, 集成`el-popover`组件，实现关注点集中的反馈模式.
 
 ## 安装
 

@@ -1,6 +1,6 @@
 <h1 align="center">elem-table</h1>
 
-🚀 element-ui样式的schema-based表格模板组件, 内置了部分表单元素组件，并对选中状态和单元格事件的封装进行些许优化
+🚀 schema-based表格模板组件, 内置了部分表单元素组件，并对选中状态和单元格事件的封装进行些许优化
 
 ## 安装
 

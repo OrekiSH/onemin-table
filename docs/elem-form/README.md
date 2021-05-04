@@ -1,21 +1,22 @@
 # ElemForm
 
-element-ui样式的schema-based表单模板组件
+schema-based表单模板组件
 
 ## 基础使用 - Usage
 
 ::: demo
 <template>
-  <elem-form
-    ref="form"
-    :query="query"
-    :filters="filters"
-    label-width="80px"
-    show-button
-    range-double
-    @on-search="handleSearch"
-    @on-change="handleChange"
-  />
+  <div>
+    <elem-form
+      ref="form"
+      :query="query"
+      :filters="filters"
+      label-width="80px"
+      @on-search="handleSearch"
+      @on-change="handleChange"
+    />
+    <button @click="handleClick">click</button>
+  </div>
 </template>
 
 <script>
@@ -23,13 +24,22 @@ element-ui样式的schema-based表单模板组件
     data() {
       return {
         query: {
-          role: ['cto'], // 选择器(多选)使用默认值
-          status: [], // 💡注意: 多选框需要显式声明默认值数组
+          content: [{ text: 'foo' }],
+          role: ['cto'],
         },
         // options
-        roleList: [],
-        departmentList: [],
+        roles: [],
+        departments: [],
       };
+    },
+
+    watch: {
+      query: {
+        handler() {
+          console.warn('query', this.query);
+        },
+        deep: true,
+      },
     },
 
     computed: {
@@ -38,16 +48,44 @@ element-ui样式的schema-based表单模板组件
           label: '姓名',
           prop: 'name',
         }, {
+          label: '数量',
+          prop: 'count',
+          type: 'input-number',
+        }, {
+          label: '描述',
+          prop: 'desc',
+          type: 'autocomplete',
+          fetchSuggestions(queryString, cb) {
+            cb(new Array(10).fill(0).map((e, i) => ({
+              value: `${queryString}_${i}`,
+            })));
+          },
+        }, {
+          label: '文本',
+          prop: 'content[0].text',
+          type: 'text',
+        }, {
           label: '角色',
           prop: 'role',
           type: 'select',
-          options: this.roleList,
+          options: this.roles,
+        }, {
+          label: '选择',
+          prop: 'radio',
+          type: 'radio',
+          options: [{
+            label: 'a',
+            value: 1,
+          }, {
+            label: 'b',
+            value: 2,
+          }],
         }, {
           label: '部门',
           prop: 'department',
           type: 'cascader',
           checkStrictly: true,
-          options: this.departmentList,
+          options: this.departments,
         }, {
           label: '创建日期',
           prop: 'createTime',
@@ -79,14 +117,18 @@ element-ui样式的schema-based表单模板组件
     },
 
     mounted() {
-      this.handleFetchRoleList();
-      this.handleFetchDepartmentList();
+      this.fetchRoles();
+      this.fetchDepartments();
     },
 
     methods: {
-      handleFetchRoleList() {
+      handleClick() {
+        this.query.role = ['ceo'];
+      },
+
+      fetchRoles() {
         setTimeout(() => {
-          this.roleList = [{
+          this.roles = [{
             label: 'CEO',
             value: 'ceo',
           }, {
@@ -96,9 +138,9 @@ element-ui样式的schema-based表单模板组件
         }, 100);
       },
 
-      handleFetchDepartmentList() {
+      fetchDepartments() {
         setTimeout(() => {
-          this.departmentList = [{
+          this.departments = [{
             label: '研发中心',
             value: 1,
             children: [{
@@ -133,20 +175,19 @@ element-ui样式的schema-based表单模板组件
 
 | 参数        | 说明           | 类型  |  默认值  |
 | ------------- |---------------| ------| ------ |
-| query(必填)      | 双向绑定的表单数据值, 同时也会被绑定到`el-form`的model属性上。<br /> 💡注意: 表单元素schema中存在`checkbox`类型时, 需要显式声明默认值数组, 具体见上方[基础使用](/elem-form/#基础使用-usage) | Object | - |
-| filters(必填) | 表单元素schema, 见下方Filter属性 |  Array | - |
-| rowAttrs | [`el-row`的属性](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)      |    Object | { gutter: 24 } |
+| query(必填) | 双向绑定的表单数据值, 同时也会被绑定到`el-form`的model属性上 | Object | - |
+| filters(必填) | 表单元素schema, 见下方Filter属性 | Array | - |
+| rowAttrs | [`el-row`的属性](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes) | Object | { gutter: 24 } |
 | loading | 搜索&重置按钮组是否加载中 |  Boolean | false |
-| showButton | 是否展示搜索&重置按钮组      |    Boolean | false |
+| showButton | 是否展示搜索&重置按钮组 | Boolean | false |
 | buttonLayout | 搜索&重置按钮组布局, 三个元素可任选、任意排列 | String | 'reset, search, collapse' |
-| searchButtonText | 搜索按钮文本      |    String | '查 询' |
-| resetButtonText | 重置按钮文本      |    String | '重 置' |
-| collapseButtonText | 收起按钮文本      |    String | '收起' |
-| expandButtonText | 展开按钮文本      |    String | '展开' |
-| defaultCollapsed | 是否默认收起      |    Boolean | false |
+| searchButtonText | 搜索按钮文本 | String | '查 询' |
+| resetButtonText | 重置按钮文本 | String | '重 置' |
+| collapseButtonText | 收起按钮文本 | String | '收起' |
+| expandButtonText | 展开按钮文本 | String | '展开' |
+| defaultCollapsed | 是否默认收起 | Boolean | false |
 | spanCalcRules | 列数计算间断点规则（根据width = document.body.clientWidth计算）<br /> [x, y, span]: (x, y)为width的范围, span为栅格占据的列数(`el-col`的span属性) |  Array | [[0, 768, 24], <br />[768, 992, 12], [992, 1440, 8], [1440, 2560, 6], [2560, 4800, 4]] |
 | buttonGroupItemAttrs | 按钮组的FormItem属性 | Object | { labelWidth: '0px' } |
-| rangeDouble | 区间选择器(`dates` / `datetimerange` / `daterange` / `monthrange`)占两倍栅格 | Boolean | false |
 
 其他继承自`el-form`的表单属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/form#form-attributes)
 
@@ -159,24 +200,20 @@ element-ui样式的schema-based表单模板组件
 | on-reset |点击`重置`按钮时触发| - |
 | on-collapse |点击`收起-展开`按钮时触发| `collapsed`: 是否收起 |
 
-## Filter属性 - Attributes
+## filter的属性 - Attributes
 
 | 参数        | 说明           | 类型  |
 | ------------- |---------------| ------|
 | prop(必填) |表单元素的标识, 会被映射到表单数据值`query`中| String |
 | type |表单元素类型, 不填为默认值`input`, 支持的类型见下方列表| String |
 | label |表单元素标签| String |
-| visible |表单元素是否可见, 不可见时`query`上绑定的数据值依然存在, 可用于一些默认值请求的场景| Boolean |
-| itemAttrs | [`el-form-item`的属性](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes) |  Object |
-| attrs |继承自element-ui组件的原有属性, **在此声明的优先级最高**。具体组件属性点击下方列表链接查看| Object |
-| listeners |继承自element-ui组件的原有事件| Object |
-| options(部分必填) |当表单元素类型为`(级联)选择器`/`(单/多)选框`时需要赋值 | Array<{ label: `string`, value: `any`, disabled?: `boolean`, children?: `Array` }> |
-| clearable |表单元素组件存在该属性时可被赋值, 默认值`true`| Boolean |
-| filterable |表单元素组件存在该属性时可被赋值, 默认值`true`| Boolean |
-| placeholder |表单元素组件存在该属性时可被赋值, 默认值`请输入`/`请选择`| String |
-| collapseTags |表单元素组件存在该属性时可被赋值, 默认值`true`| Boolean |
-| props |表单元素组件类型为`级联选择器`时可被赋值 | Object |
-| render | 自定义组件渲染 | Function |
+| labelSlotRender | 表单元素标签文本的内容渲染函数 | Function |
+| visible |表单元素是否可见, 不可见时`query`上绑定的数据值依然存在, 适用于一些含有默认值请求的场景| Boolean |
+| attrs |继承自表单元素组件的prop属性, 具体组件属性见下方列表 | Object |
+| options/... | `options`等表单元素组件的prop属性, 优先级低于attrs中声明的属性 | any |
+| label-width/... | `label-width`等[`<el-form-item>`]的属性(https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes), 支持同时支持和中划线写法(kebab case)和小驼峰(camel case)写法 | any |
+| listeners | 表单元素组件的事件 | Object |
+| render | 自定义渲染函数 | Function |
 
 
 **表单元素支持的类型(type):**

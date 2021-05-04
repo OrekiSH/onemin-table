@@ -1,6 +1,12 @@
-<h1 align="center">elem-input</h1>
+# elem-input
 
-🚀 element-ui样式的schema-based输入框模板组件, 集成`el-popover`组件，实现关注点集中的反馈模式.
+## 特性
+
+- [x] 集成`el-popover`组件，实现关注点集中的反馈模式
+
+- [x] 为slot添加render function, 更便利的使用JSX
+
+- [x] 增加分隔模式，针对特定字符分隔字符串, 将绑定值转换为数组
 
 ## 安装
 
@@ -14,9 +20,37 @@ $ npm i @onemin-table/elem-input
 $ yarn add @onemin-table/elem-input
 ```
 
-## 用法
 
-::: demo
+## 分隔模式
+
+::: demo[scope]
+<template>
+  <elem-input
+    v-model="foo"
+    split
+    placeholder="空格分隔"
+  />
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        foo: [1, 2],
+      };
+    },
+    watch: {
+      foo(val) {
+        console.warn(val);
+      },
+    },
+  };
+</script>
+:::
+
+## Popover
+
+::: demo[scope]
 <template>
   <div>
     <button @click="active = !active">切换</button>
@@ -30,8 +64,6 @@ $ yarn add @onemin-table/elem-input
       append=".com"
       prepend="https://"
       popover-content="content"
-      split
-      placeholder="空格分隔"
       @change="handleChange"
     />
   </div>
@@ -41,16 +73,9 @@ $ yarn add @onemin-table/elem-input
   export default {
     data() {
       return {
-        foo: ['a', 'b'],
-
+        foo: '',
         active: true,
       };
-    },
-
-    watch: {
-      foo() {
-        console.warn(this.foo);
-      },
     },
 
     methods: {
@@ -65,6 +90,39 @@ $ yarn add @onemin-table/elem-input
   };
 </script>
 :::
+
+## 插槽元素
+
+::: demo[scope]
+<template>
+  <div>
+    <elem-input
+      v-model="foo"
+      :prefix-slot-render="prefixSlotRender"
+      suffix-icon="date"
+      append=".com"
+      prepend="https://"
+    />
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        foo: '',
+      };
+    },
+
+    methods: {
+      prefixSlotRender() {
+        return <i class="el-icon-time el-input__icon" />;
+      },
+    },
+  };
+</script>
+:::
+
 
 ## 属性
 
