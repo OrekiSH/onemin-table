@@ -131,7 +131,6 @@ $ yarn add @onemin-table/elem-table
       :selection="selection"
       :duration="1000"
       :image-src-transformer="imageSrcTransformer"
-      height="123"
       selection-key="id"
       scroll-wrapper="window"
       @selection-change="onSelectionChange"
@@ -201,6 +200,18 @@ $ yarn add @onemin-table/elem-table
               console.warn(rowIndex, evt);
             },
           },
+        }, {
+          label: '性别',
+          type: 'radio',
+          prop: 'sex',
+          minWidth: 160,
+          options: [{
+            label: '男',
+            value: 'male',
+          }, {
+            label: '女',
+            value: 'female',
+          }],
         }, {
           label: '日期',
           type: 'date',
@@ -463,3 +474,5 @@ $ yarn add @onemin-table/elem-table
 - [input](/elem-input/): 输入框
 - [input-number](/elem-input-number/): 计数器
 - [autocomplete](/elem-autocomplete/): 输入匹配框
+- [checkbox/checkbox-button](/elem-list-group/): 多选框
+- [radio/radio-button](/elem-list-group/): 单选框

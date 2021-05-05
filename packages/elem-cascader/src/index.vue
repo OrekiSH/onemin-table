@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    v-if="!lite"
     ref="popover"
     :value="innerVisible && mounted"
     v-bind="innerPopoverAttrs"
@@ -35,6 +36,27 @@
       </el-cascader>
     </div>
   </el-popover>
+
+  <el-cascader
+    v-else
+    ref="cascader"
+    :value="inputVal"
+    v-bind="attrs"
+    v-on="listeners"
+    style="width: 100%"
+  >
+    <cascader-slot
+      :empty-slot-render="emptySlotRender"
+    />
+
+    <template slot-scope="{ node, data }">
+      <option-slot
+        :render="optionSlotRender"
+        :node="node"
+        :data="data"
+      />
+    </template>
+  </el-cascader>
 </template>
 
 <script>
@@ -240,7 +262,6 @@ export default {
     },
 
     listeners() {
-      /* istanbul ignore next */
       return {
         ...this.$listeners,
         change: (val) => {
@@ -265,7 +286,6 @@ export default {
      * leaf node's path value map
      */
     leafPathMap() {
-      /* istanbul ignore next */
       if (Array.isArray(this.options)) {
         let result = {};
         this.options.forEach((root) => {
@@ -279,7 +299,6 @@ export default {
         return result;
       }
 
-      /* istanbul ignore next */
       return {};
     },
   },
@@ -337,7 +356,6 @@ export default {
      * 例如[[1, 10], [1, 12]]合并为[[1], [10, 12]]
      */
     genOuterVal(val) {
-      /* istanbul ignore next */
       if (this.canMerge && Array.isArray(val)) {
         const value = val.filter(Array.isArray);
         // longest path, 最长路径
@@ -351,7 +369,6 @@ export default {
         return result;
       }
 
-      /* istanbul ignore next */
       return val;
     },
   },

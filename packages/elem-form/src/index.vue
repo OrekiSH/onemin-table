@@ -2,12 +2,11 @@
   <el-form
     ref="form"
     :model="query"
-    v-bind="$attrs"
-    v-on="$listeners"
     class="ot-form--elem"
+    v-bind="attrs"
+    v-on="listeners"
   >
-    <template v-for="(row, index) in rowList">
-      <!-- Row, 行 -->
+    <template v-for="(row, index) in rows">
       <el-row
         :key="index"
         v-bind="rowAttrs"
@@ -16,158 +15,21 @@
         <el-col
           v-for="filter in row"
           :key="filter.prop"
-          :span="filter.span"
-          :offset="filter.offset"
+          v-bind="genColAttrs(filter)"
         >
-          <el-form-item
-            :label="filter.visible !== false ? filter.label : ''"
-            :prop="filter.prop"
-            v-bind="filter.itemAttrs"
-          >
-            <!-- If hidden, 是否隐藏 -->
-            <template v-if="filter.visible !== false">
+          <button-group
+            v-if="showButtonGroup && filter.type === BUTTON_GROUP_TYPE"
+            v-bind="buttonGroupAttrs"
+            @on-search="$emit('on-search')"
+            @on-reset="$emit('on-reset')"
+            @on-collapse="handleSetCollapsed"
+          />
 
-              <!-- Select(single and multiple), 选择器(单选与多选) -->
-              <el-select
-                v-if="filter.type === 'select' || filter.type === 'single-select'"
-                v-model="query[filter.prop]"
-                :multiple="filter.type !== 'single-select'"
-                :popper-append-to-body="genDefaultProp(filter, 'popperAppendToBody')"
-                v-bind="genSelectDefaultAttrs(filter)"
-                v-on="filter.listeners"
-                @change="handleChange(filter)"
-              >
-                <el-option
-                  v-for="(item, i) in (filter.options || [])"
-                  :key="i"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-                />
-              </el-select>
-
-              <!-- Cascader(single and multiple), 级联选择器(单选与多选) -->
-              <el-cascader
-                v-else-if="filter.type === 'cascader' || filter.type === 'single-cascader'"
-                v-model="query[filter.prop]"
-                :options="filter.options"
-                :props="genCascaderProps(filter)"
-                v-bind="genSelectDefaultAttrs(filter)"
-                v-on="filter.listeners"
-                @change="handleChange(filter)"
-              />
-
-              <!-- Date Picker, 日期选择器 -->
-              <el-date-picker
-                v-else-if="DATE_TYPES.includes(filter.type)"
-                v-model="query[filter.prop]"
-                :type="filter.type"
-                v-bind="genPickerDefaultAttrs(filter, '日期')"
-                v-on="filter.listeners"
-                @change="handleChange(filter)"
-              />
-
-              <!-- Time Picker, 时间选择器 -->
-              <el-time-picker
-                v-else-if="TIME_TYPES.includes(filter.type)"
-                v-model="query[filter.prop]"
-                :is-range="filter.type === 'timerange'"
-                v-bind="genPickerDefaultAttrs(filter, '时间')"
-                v-on="filter.listeners"
-                @change="handleChange(filter)"
-              />
-
-              <!-- Checkbox Group, 多选框 -->
-              <el-checkbox-group
-                v-else-if="filter.type === 'checkbox' || filter.type === 'checkbox-button'"
-                v-model="query[filter.prop]"
-                :data-prop="filter.prop"
-                v-bind="filter.attrs"
-                v-on="filter.listeners"
-                @change="handleChange(filter)"
-              >
-                <component
-                  :is="`el-${filter.type}`"
-                  v-for="(item, i) in (filter.options || [])"
-                  :key="i"
-                  v-bind="genSelectBoxAttrs(item)"
-                >{{ item.label }}</component>
-              </el-checkbox-group>
-
-              <!-- Radio Group, 单选框 -->
-              <el-radio-group
-                v-else-if="filter.type === 'radio' || filter.type === 'radio-button'"
-                v-model="query[filter.prop]"
-                :data-prop="filter.prop"
-                v-bind="filter.attrs"
-                v-on="filter.listeners"
-                @change="handleChange(filter)"
-              >
-                <component
-                  :is="`el-${filter.type}`"
-                  v-for="(item, i) in (filter.options || [])"
-                  :key="i"
-                  v-bind="genSelectBoxAttrs(item)"
-                >{{ item.label }}</component>
-              </el-radio-group>
-
-              <!-- Plain Text, 纯文本 -->
-              <span
-                v-else-if="filter.type === 'text'"
-                :data-prop="filter.prop"
-              >{{ query[filter.prop] || '' }}</span>
-
-              <!-- Search & Reset Button Group, 搜索重置按钮组 -->
-              <div
-                v-else-if="filter.type === 'button-group' && showButton"
-                class="ot-form__button-group"
-              >
-                <template
-                  v-for="button in buttonGroupList"
-                >
-                  <component
-                    :key="button"
-                    :is="button"
-                    v-bind="genButtonGroupProps(button)"
-                    @on-search="$emit('on-search')"
-                    @on-reset="$emit('on-reset')"
-                    @on-collapse="handleSetCollapsed"
-                  />
-                </template>
-              </div>
-
-              <!-- InputNumber, 计数器 -->
-              <el-input-number
-                v-else-if="filter.type === 'input-number'"
-                v-model="query[filter.prop]"
-                :data-prop="filter.prop"
-                :controls-position="genDefaultProp(filter, 'controlsPosition', 'right')"
-                :clearable="genDefaultProp(filter, 'clearable')"
-                :placeholder="genDefaultProp(filter, 'placeholder', '请输入')"
-                v-bind="filter.attrs"
-                v-on="filter.listeners"
-                @input="handleChange(filter)"
-              />
-
-              <!-- Custom render component, 自定义渲染组件 -->
-              <custom-render
-                v-else-if="typeof filter.render === 'function'"
-                :render="filter.render"
-              />
-
-              <!-- Default Input, 默认输入框 -->
-              <el-input
-                v-else-if="filter.type !== 'button-group'"
-                v-model="query[filter.prop]"
-                :data-prop="filter.prop"
-                :clearable="genDefaultProp(filter, 'clearable')"
-                :placeholder="genDefaultProp(filter, 'placeholder', '请输入')"
-                v-bind="filter.attrs"
-                v-on="filter.listeners"
-                @input="handleChange(filter)"
-              />
-            </template>
-          </el-form-item>
+          <elem-form-item
+            v-else
+            :filter="filter"
+            :query="query"
+          />
         </el-col>
       </el-row>
     </template>
@@ -175,63 +37,38 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce';
-import {
-  Form, FormItem, Select, Option, Button, Row, Col, DatePicker, Cascader,
-  CheckboxGroup, Checkbox, InputNumber, TimePicker,
-} from 'element-ui';
-import search from './components/button-group/search.vue';
-import reset from './components/button-group/reset.vue';
-import collapse from './components/button-group/collapse.vue';
-import CustomRender from './components/custom-render';
-
-const DATE_RANGE_TYPES = [
-  'dates',
-  'datetimerange',
-  'daterange',
-  'monthrange',
-];
-
-const DATE_TYPES = [
-  'year',
-  'month',
-  'date',
-  'week',
-  'datetime',
-  ...DATE_RANGE_TYPES,
-];
-
-const TIME_TYPES = ['time', 'timerange'];
-
-const RANGE_TYPES = [
-  ...DATE_RANGE_TYPES,
-  'timerange',
-];
+import pick from 'lodash/pick';
+import throttle from 'lodash/throttle';
+import { searchResetProps, proxyMethods, EL_COL_ATTRS } from '@onemin-table/shared';
+import ButtonGroup from './components/button-group/index.vue';
+import ElemFormItem from './components/form-item.vue';
+import ResizeObserver from 'resize-observer-polyfill';
 
 const ROW_SPAN_COUNT = 24;
+const ELEM_FORM_ATTRS = [
+  'rules',
+  'inline',
+  'label-position',
+  'label-width',
+  'label-suffix',
+  'hide-required-asterisk',
+  'show-message',
+  'inline-message',
+  'status-icon',
+  'validate-on-rule-change',
+  'size',
+  'disabled',
+];
+const BUTTON_GROUP_ATTRS = Object.keys(searchResetProps);
 
 export default {
   name: 'ElemForm',
 
-  components: {
-    ElForm: Form,
-    ElFormItem: FormItem,
-    ElSelect: Select,
-    ElOption: Option,
-    ElButton: Button,
-    ElRow: Row,
-    ElCol: Col,
-    ElDatePicker: DatePicker,
-    ElCascader: Cascader,
-    ElCheckboxGroup: CheckboxGroup,
-    ElCheckbox: Checkbox,
-    ElInputNumber: InputNumber,
-    ElTimePicker: TimePicker,
+  inheritAttrs: false,
 
-    search,
-    reset,
-    collapse,
-    CustomRender,
+  components: {
+    ElemFormItem,
+    ButtonGroup,
   },
 
   props: {
@@ -266,72 +103,9 @@ export default {
 
     /**
      * @language=zh
-     * 搜索&重置按钮组是否加载中
+     * 根据屏幕宽度(document.body.clientWidth)自动布局
      */
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-
-    /**
-     * @language=zh
-     * 是否展示搜索&重置按钮组
-     */
-    showButton: {
-      type: Boolean,
-      default: false,
-    },
-
-    /**
-     * @language=zh
-     * 搜索&重置按钮组布局
-     */
-    buttonLayout: {
-      type: String,
-      default: 'reset, search, collapse',
-    },
-
-    /**
-     * @language=zh
-     * 搜索按钮文本
-     */
-    searchButtonText: {
-      type: String,
-      default: '查 询',
-    },
-
-    /**
-     * @language=zh
-     * 重置按钮文本
-     */
-    resetButtonText: {
-      type: String,
-      default: '重 置',
-    },
-
-    /**
-     * @language=zh
-     * 收起按钮文本
-     */
-    collapseButtonText: {
-      type: String,
-      default: '收起',
-    },
-
-    /**
-     * @language=zh
-     * 展开按钮文本
-     */
-    expandButtonText: {
-      type: String,
-      default: '展开',
-    },
-
-    /**
-     * @language=zh
-     * 是否默认收起
-     */
-    defaultCollapsed: {
+    autoLayout: {
       type: Boolean,
       default: false,
     },
@@ -355,95 +129,115 @@ export default {
 
     /**
      * @language=zh
-     * 按钮组的FormItem属性
+     * 是否默认收起
      */
-    buttonGroupItemAttrs: {
-      type: Object,
-      default() {
-        return {
-          labelWidth: '0px',
-        };
-      },
+    defaultCollapsed: {
+      type: Boolean,
+      default: false,
     },
 
     /**
      * @language=zh
-     * 区间选择器占两倍栅格
+     * 是否展示搜索&重置按钮组
      */
-    rangeDouble: {
+    showButtonGroup: {
       type: Boolean,
       default: false,
     },
+
+    ...searchResetProps,
   },
 
   data() {
     return {
       collapsed: this.defaultCollapsed,
 
-      DATE_TYPES,
-      TIME_TYPES,
+      GLOBAL_SPAN: 8,
       resizeObserver: null,
-      span: 8,
+
+      BUTTON_GROUP_TYPE: '@onemin-table/button_group',
     };
   },
 
   computed: {
-    FILTERS() {
-      return this.filters.filter((e) => e.visible !== false).map((filter) => {
-        const isRange = RANGE_TYPES.includes(filter.type) && this.rangeDouble;
-        return {
-          ...filter,
-          // 日期区间选择器两倍长度
-          span: isRange ? (this.span * 2) : this.span,
-        };
-      });
+    // filter with span value in autoLayout mode, 自动布局模式下filters自带span
+    filtersWithSpan() {
+      const filters = this.autoLayout
+        ? this.filters.map((e) => ({ ...e, span: this.GLOBAL_SPAN }))
+        : this.filters;
+
+      return filters.filter((e) => e.visible !== false);
     },
 
-    rowList() {
-      let result = [];
-      let filters = this.FILTERS;
-
-      if (this.collapsed) {
-        const items = [];
-        for (const filter of this.FILTERS) {
-          const sum = items.map((e) => e.span).reduce((a, c) => a + c, 0);
-          if (sum + this.span === ROW_SPAN_COUNT) {
-            filters = items;
-            break;
-          }
-          items.push(filter);
-        }
-      }
+    rows() {
+      const result = [];
 
       let tmp = [];
-      filters.forEach((filter) => {
-        const sum = tmp.map((e) => e.span).reduce((a, c) => a + c, 0);
-        // 行满推入result
+      this.filtersWithSpan.forEach((filter) => {
+        const sum = tmp.reduce((a, c) => a + (c.span || 0), 0);
+        // fill and change row, 行满推入result
         if (sum >= ROW_SPAN_COUNT) {
           result.push(tmp);
           tmp = [];
         }
-        tmp.push(filter);
+        // default input, 默认输入框
+        const item = filter;
+        if (!item.type && !item.render) item.type = 'input';
+        tmp.push(item);
       });
       // push last
       if (tmp.length) result.push(tmp);
 
-      result = this.appendButtonGroup(result);
+      if (this.showButtonGroup) {
+        const last = result[result.length - 1];
+        // last row max column count, 最后一行最大列数
+        const lastMaxCount = ROW_SPAN_COUNT / this.GLOBAL_SPAN;
+        const lastCount = last.length;
+        // button group column, 搜索&重置按钮组所在列
+        const buttonGroupCol = {
+          type: this.BUTTON_GROUP_TYPE,
+          span: this.GLOBAL_SPAN,
+          push: ROW_SPAN_COUNT - this.GLOBAL_SPAN,
+        };
+        if (lastCount === lastMaxCount) {
+          result.push([buttonGroupCol]);
+        } else {
+          last.push({
+            ...buttonGroupCol,
+            push: ROW_SPAN_COUNT - ((lastCount + 1) * this.GLOBAL_SPAN),
+          });
+        }
+      }
 
       return result;
     },
 
-    /**
-     * 按钮组件名称排列
-     */
-    buttonGroupList() {
-      let d = this.buttonLayout.split(',').map((e) => e.trim());
-      // 单行不显示收起-展开
-      if (this.rowList.length === 1 && !this.collapsed) {
-        d = d.filter((e) => e !== 'collapse');
+    // form attributes, 表单属性
+    attrs() {
+      return pick(this.$attrs, ELEM_FORM_ATTRS);
+    },
+
+    // form listeners, 表单事件
+    listeners() {
+      return pick(this.$listeners, ['validate']);
+    },
+
+    // layout meta data corrent, 布局信息无误
+    calculateable() {
+      return Array.isArray(this.spanCalcRules)
+        && this.spanCalcRules.every((e) => Array.isArray(e) && e.length === 3);
+    },
+
+    // search&reset button group attrs, 搜索重置按钮组属性
+    buttonGroupAttrs() {
+      const result = pick(this, BUTTON_GROUP_ATTRS);
+      // hide collapse when only one row, 只有一行时隐藏收起-展开按钮
+      const spanSum = this.filtersWithSpan.reduce((a, c) => a + (c.span || 0), 0);
+      if (spanSum < ROW_SPAN_COUNT) {
+        result.buttonLayout = result.buttonLayout.filter((e) => e !== 'collapse');
       }
 
-      return d;
+      return result;
     },
   },
 
@@ -451,193 +245,54 @@ export default {
     filters() {
       this.$refs?.form?.clearValidate();
     },
+  },
 
-    rowList() {
-      this.initResizeObserver();
-    },
+  created() {
+    this.handleSetCollapsed = (val) => {
+      this.collapsed = val;
+      this.$emit('on-collapse', val);
+    };
   },
 
   mounted() {
     // Proxy Form Methods, 代理表单方法
-    const ref = this.$refs?.form;
-    if (ref) {
-      ['validate', 'validateField', 'resetFields', 'clearValidate'].forEach((method) => {
-        if (typeof ref?.[method] === 'function') {
-          this[method] = ref[method];
-        }
-      });
-    }
+    proxyMethods(this, 'form', ['validate', 'validateField', 'resetFields', 'clearValidate']);
 
-    this.handleSpanCalc(document.body.clientWidth);
+    if (this.autoLayout) {
+      /**
+       * span in auto layout mode
+       * 自动布局模式下的span
+       */
+      const genGloablSpan = throttle(() => {
+        if (!this.calculateable) return;
+
+        const width = document.body.clientWidth;
+        this.spanCalcRules.forEach(([start, end, span]) => {
+          if (width > start && width <= end) {
+            this.GLOBAL_SPAN = span;
+          }
+        });
+      }, 200);
+
+      genGloablSpan();
+      // detect size change, 观察元素大小改变
+      this.resizeObserver = new ResizeObserver(() => {
+        window.requestAnimationFrame(genGloablSpan);
+      });
+      this.resizeObserver.observe(document.body);
+    }
+  },
+
+  beforeDestroy() {
+    if (this.autoLayout && this.resizeObserver) {
+      this.resizeObserver.unobserve(document.body);
+    }
   },
 
   methods: {
-    handleSpanCalc(width) {
-      if (Array.isArray(this.spanCalcRules)
-        && this.spanCalcRules.every((e) => Array.isArray(e) && e.length === 3)
-      ) {
-        this.spanCalcRules.forEach(([start, end, span]) => {
-          if (width > start && width <= end) {
-            this.span = span;
-          }
-        });
-      }
-    },
-
-    initResizeObserver() {
-      if (typeof ResizeObserver === 'undefined') return;
-      if (this.resizeObserver) return;
-
-      const handler = debounce(() => {
-        this.handleSpanCalc(document.body.clientWidth);
-      }, 100);
-
-      this.resizeObserver = new ResizeObserver(handler);
-      if (this.$el) this.resizeObserver.observe(this.$el);
-    },
-
-    appendButtonGroup(result) {
-      // 最后一行
-      const last = result?.[result.length - 1] || [];
-      const sum = last.map((e) => e.span).reduce((a, c) => a + c, 0);
-
-      // 按钮组
-      const buttonGroup = {
-        label: '',
-        prop: 'buttonGroup',
-        type: 'button-group',
-        span: this.span,
-        itemAttrs: this.buttonGroupItemAttrs,
-      };
-
-      const tmp = [];
-      const columnCount = ROW_SPAN_COUNT / this.span;
-      // 剩余列数
-      const demainCount = ((ROW_SPAN_COUNT - sum) / this.span) || columnCount;
-      // 填充空位
-      for (let i = 0; i < demainCount; i += 1) {
-        if (i === demainCount - 1) {
-          tmp.push(buttonGroup);
-        } else {
-          tmp.push({
-            label: '',
-            prop: `placeholder_${i}`,
-            visible: false,
-            span: this.span,
-          });
-        }
-      }
-      if (demainCount === columnCount) {
-        result.push(tmp);
-      } else {
-        result[result.length - 1] = last.concat(tmp);
-      }
-
-      return result;
-    },
-
-    handleChange(filter) {
-      this.$emit('on-change', {
-        filter,
-        query: this.query,
-      });
-    },
-
-    genDefaultProp(filter, key, defaultVal = true) {
-      return (typeof filter[key] === 'undefined') ? defaultVal : filter[key];
-    },
-
-    handleSetCollapsed(val) {
-      this.collapsed = val;
-      this.$emit('on-collapse', val);
-    },
-
-    /**
-     * cascader props
-     * 级联选择器props
-     */
-    genCascaderProps(filter) {
-      return {
-        multiple: filter.type === 'cascader',
-        checkStrictly: filter.checkStrictly,
-        ...filter.props,
-      };
-    },
-
-    /**
-     * search&reset button group props
-     * 搜索&重置按钮组props
-     */
-    genButtonGroupProps(name) {
-      switch (name) {
-        case 'search':
-          return {
-            searchButtonText: this.searchButtonText,
-            loading: this.loading,
-          };
-        case 'reset':
-          return {
-            resetButtonText: this.resetButtonText,
-            loading: this.loading,
-          };
-        case 'collapse':
-          return {
-            collapseButtonText: this.collapseButtonText,
-            expandButtonText: this.expandButtonText,
-            collapsed: this.collapsed,
-          };
-        default:
-          return {};
-      }
-    },
-
-    /**
-     * select default attrs
-     * 选择器默认属性
-     */
-    genSelectDefaultAttrs(filter) {
-      const def = this.genDefaultProp;
-      return {
-        clearable: def(filter, 'clearable'),
-        filterable: def(filter, 'filterable'),
-        placeholder: def(filter, 'placeholder', '请选择'),
-        style: 'width: 100%',
-        'collapse-tags': def(filter, 'collapseTags'),
-        'data-prop': filter.prop,
-        ...filter.attrs,
-      };
-    },
-
-    /**
-     * date/time picker default attrs
-     * 日期/时间选择器默认属性
-     */
-    genPickerDefaultAttrs(filter, text) {
-      const def = this.genDefaultProp;
-      return {
-        clearable: def(filter, 'clearable'),
-        style: 'width: 100%',
-        'range-separator': def(filter, 'rangeSeparator', '~'),
-        'start-placeholder': def(filter, 'startPlaceholder', `开始${text}`),
-        'end-placeholder': def(filter, 'endPlaceholder', `结束${text}`),
-        placeholder: def(filter, 'placeholder', `选择${text}`),
-        'data-prop': filter.prop,
-        ...filter.attrs,
-      };
-    },
-
-    /**
-     * checkbox/radio attrs
-     * 多选/单选框属性
-     */
-    genSelectBoxAttrs(item) {
-      return {
-        label: item.value,
-        disabled: item.disabled,
-        name: item.name,
-        border: item.border,
-        size: item.size,
-      };
+    // <el-col> attrs, <el-col>属性
+    genColAttrs(filter) {
+      return pick(filter, EL_COL_ATTRS);
     },
   },
 };

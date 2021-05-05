@@ -38,5 +38,8 @@
   "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-form#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "resize-observer-polyfill": "^1.5.1"
   }
 }

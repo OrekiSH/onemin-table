@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    v-if="!lite"
     ref="popover"
     :value="innerVisible && mounted"
     v-bind="innerPopoverAttrs"
@@ -19,10 +20,19 @@
         :value="innerVal"
         v-bind="$attrs"
         v-on="$listeners"
-        style="width: 100%"
+        style="width: 100%;"
       />
     </div>
   </el-popover>
+
+  <el-input-number
+    v-else
+    ref="input"
+    :value="innerVal"
+    v-bind="$attrs"
+    v-on="$listeners"
+    style="width: 100%;"
+  />
 </template>
 
 <script>

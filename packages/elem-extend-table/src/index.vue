@@ -160,7 +160,6 @@ export default {
   computed: {
     // 分页器属性
     defaultPaginationAttrs() {
-      console.warn(this.$attrs);
       const attrs = this.$attrs || {};
       Object.keys(attrs).forEach((key) => {
         attrs[kebabCase(key)] = attrs[key];
@@ -406,7 +405,3 @@ export default {
   },
 };
 </script>
-
-<style>
-
-</style>

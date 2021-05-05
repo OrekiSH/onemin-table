@@ -36,11 +36,16 @@ import {
   inputSlotMixin,
 } from '@onemin-table/shared';
 import InputFragment from './components/input-fragment.vue';
+import proxyMixin from './mixins/proxy';
 
 export default {
   name: 'ElemInput',
 
-  mixins: [inputMixin, inputSlotMixin],
+  mixins: [
+    inputMixin, // mounted, innerVisible, popoverListeners, popoverSlotRender, lite
+    inputSlotMixin, // slotRenders
+    proxyMixin,
+  ],
 
   inheritAttrs: false,
 
@@ -52,15 +57,6 @@ export default {
     value: {
       type: [String, Number, Array],
       default: null,
-    },
-
-    /**
-     * @language=zh
-     * 是否添加Popover
-     */
-    lite: {
-      type: Boolean,
-      default: false,
     },
 
     ...inputProps,
@@ -149,16 +145,6 @@ export default {
       },
       deep: true,
     },
-  },
-
-  mounted() {
-    const ref = this.$refs.input;
-    if (ref) {
-      // Proxy <el-input> methods, 代理<el-input>的方法
-      ['focus', 'blur', 'select'].forEach((key) => {
-        this[key] = ref[key];
-      });
-    }
   },
 
   methods: {

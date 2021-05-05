@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    v-if="!lite"
     ref="popover"
     :value="innerVisible && mounted"
     v-bind="innerPopoverAttrs"
@@ -9,46 +10,50 @@
       <custom-render :render="popoverSlotRender" />
     </template>
 
-    <el-autocomplete
+    <autocomplete-fragment
       slot="reference"
-      ref="autocomplete"
+      ref="input"
       :value="innerVal"
-      v-bind="attrs"
-      v-on="$listeners"
-    >
-      <input-slot
-        :prefix-slot-render="innerPrefixSlotRender"
-        :suffix-slot-render="innerSuffixSlotRender"
-        :prepend-slot-render="innerPrependSlotRender"
-        :append-slot-render="innerAppendSlotRender"
-      />
-
-      <template
-        v-if="optionSlotRender"
-        slot-scope="{ item }"
-      >
-        <option-slot
-          :render="optionSlotRender"
-          :item="item"
-        />
-      </template>
-    </el-autocomplete>
+      :attrs="attrs"
+      :listeners="$listeners"
+      :slot-renders="slotRenders"
+      :option-slot-render="optionSlotRender"
+    />
   </el-popover>
+
+  <autocomplete-fragment
+    v-else
+    ref="input"
+    :value="innerVal"
+    :attrs="attrs"
+    :listeners="$listeners"
+    :slot-renders="slotRenders"
+    :option-slot-render="optionSlotRender"
+  />
 </template>
 
 <script>
 import {
-  inputMixin, CustomRender, InputSlot, inputProps,
-  inputSlotMixin,
+  inputMixin, CustomRender, inputProps, inputSlotMixin,
 } from '@onemin-table/shared';
-import OptionSlot from './components/option-slot';
+import AutocompleteFragment from './components/autocomplete-fragment.vue';
+import proxyMixin from './mixins/proxy';
 
 export default {
   name: 'ElemAutocomplete',
 
-  mixins: [inputMixin, inputSlotMixin],
+  mixins: [
+    inputMixin, // mounted, innerVisible, popoverListeners, popoverSlotRender, lite, innerVal
+    inputSlotMixin, // slotRenders
+    proxyMixin,
+  ],
 
   inheritAttrs: false,
+
+  components: {
+    CustomRender,
+    AutocompleteFragment,
+  },
 
   props: {
     /**
@@ -72,12 +77,6 @@ export default {
     ...inputProps,
   },
 
-  components: {
-    CustomRender,
-    InputSlot,
-    OptionSlot,
-  },
-
   computed: {
     /**
      * autocomplete default attributes
@@ -96,16 +95,6 @@ export default {
     innerPopoverAttrs() {
       return this.genDefaultPopoverAttrs('ot-autocomplete__popover--elem');
     },
-  },
-
-  mounted() {
-    const ref = this.$refs.autocomplete;
-    // Proxy <el-autocomplete> methods, 代理<el-autocomplete>的方法
-    if (ref) {
-      ['focus'].forEach((key) => {
-        this[key] = ref[key];
-      });
-    }
   },
 };
 </script>

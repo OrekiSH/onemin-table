@@ -46,7 +46,10 @@ import camelCase from 'lodash/camelCase';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import kebabCase from 'lodash/kebabCase';
-import { ELEM_DATE_TYPES, EL_TABLE_METHODS } from '@onemin-table/shared';
+import {
+  ELEM_COMPONENTS, EL_TABLE_METHODS,
+  OPTIONS_COMPONENTS, VALUE_COMPONENTS, LIST_COMPONENTS, INPUT_TYPES,
+} from '@onemin-table/shared';
 import ElemTableColumnGroup from './components/table-column-group.vue';
 import ElemTableColumn from './components/table-column.vue';
 
@@ -345,7 +348,6 @@ export default {
 
   created() {
     CELL_LISTENERS.forEach((name) => {
-      /* istanbul ignore next */
       this[camelCase(name)] = (...args) => this.handleCellEvent(name, ...args);
     });
   },
@@ -525,20 +527,12 @@ export default {
           'image-src-transformer': this.imageSrcTransformer,
         },
 
-        ...Object.fromEntries([
-          'select',
-          'single-select',
-          'cascader',
-        ].map((t) => [t, {
+        ...Object.fromEntries(OPTIONS_COMPONENTS.map((t) => [t, {
           options: col.options,
           value: get(scope.row, col.prop),
         }])),
 
-        ...Object.fromEntries([
-          ...ELEM_DATE_TYPES,
-          'input',
-          'input-number',
-        ].map((t) => [t, { value: get(scope.row, col.prop) }])),
+        ...Object.fromEntries(VALUE_COMPONENTS.map((t) => [t, { value: get(scope.row, col.prop) }])),
       };
 
       // default, attrs set, user set
@@ -552,7 +546,11 @@ export default {
         'data-prop': `${col.prop || ''}_${scope.$index}`,
       };
 
+      // multiple for <elem-select>
       if (col.type === 'select') result.multiple = true;
+      // type for <elem-list-group>
+      if (LIST_COMPONENTS.indexOf(col.type) > -1) result.type = col.type;
+
       if (typeof this.$attrs.duration !== 'undefined') {
         result.duration = this.$attrs.duration;
       }
@@ -565,18 +563,10 @@ export default {
      * 列表单元素事件监听
      */
     genColumnItemListeners(col, scope) {
-      const isSystemTypes = [
-        'input',
-        'input-number',
-        'select',
-        'single-select',
-        'cascader',
-        ...ELEM_DATE_TYPES,
-      ].includes(col.type);
-
       // system components value changed, 系统定义组件值改变事件
-      const changeEvent = isSystemTypes
-        ? { [col.type === 'input' ? 'input' : 'change']: (val) => this.handleChange(val, scope, col) }
+      const evt = INPUT_TYPES.indexOf(col.type) > -1 ? 'input' : 'change';
+      const changeEvent = ELEM_COMPONENTS.indexOf(col.type) > -1
+        ? { [evt]: (val) => this.handleChange(val, scope, col) }
         : {};
 
       const result = {};

@@ -91,3 +91,19 @@ export const VALUE_COMPONENTS = [
 ];
 
 export const ELEM_COMPONENTS = OPTIONS_COMPONENTS.concat(VALUE_COMPONENTS);
+
+/**
+ * <el-col> attributes, <el-col>属性
+ */
+export const EL_COL_ATTRS = [
+  'span',
+  'offset',
+  'push',
+  'pull',
+  'tag',
+  'xs',
+  'sm',
+  'md',
+  'lg',
+  'xl',
+];

@@ -14,6 +14,7 @@ import ElemExtendTable from '../../packages/elem-extend-table/es/index';
 
 import ElemTablePage from '../../packages/elem-table-page/es/index';
 import '../../packages/elem-table/lib/elem-table.css';
+import '../../packages/elem-form/lib/elem-form.css';
 
 export default ({ Vue }) => {
   Vue.use(ElementUI);

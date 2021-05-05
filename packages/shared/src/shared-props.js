@@ -120,6 +120,15 @@ export const loadingProps = {
 export const searchResetProps = {
   /**
    * @language=zh
+   * 搜索重置按钮组
+   */
+  buttonLayout: {
+    type: Array,
+    default() { return ['search', 'reset', 'collapse']; },
+  },
+
+  /**
+   * @language=zh
    * 搜索按钮文本
    */
   searchButtonText: {

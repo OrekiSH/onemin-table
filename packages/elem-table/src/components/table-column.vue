@@ -43,7 +43,7 @@
 
 <script>
 import get from 'lodash/get';
-import { CustomRender, ELEM_DATE_TYPES } from '@onemin-table/shared';
+import { CustomRender, COMPONENT_MAP } from '@onemin-table/shared';
 import CustomCellRender from './custom-cell-render';
 import ColumnImage from './column-image.vue';
 
@@ -53,6 +53,7 @@ const ElemInputNumber = () => import('@onemin-table/elem-input-number');
 const ElemDatePicker = () => import('@onemin-table/elem-date-picker');
 const ElemCascader = () => import('@onemin-table/elem-cascader');
 const ElemAutocomplete = () => import('@onemin-table/elem-autocomplete');
+const ElemListGroup = () => import('@onemin-table/elem-list-group');
 
 export default {
   name: 'ElemTableColumn',
@@ -82,6 +83,7 @@ export default {
     ElemDatePicker,
     ElemCascader,
     ElemAutocomplete,
+    ElemListGroup,
 
     CustomCellRender,
     CustomRender,
@@ -90,26 +92,7 @@ export default {
 
   data() {
     return {
-      COMPONENT_MAP: Object.freeze({
-        // input, 输入框
-        input: 'elem-input',
-
-        // input-number, 计数器
-        'input-number': 'elem-input-number',
-
-        // select, 选择器
-        select: 'elem-select',
-        'single-select': 'elem-select',
-
-        // cascader, 级联选择器
-        cascader: 'elem-cascader',
-
-        // autocomplete, 输入匹配框
-        autocomplete: 'elem-autocomplete',
-
-        // date-picker, 日期选择器
-        ...Object.fromEntries(ELEM_DATE_TYPES.map((e) => [e, 'elem-date-picker'])),
-      }),
+      COMPONENT_MAP,
     };
   },
 
@@ -126,6 +109,3 @@ export default {
 };
 </script>
 
-<style>
-
-</style>

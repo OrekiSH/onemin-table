@@ -1,6 +1,6 @@
 <h1 align="center">elem-input</h1>
 
-🚀 element-ui样式的schema-based输入框模板组件, 集成`el-popover`组件，实现关注点集中的反馈模式.
+🚀 schema-based输入框模板组件, 集成`el-popover`组件，实现关注点集中的反馈模式.
 
 ## 安装
 

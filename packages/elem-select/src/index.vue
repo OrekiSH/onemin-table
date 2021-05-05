@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    v-if="!lite"
     ref="popover"
     :value="innerVisible && mounted"
     v-bind="innerPopoverAttrs"
@@ -14,57 +15,49 @@
       class="el-select"
       slot="reference"
     >
-      <el-select
+      <select-fragment
         ref="select"
-        v-model="innerVal"
-        v-bind="attrs"
-        v-on="$listeners"
-      >
-        <select-slot
-          :prefix-slot-render="prefixSlotRender"
-          :empty-slot-render="innerEmptySlotRender"
-        />
-
-        <template v-if="isGroup">
-          <el-option-group
-            v-for="(option, i) in (options || [])"
-            :key="i"
-            :label="option.label"
-          >
-            <elem-option
-              :options="option.children"
-              :option-slot-render="optionSlotRender"
-            />
-          </el-option-group>
-        </template>
-
-        <template v-else>
-          <elem-option
-            :options="options"
-            :option-slot-render="optionSlotRender"
-          />
-        </template>
-      </el-select>
+        :value="innerVal"
+        :attrs="attrs"
+        :listeners="$listeners"
+        :is-group="isGroup"
+        :options="options"
+        :slot-renders="slotRenders"
+      />
     </div>
   </el-popover>
+
+  <select-fragment
+    v-else
+    ref="select"
+    :value="innerVal"
+    :attrs="attrs"
+    :listeners="$listeners"
+    :is-group="isGroup"
+    :options="options"
+    :slot-renders="slotRenders"
+  />
 </template>
 
 <script>
 import { inputMixin, CustomRender, loadingProps } from '@onemin-table/shared';
-import SelectSlot from './components/select-slot';
-import ElemOption from './components/elem-option';
+import SelectFragment from './components/select-fragment.vue';
+import proxyMixin from './mixins/proxy';
 
 export default {
   name: 'ElemSelect',
 
-  mixins: [inputMixin],
+  mixins: [
+    // mounted, innerVisible, popoverListeners, popoverSlotRender, lite, elWidth
+    inputMixin,
+    proxyMixin,
+  ],
 
   inheritAttrs: false,
 
   components: {
-    SelectSlot,
     CustomRender,
-    ElemOption,
+    SelectFragment,
   },
 
   props: {
@@ -154,18 +147,17 @@ export default {
       }
       return this.emptySlotRender;
     },
+
+    slotRenders() {
+      return {
+        prefix: this.prefixSlotRender,
+        empty: this.emptySlotRender,
+        option: this.optionSlotRender,
+      };
+    },
   },
 
   mounted() {
-    const ref = this.$refs.select;
-
-    if (ref) {
-      // Proxy <el-select> methods, 代理<el-select>的方法
-      ['focus', 'blur'].forEach((key) => {
-        this[key] = ref[key];
-      });
-    }
-
     // set element-ui lost blur event, 补充element-ui丢失的blur事件
     if (typeof this.$listeners.blur === 'function') {
       this.inputEl?.addEventListener('blur', this.$listeners.blur);

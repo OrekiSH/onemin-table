@@ -36,7 +36,3 @@ export default {
   inheritAttrs: false,
 };
 </script>
-
-<style>
-
-</style>
