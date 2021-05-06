@@ -9,8 +9,8 @@ const createVue = (options) => mount({
   ...options,
 });
 
-const TRIGGER = '.el-cascader'
-const DROPDOWN = '.el-cascader__dropdown'
+const TRIGGER = '.el-cascader';
+const DROPDOWN = '.el-cascader__dropdown';
 
 const OPTIONS = [
   {
@@ -73,11 +73,11 @@ describe('ElemCascader', () => {
 
     const { vm, inputElm } = genInputElm(wrapper);
     vm.options = [];
-    expect(inputElm.value).toBe('')
-  })
+    expect(inputElm.value).toBe('');
+  });
 
   test('disabled', async () => {
-    const handleVisibleChange = jest.fn()
+    const handleVisibleChange = jest.fn();
     const wrapper = createVue({
       template: `
         <elem-cascader disabled @visible-change="handleVisibleChange" />
@@ -85,11 +85,11 @@ describe('ElemCascader', () => {
       methods: {
         handleVisibleChange,
       },
-    })
-    await wrapper.find(TRIGGER).trigger('click')
-    expect(handleVisibleChange).not.toBeCalled()
-    expect(wrapper.find('input[disabled]').exists()).toBe(true)
-  })
+    });
+    await wrapper.find(TRIGGER).trigger('click');
+    expect(handleVisibleChange).not.toBeCalled();
+    expect(wrapper.find('input[disabled]').exists()).toBe(true);
+  });
 
   test('custom placeholder', async () => {
     const wrapper = createVue({
@@ -98,9 +98,9 @@ describe('ElemCascader', () => {
           placeholder="请选择内容"
         />
       `,
-    })
-    expect(wrapper.find('input').attributes().placeholder).toBe('请选择内容')
-  })
+    });
+    expect(wrapper.find('input').attributes().placeholder).toBe('请选择内容');
+  });
 
   test('same level merge', async () => {
     const wrapper = createVue({
@@ -158,8 +158,8 @@ describe('ElemCascader', () => {
       },
     });
 
-    expect(wrapper.find('input').attributes().placeholder).toBe('请选择内容')
-  })
+    expect(wrapper.find('input').attributes().placeholder).toBe('请选择内容');
+  });
 
   test('empty options', async () => {
     const wrapper = createVue({
@@ -168,9 +168,9 @@ describe('ElemCascader', () => {
       `,
       methods: {
         handleInput() {},
-      }
+      },
     });
 
-    expect(wrapper.find('input').attributes().placeholder).toBe('请选择')
-  })
+    expect(wrapper.find('input').attributes().placeholder).toBe('请选择');
+  });
 });

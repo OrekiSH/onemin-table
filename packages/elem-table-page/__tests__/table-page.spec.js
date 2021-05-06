@@ -54,7 +54,7 @@ describe('ElemTablePage', () => {
         onRequest() {},
         onResponse(err, response) {},
         onError(err) {},
-        onSizeChange() {}
+        onSizeChange() {},
       },
     });
 

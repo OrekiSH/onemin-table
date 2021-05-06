@@ -10,6 +10,7 @@ schema-based表单模板组件
     <elem-form
       ref="form"
       :query="query"
+      :rules="rules"
       :filters="filters"
       :auto-layout="autoLayout"
       label-width="80px"
@@ -18,6 +19,7 @@ schema-based表单模板组件
     />
     <button @click="handleClick">click</button>
     <button @click="autoLayout = !autoLayout">switch</button>
+    <button @click="handleSubmit">submit</button>
   </div>
 </template>
 
@@ -46,11 +48,19 @@ schema-based表单模板组件
     },
 
     computed: {
+      rules() {
+        return {
+          // desc: [{ required: true, message: 'xxx' }],
+          desc: { required: true, message: 'xxx' },
+        };
+      },
+
       filters() {
         return [{
           label: '姓名',
           prop: 'name',
           span: 12,
+          required: true,
         }, {
           label: '数量',
           prop: 'count',
@@ -75,6 +85,7 @@ schema-based表单模板组件
           prop: 'role',
           type: 'select',
           options: this.roles,
+          required: true,
         }, {
           label: '选择',
           prop: 'radio',
@@ -172,6 +183,11 @@ schema-based表单模板组件
       handleChange(e) {
         console.warn(e);
       },
+
+      async handleSubmit() {
+        const ref = this.$refs.form;
+        if (ref) console.warn(await ref?.validateAsync());
+      },
     },
   };
 </script>
@@ -184,16 +200,17 @@ schema-based表单模板组件
 | query(必填) | 双向绑定的表单数据值, 同时也会被绑定到`el-form`的model属性上 | Object | - |
 | filters(必填) | 表单元素schema, [可用属性](/elem-form/#filter的属性-attributes) | Array | - |
 | rowAttrs | [`el-row`的属性](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes) | Object | { gutter: 24 } |
+| required-rule-transform | required选项为true时错误信息格式化文本, `<elem-select>`/`<elem-date-picker>`/`<elem-list-group>`/`<elem-cascader>`为select类型，其余为input类型 | Object | "{ select: (name) => `请选择${name}`, input: (name) => `请输入${name}` }" |
 | auto-layout | 根据屏幕宽度(document.body.clientWidth)自动布局 | Boolean | false |
-| spanCalcRules | `auto-layout`为true时有效, 列数计算间断点规则: [x, y, span]: (x, y)为width的范围, span为栅格占据的列数(`el-col`的span属性) |  Array | [[0, 768, 24], [768, 992, 12], [992, 1440, 8], [1440, 2560, 6], [2560, 4800, 4]] |
-| showButtonGroup | 是否展示搜索&重置按钮组 | Boolean | false |
-| buttonLayout | 搜索&重置按钮组布局, 三个元素可任选、任意排列, 例如: `['reset', 'search']` | Array | `['search', 'reset', 'collapse']` |
+| span-calc-rules | `auto-layout`为true时有效, 列数计算间断点规则: [x, y, span]: (x, y)为width的范围, span为栅格占据的列数(`el-col`的span属性) |  Array | [[0, 768, 24], [768, 992, 12], [992, 1440, 8], [1440, 2560, 6], [2560, 4800, 4]] |
+| show-button-group | 是否展示搜索&重置按钮组 | Boolean | false |
+| button-layout | 搜索&重置按钮组布局, 三个元素可任选、任意排列, 例如: `['reset', 'search']` | Array | `['search', 'reset', 'collapse']` |
 | loading | 搜索&重置按钮组是否加载中 |  Boolean | false |
-| searchButtonText | 搜索按钮文本 | String | '查 询' |
-| resetButtonText | 重置按钮文本 | String | '重 置' |
-| collapseButtonText | 收起按钮文本 | String | '收起' |
-| expandButtonText | 展开按钮文本 | String | '展开' |
-| defaultCollapsed | 是否默认收起 | Boolean | false |
+| search-button-text | 搜索按钮文本 | String | '查 询' |
+| reset-button-text | 重置按钮文本 | String | '重 置' |
+| collapse-button-text | 收起按钮文本 | String | '收起' |
+| expand-button-text | 展开按钮文本 | String | '展开' |
+| default-collapsed | 是否默认收起 | Boolean | false |
 
 其他继承自`el-form`的表单属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/form#form-attributes)
 
@@ -206,6 +223,14 @@ schema-based表单模板组件
 | on-reset |点击`重置`按钮时触发| - |
 | on-collapse |点击`收起-展开`按钮时触发| `collapsed`: 是否收起 |
 
+## 方法 - Methods
+
+| 参数        | 说明           | 参数  |
+| ------------- |---------------| ------|
+| validateAsync | 对整个表单进行校验, 返回一个Promise<{ valid: boolean, invalidFields: Record<string, Array> }> | - |
+
+其他继承自`el-form`的方法见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/form#form-methods)
+
 ## Filter的属性 - Attributes
 
 | 参数        | 说明           | 类型  |
@@ -216,9 +241,9 @@ schema-based表单模板组件
 | labelSlotRender | 表单元素标签文本的内容渲染函数 | Function |
 | visible | 表单元素是否可见, 不可见时`query`上绑定的数据值依然存在 | Boolean |
 | attrs |继承自表单元素组件的prop属性, 具体组件属性见下方列表 | Object |
-| options/... | `options`等表单元素组件的prop属性, 优先级低于attrs中声明的属性 | any |
-| label-width/... | `label-width`等[`<el-form-item>`]的属性(https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes), 支持同时支持和中划线写法(kebab case)和小驼峰(camel case)写法 | any |
-| span/... | `span`等[`<el-col>`]的属性(https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)  | any |
+| options/... | `options`等表单元素组件的prop属性, 优先级低于attrs中声明的属性 | - |
+| label-width/... | `label-width`等[`<el-form-item>`的属性](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes), 支持同时支持和中划线写法(kebab case)和小驼峰(camel case)写法 | - |
+| span/... | `span`等[`<el-col>`的属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes) | - |
 | listeners | 表单元素组件的事件 | Object |
 | render | 自定义渲染函数 | Function |
 

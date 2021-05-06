@@ -11,7 +11,7 @@ const createVue = (options) => mount({
 describe('ElemTable', () => {
   test('empty', async () => {
     const wrapper = createVue({
-      template: `<elem-extend-table />`,
+      template: '<elem-extend-table />',
     });
 
     expect(wrapper.html().includes('暂无数据')).toBe(true);
@@ -70,7 +70,7 @@ describe('ElemTable', () => {
     $refs.table?.setCellAttrs?.('name', 1, {});
     $refs.table?.handleFilterChange?.({});
 
-    expect([...$el.querySelectorAll('thead th')].map(node => node.textContent)).toEqual([ '名称', '年龄' ]);
-    expect([...$el.querySelectorAll('td .cell')].map(node => node.textContent)).toEqual([ 'a', '18', 'b', '19' ]);
+    expect([...$el.querySelectorAll('thead th')].map((node) => node.textContent)).toEqual(['名称', '年龄']);
+    expect([...$el.querySelectorAll('td .cell')].map((node) => node.textContent)).toEqual(['a', '18', 'b', '19']);
   });
 });

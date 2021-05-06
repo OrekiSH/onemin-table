@@ -4,6 +4,7 @@
     :model="query"
     class="ot-form--elem"
     v-bind="attrs"
+    :rules="innerRules"
     v-on="listeners"
   >
     <template v-for="(row, index) in rows">
@@ -39,10 +40,12 @@
 <script>
 import pick from 'lodash/pick';
 import throttle from 'lodash/throttle';
-import { searchResetProps, proxyMethods, EL_COL_ATTRS } from '@onemin-table/shared';
+import {
+  searchResetProps, proxyMethods, EL_COL_ATTRS, OPTIONS_COMPONENTS,
+} from '@onemin-table/shared';
+import ResizeObserver from 'resize-observer-polyfill';
 import ButtonGroup from './components/button-group/index.vue';
 import ElemFormItem from './components/form-item.vue';
-import ResizeObserver from 'resize-observer-polyfill';
 
 const ROW_SPAN_COUNT = 24;
 const ELEM_FORM_ATTRS = [
@@ -60,6 +63,9 @@ const ELEM_FORM_ATTRS = [
   'disabled',
 ];
 const BUTTON_GROUP_ATTRS = Object.keys(searchResetProps);
+
+const { toString } = Object.prototype;
+const isObject = (val) => toString.call(val) === '[object Object]';
 
 export default {
   name: 'ElemForm',
@@ -143,6 +149,21 @@ export default {
     showButtonGroup: {
       type: Boolean,
       default: false,
+    },
+
+    /**
+     * @language=zh
+     * required选项为true时错误信息格式化
+     * <elem-select>/<elem-date-picker>/<elem-list-group>/<elem-cascader>为select类型，其余为input类型
+     */
+    requiredRuleTransform: {
+      type: Object,
+      default() {
+        return {
+          select: (name) => `请选择${name}`,
+          input: (name) => `请输入${name}`,
+        };
+      },
     },
 
     ...searchResetProps,
@@ -239,6 +260,56 @@ export default {
 
       return result;
     },
+
+    // required filed in rules, rules中含有required字段的key
+    customRequiredFields() {
+      const result = [];
+      const rules = this.$attrs?.rules;
+
+      Object.keys(rules).forEach((key) => {
+        const val = rules[key];
+        if (Array.isArray(val)) {
+          val.forEach((rule) => {
+            if (typeof rule?.required !== 'undefined') result.push(key);
+          });
+        } else if (isObject(val) && typeof val?.required !== 'undefined') {
+          result.push(key);
+        }
+      });
+
+      return result;
+    },
+
+    // required为true的错误信息自动转换
+    innerRules() {
+      const { input, select } = this.requiredRuleTransform;
+      const rules = this.$attrs?.rules;
+      if (typeof input !== 'function' || typeof select !== 'function') return rules;
+
+      const { customRequiredFields } = this;
+
+      this.filters.forEach((filter) => {
+        const { prop, type, label } = filter;
+        // filter customRequiredFields, 过滤掉customRequiredFields中的字段
+        if (!filter.required || customRequiredFields.indexOf(prop) > -1) return;
+
+        const rule = rules[prop];
+        const message = OPTIONS_COMPONENTS.indexOf(type) > -1
+          ? select(label)
+          : input(label);
+
+        const requiredRule = { required: true, message };
+        if (typeof rule === 'undefined') {
+          rules[prop] = [requiredRule];
+        } else if (Array.isArray(rule) && !rule.some((e) => e.required)) {
+          rules[prop].push(requiredRule);
+        } else if (isObject(rule)) {
+          rules[prop] = [rule, requiredRule];
+        }
+      });
+
+      return rules;
+    },
   },
 
   watch: {
@@ -257,6 +328,10 @@ export default {
   mounted() {
     // Proxy Form Methods, 代理表单方法
     proxyMethods(this, 'form', ['validate', 'validateField', 'resetFields', 'clearValidate']);
+    this.validateAsync = () => new Promise((resolve) => {
+      const ref = this.$refs.form;
+      ref?.validate?.((valid, invalidFields) => resolve({ valid, invalidFields }));
+    });
 
     if (this.autoLayout) {
       /**

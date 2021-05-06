@@ -11,7 +11,7 @@ const createVue = (options) => mount({
 describe('ElemTable', () => {
   test('empty', async () => {
     const wrapper = createVue({
-      template: `<elem-table />`,
+      template: '<elem-table />',
     });
 
     expect(wrapper.html().includes('暂无数据')).toBe(true);
@@ -53,8 +53,8 @@ describe('ElemTable', () => {
     await sleep();
     const { $el } = wrapper.vm;
 
-    expect([...$el.querySelectorAll('thead th')].map(node => node.textContent).filter(Boolean)).toEqual([ '名称', '年龄' ]);
-    expect([...$el.querySelectorAll('td .cell')].map(node => node.textContent).filter(Boolean)).toEqual([ 'a', '18', 'b', '19' ]);
+    expect([...$el.querySelectorAll('thead th')].map((node) => node.textContent).filter(Boolean)).toEqual(['名称', '年龄']);
+    expect([...$el.querySelectorAll('td .cell')].map((node) => node.textContent).filter(Boolean)).toEqual(['a', '18', 'b', '19']);
   });
 
   test('methods', async () => {
@@ -116,8 +116,8 @@ describe('ElemTable', () => {
     $refs?.table?.setCellAttrs('name', 0, { popoverVisible: true });
     $refs?.table?.initCellAttrsMap();
 
-    expect([...$el.querySelectorAll('thead th')].map(node => node.textContent).filter(Boolean)).toEqual([ '名称', '年龄', '名称', '年龄' ]);
-    expect([...$el.querySelectorAll('td .cell')].map(node => node.textContent).filter(Boolean)).toEqual([ 'a', '18', 'b', '19', 'a', '18', 'b', '19' ]);
+    expect([...$el.querySelectorAll('thead th')].map((node) => node.textContent).filter(Boolean)).toEqual(['名称', '年龄', '名称', '年龄']);
+    expect([...$el.querySelectorAll('td .cell')].map((node) => node.textContent).filter(Boolean)).toEqual(['a', '18', 'b', '19', 'a', '18', 'b', '19']);
 
     wrapper.vm.data = [];
     wrapper.vm.selection = [];

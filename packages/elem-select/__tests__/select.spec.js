@@ -110,6 +110,6 @@ describe('ElemSelect', () => {
     await wrapper.vm.$nextTick();
     expect(wrapper.find('.el-input__inner').element.value).toBe('黄金糕');
 
-    wrapper
+    wrapper;
   });
 });

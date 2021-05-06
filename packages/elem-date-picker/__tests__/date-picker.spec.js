@@ -21,16 +21,16 @@ describe('ElemInput', () => {
           value: '',
         };
       },
-    })
+    });
 
-    expect(wrapper.find('input[disabled]').exists()).toBe(true)
+    expect(wrapper.find('input[disabled]').exists()).toBe(true);
   });
 
   test('start-placeholder', () => {
     const wrapper = createVue({
-      template: `<elem-date-picker type="daterange" />`,
+      template: '<elem-date-picker type="daterange" />',
     });
 
-    expect(wrapper.html().includes('开始日期')).toBe(true)
+    expect(wrapper.html().includes('开始日期')).toBe(true);
   });
 });
