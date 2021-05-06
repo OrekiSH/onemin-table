@@ -187,11 +187,35 @@ export default {
         ? this.filters.map((e) => ({ ...e, span: this.GLOBAL_SPAN }))
         : this.filters;
 
-      return filters.filter((e) => e.visible !== false);
+      const result =  filters.filter((e) => e.visible !== false);
+      result.forEach((item) => {
+        // default input, 默认输入框
+        if (!item.type && !item.render) item.type = 'input';
+      });
+
+      return result;
     },
 
     rows() {
       const result = [];
+
+      if (this.autoLayout && this.showButtonGroup && this.collapsed) {
+        const buttonGroup = {
+          type: this.BUTTON_GROUP_TYPE,
+          span: this.GLOBAL_SPAN,
+        };
+
+        // only one element one row change lien, 单个时换行
+        return ROW_SPAN_COUNT === this.GLOBAL_SPAN
+          ? [
+            this.filtersWithSpan.slice(0, 1),
+            [buttonGroup],
+          ]
+          : [[
+            ...this.filtersWithSpan.slice(0, (ROW_SPAN_COUNT / this.GLOBAL_SPAN) - 1),
+            buttonGroup,
+          ]];
+      }
 
       let tmp = [];
       this.filtersWithSpan.forEach((filter) => {
@@ -201,10 +225,7 @@ export default {
           result.push(tmp);
           tmp = [];
         }
-        // default input, 默认输入框
-        const item = filter;
-        if (!item.type && !item.render) item.type = 'input';
-        tmp.push(item);
+        tmp.push(filter);
       });
       // push last
       if (tmp.length) result.push(tmp);
@@ -251,7 +272,10 @@ export default {
 
     // search&reset button group attrs, 搜索重置按钮组属性
     buttonGroupAttrs() {
-      const result = pick(this, BUTTON_GROUP_ATTRS);
+      const result = {
+        ...pick(this, BUTTON_GROUP_ATTRS),
+        collapsed: this.collapsed,
+      };
       // hide collapse when only one row, 只有一行时隐藏收起-展开按钮
       const spanSum = this.filtersWithSpan.reduce((a, c) => a + (c.span || 0), 0);
       if (spanSum < ROW_SPAN_COUNT) {

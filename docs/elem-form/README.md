@@ -14,6 +14,7 @@ schema-based表单模板组件
       :filters="filters"
       :auto-layout="autoLayout"
       label-width="80px"
+      show-button-group
       @on-search="handleSearch"
       @on-change="handleChange"
     />
@@ -125,8 +126,12 @@ schema-based表单模板组件
           label: '自定义',
           prop: 'foo',
           render: (h) => (
-            <el-tooltip content="跟随role值变化">
-              <span>{ this.query.role }</span>
+            <el-tooltip content="跟随radio值变化">
+              <el-switch
+                value={this.query.radio}
+                active-value={1}
+                inactive-value={2}
+              />
             </el-tooltip>
           ),
         }];
