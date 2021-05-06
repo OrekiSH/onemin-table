@@ -12,6 +12,7 @@ module.exports = {
       ['/elem-cascader/', 'ElemCascader'],
       ['/elem-date-picker/', 'ElemDatePicker'],
       ['/elem-list-group/', 'ElemListGroup'],
+      ['/elem-input-range/', 'ElemInputRange'],
 
       ['/elem-form/', 'ElemForm'],
       ['/elem-table/', 'ElemTable'],

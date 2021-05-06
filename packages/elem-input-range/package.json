@@ -1,9 +1,17 @@
 {
-  "name": "@onemin-table/shared",
-  "version": "0.8.10",
-  "description": "@onemin-table/shared",
+  "name": "@onemin-table/elem-input-range",
+  "version": "0.1.0",
+  "description": "@onemin-table/elem-input-range",
+  "module": "es/index.js",
   "main": "lib/index.js",
-  "module": "src/index.js",
+  "unpkg": "dist/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "dist",
+    "es"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/OrekiSH/onemin-table"
@@ -26,7 +34,7 @@
   ],
   "license": "MIT",
   "bugs": "https://github.com/OrekiSH/onemin-table/issues",
-  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/shared#readme",
+  "homepage": "https://github.com/OrekiSH/onemin-table/tree/master/packages/elem-input-range#readme",
   "publishConfig": {
     "access": "public"
   }

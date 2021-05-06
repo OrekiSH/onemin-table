@@ -1,3 +1,50 @@
+export const atomicProps = {
+  /**
+   * @language=zh
+   * 选择器边框颜色
+   */
+  borderColor: {
+    type: String,
+    default: '',
+  },
+
+  /**
+   * @language=zh
+   * 选择器背景颜色
+   */
+  backgroundColor: {
+    type: String,
+    default: '',
+  },
+
+  /**
+   * @language=zh
+   * 选择器字体颜色
+   */
+  color: {
+    type: String,
+    default: '',
+  },
+
+  /**
+   * @language=zh
+   * 元素长度
+   */
+  width: {
+    type: [String, Number],
+    default: '',
+  },
+
+  /**
+   * @language=zh
+   * 是否添加Popover
+   */
+  lite: {
+    type: Boolean,
+    default: false,
+  },
+};
+
 export const inputSlotRenderProps = {
   /**
    * @language=zh

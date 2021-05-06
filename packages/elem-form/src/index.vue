@@ -205,7 +205,7 @@ export default {
           span: this.GLOBAL_SPAN,
         };
 
-        // only one element one row change lien, 单个时换行
+        // only one element one row change line, 单个时换行
         return ROW_SPAN_COUNT === this.GLOBAL_SPAN
           ? [
             this.filtersWithSpan.slice(0, 1),
@@ -350,7 +350,7 @@ export default {
   },
 
   mounted() {
-    // Proxy Form Methods, 代理表单方法
+    // Proxy <el-form> Methods, 代理<el-form>方法
     proxyMethods(this, 'form', ['validate', 'validateField', 'resetFields', 'clearValidate']);
     this.validateAsync = () => new Promise((resolve) => {
       const ref = this.$refs.form;

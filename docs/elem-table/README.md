@@ -469,10 +469,12 @@ $ yarn add @onemin-table/elem-table
 - image
 - [select](/elem-select/): 选择器(多选), 默认属性: `{ multiple: true, collapseTags: true }`
 - [single-select](/elem-select/): 选择器(单选)
-- [cascader](/elem-cascader/): 级联选择器(多选), 默认属性: `{ props: { multiple: true, collapseTags: true }, }`
+- [cascader](/elem-cascader/): 级联选择器(多选), 默认属性: `{ props: { multiple: true, collapseTags: true } }`
+- [single-cascader](/elem-cascader/): 级联选择器(单选)
 - [year/month/date/week/datetime/dates/datetimerange/daterange/monthrange](/elem-date-picker/): 日期选择器
 - [input](/elem-input/): 输入框
 - [input-number](/elem-input-number/): 计数器
 - [autocomplete](/elem-autocomplete/): 输入匹配框
 - [checkbox/checkbox-button](/elem-list-group/): 多选框
 - [radio/radio-button](/elem-list-group/): 单选框
+- [input-range](/input-range/): 范围输入框

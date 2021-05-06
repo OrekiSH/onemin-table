@@ -22,8 +22,9 @@
         v-on="$listeners"
         style="width: 100%;"
       >
-        <date-picker-slot
-          :range-separator-slot-render="rangeSeparatorSlotRender"
+        <custom-render
+          slot="range-separator"
+          :render="rangeSeparatorSlotRender"
         />
       </el-date-picker>
     </div>
@@ -37,15 +38,15 @@
     v-on="$listeners"
     style="width: 100%;"
   >
-    <date-picker-slot
-      :range-separator-slot-render="rangeSeparatorSlotRender"
+    <custom-render
+      slot="range-separator"
+      :render="rangeSeparatorSlotRender"
     />
   </el-date-picker>
 </template>
 
 <script>
 import { inputMixin, CustomRender } from '@onemin-table/shared';
-import DatePickerSlot from './components/date-picker-slot';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -105,7 +106,6 @@ export default {
 
   components: {
     CustomRender,
-    DatePickerSlot,
   },
 
   computed: {

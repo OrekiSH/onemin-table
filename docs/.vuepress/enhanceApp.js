@@ -7,6 +7,7 @@ import ElemCascader from '../../packages/elem-cascader/es/index';
 import ElemAutocomplete from '../../packages/elem-autocomplete/es/index';
 import ElemInputNumber from '../../packages/elem-input-number/es/index';
 import ElemListGroup from '../../packages/elem-list-group/es/index';
+import ElemInputRange from '../../packages/elem-input-range/es/index';
 
 import ElemForm from '../../packages/elem-form/es/index';
 import ElemTable from '../../packages/elem-table/es/index';
@@ -25,6 +26,7 @@ export default ({ Vue }) => {
   Vue.component('elem-autocomplete', ElemAutocomplete);
   Vue.component('elem-input-number', ElemInputNumber);
   Vue.component('elem-list-group', ElemListGroup);
+  Vue.component('elem-input-range', ElemInputRange);
 
   Vue.component('elem-form', ElemForm);
   Vue.component('elem-table', ElemTable);

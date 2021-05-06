@@ -14,7 +14,7 @@ schema-based表单模板组件
       :filters="filters"
       :auto-layout="autoLayout"
       label-width="80px"
-      show-button-group
+      label-position="top"
       @on-search="handleSearch"
       @on-change="handleChange"
     />
