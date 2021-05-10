@@ -79,6 +79,21 @@ $ yarn add @onemin-table/elem-cascader
             label: '分组2',
             value: 12,
             children: [{
+              label: '一级1',
+              value: 'a1',
+            }, {
+              label: '一级2',
+              value: 'a2',
+            }, {
+              label: '一级3',
+              value: 'a3',
+            }, {
+              label: '一级4',
+              value: 'a4',
+            }, {
+              label: '一级5',
+              value: 'a5',
+            }, {
               label: 'd',
               value: 4,
               disabled: true,

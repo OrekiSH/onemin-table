@@ -54,6 +54,7 @@ const ElemDatePicker = () => import('@onemin-table/elem-date-picker');
 const ElemCascader = () => import('@onemin-table/elem-cascader');
 const ElemAutocomplete = () => import('@onemin-table/elem-autocomplete');
 const ElemListGroup = () => import('@onemin-table/elem-list-group');
+const ElemInputRange = () => import('@onemin-table/elem-input-range');
 
 export default {
   name: 'ElemTableColumn',
@@ -84,6 +85,7 @@ export default {
     ElemCascader,
     ElemAutocomplete,
     ElemListGroup,
+    ElemInputRange,
 
     CustomCellRender,
     CustomRender,

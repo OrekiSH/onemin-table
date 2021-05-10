@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-cascader",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "@onemin-table/elem-cascader",
   "module": "es/index.js",
   "main": "lib/index.js",

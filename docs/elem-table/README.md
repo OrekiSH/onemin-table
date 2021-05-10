@@ -213,6 +213,11 @@ $ yarn add @onemin-table/elem-table
             value: 'female',
           }],
         }, {
+          label: '区间',
+          type: 'input-range',
+          prop: 'range',
+          minWidth: 260,
+        }, {
           label: '日期',
           type: 'date',
           prop: 'date',
@@ -305,6 +310,15 @@ $ yarn add @onemin-table/elem-table
       },
     },
 
+    watch: {
+      data: {
+        handler() {
+          console.warn(this.data);
+        },
+        deep: true,
+      },
+    },
+
     mounted() {
       this.fetchMockData();
     },
@@ -352,6 +366,8 @@ $ yarn add @onemin-table/elem-table
             date: '',
             category: 's2',
             num: 0,
+            range: [],
+            sex: '',
           }, {
             id: 2,
             name: 'ccsdaskdhajksbdajksdbakdbksadbsjdbkda',
@@ -364,6 +380,8 @@ $ yarn add @onemin-table/elem-table
             date: '',
             category: '',
             num: 0,
+            range: ['a', 1],
+            sex: '',
           }, {
             id: 3,
             name: 'b',
@@ -375,6 +393,8 @@ $ yarn add @onemin-table/elem-table
             date: '',
             category: '',
             num: 2,
+            range: [],
+            sex: 'male',
           }];
           this.selection = [this.data[1]];
           this.loading = false;

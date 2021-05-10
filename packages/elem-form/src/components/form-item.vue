@@ -48,6 +48,7 @@ const ElemDatePicker = () => import('@onemin-table/elem-date-picker');
 const ElemCascader = () => import('@onemin-table/elem-cascader');
 const ElemAutocomplete = () => import('@onemin-table/elem-autocomplete');
 const ElemListGroup = () => import('@onemin-table/elem-list-group');
+const ElemInputRange = () => import('@onemin-table/elem-input-range');
 
 const EL_FORM_ITEM_ATTRS = [
   'prop',
@@ -87,6 +88,7 @@ export default {
     ElemCascader,
     ElemAutocomplete,
     ElemListGroup,
+    ElemInputRange,
 
     CustomRender,
   },
@@ -113,6 +115,8 @@ export default {
 
       // multiple attr for type select, 多选框类型默认添加multiple
       if (this.filter.type === 'select') result.multiple = true;
+      if (this.filter.type === 'cascader') result.multiple = true;
+      if (this.filter.type === 'single-cascader') result.checkStrictly = true;
 
       return result;
     },

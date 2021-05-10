@@ -347,7 +347,7 @@ export default {
     genInnerVal() {
       return (this.canMerge && Array.isArray(this.value))
         // all level can be leaf node, 所有层级都可能是叶子节点
-        ? (this.value || []).flat().map((val) => this.leafPathMap[val])
+        ? (this.value || []).flat().map((val) => this.leafPathMap[val]).filter(Boolean)
         : this.value;
     },
 

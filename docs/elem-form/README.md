@@ -99,10 +99,18 @@ schema-based表单模板组件
             value: 2,
           }],
         }, {
+          label: '区间',
+          prop: 'range',
+          type: 'input-range',
+        }, {
           label: '部门',
           prop: 'department',
           type: 'cascader',
-          checkStrictly: true,
+          options: this.departments,
+        }, {
+          label: '部门2',
+          prop: 'department2',
+          type: 'single-cascader',
           options: this.departments,
         }, {
           label: '创建日期',

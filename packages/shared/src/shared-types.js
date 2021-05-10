@@ -35,6 +35,7 @@ export const COMPONENT_MAP = Object.freeze({
 
   // cascader, 级联选择器
   cascader: 'elem-cascader',
+  'single-cascader': 'elem-cascader',
 
   // autocomplete, 输入匹配框
   autocomplete: 'elem-autocomplete',
@@ -49,6 +50,8 @@ export const COMPONENT_MAP = Object.freeze({
   // radio, 单选框
   radio: 'elem-list-group',
   'radio-button': 'elem-list-group',
+
+  'input-range': 'elem-input-range',
 });
 
 export const LIST_COMPONENTS = [
@@ -76,6 +79,7 @@ export const OPTIONS_COMPONENTS = [
   'select',
   'single-select',
   'cascader',
+  'single-cascader',
   ...LIST_COMPONENTS,
 ];
 
@@ -88,6 +92,7 @@ export const VALUE_COMPONENTS = [
   'input',
   'input-number',
   'autocomplete',
+  'input-range',
 ];
 
 export const ELEM_COMPONENTS = OPTIONS_COMPONENTS.concat(VALUE_COMPONENTS);

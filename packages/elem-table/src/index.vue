@@ -548,6 +548,9 @@ export default {
 
       // multiple for <elem-select>
       if (col.type === 'select') result.multiple = true;
+      if (col.type === 'cascader') result.multiple = true;
+      if (col.type === 'single-cascader') result.checkStrictly = true;
+
       // type for <elem-list-group>
       if (LIST_COMPONENTS.indexOf(col.type) > -1) result.type = col.type;
 
