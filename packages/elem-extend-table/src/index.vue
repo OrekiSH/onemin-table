@@ -271,14 +271,14 @@ export default {
       };
     }
 
-    // add setCurrentPage(available when offline true), 添加page手动修改(offline模式下可用)
+    // add setCurrentPage(available when offline is true), 添加page手动修改(offline模式下可用)
     this.setCurrentPage = (page) => {
       if (!this.offline) return;
       this.page = page;
       this.genPageData({ page });
     };
 
-    // add setPageSize(available when offline true), 添加pageSize手动修改(offline模式下可用)
+    // add setPageSize(available when offline is true), 添加pageSize手动修改(offline模式下可用)
     this.setPageSize = (size) => {
       if (!this.offline) return;
       this.size = size;

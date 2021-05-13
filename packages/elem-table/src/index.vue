@@ -292,7 +292,6 @@ export default {
   data() {
     return {
       cellAttrsMap: {},
-      clones: [],
     };
   },
 
@@ -648,13 +647,11 @@ export default {
         // delete cloned popover, 删除克隆的列生成的popover.
         this.$nextTick(() => {
           const clonedColumns = document.body.querySelectorAll('.is-hidden [aria-describedby^="el-popover"]');
-          if (this.clones.length !== clonedColumns.length) {
-            this.clones = [...clonedColumns]
-              .map((e) => e?.getAttribute('aria-describedby'))
-              .filter(Boolean);
-          }
+          const clones = [...clonedColumns]
+            .map((e) => e?.getAttribute('aria-describedby'))
+            .filter(Boolean);
 
-          this.clones.forEach((id) => {
+          clones.forEach((id) => {
             const node = document.body.querySelector(`#${id}`);
             if (node && node.parentNode === document.body) document.body.removeChild(node);
           });

@@ -123,13 +123,14 @@ $ yarn add @onemin-table/elem-table
     <button @click="handleClear">clear</button>
     <button @click="handleToggleAllSelection">select all</button>
     <button @click="handleToggleLastRow">select last row</button>
+    <button @click="handleShowTooltip">show tooltip</button>
     <elem-table
       ref="table"
       :loading="loading"
       :data="data"
       :columns="columns"
       :selection="selection"
-      :duration="1000"
+      :duration="100000"
       :image-src-transformer="imageSrcTransformer"
       selection-key="id"
       scroll-wrapper="window"
@@ -306,6 +307,7 @@ $ yarn add @onemin-table/elem-table
           render: (h, p) => h('button', { on: {
             click: this.handleDelete(p),
           } }, '删除'),
+          fixed: 'right',
         }];
       },
     },
@@ -332,6 +334,12 @@ $ yarn add @onemin-table/elem-table
       handleDelete(p) {
         return () => {
           this.data.splice(p.index, 1);
+
+          const ref = this.$refs.table;
+          ref.setCellAttrs('item.remark', 0, {
+            popoverVisible: false,
+            borderColor: '',
+          });
         };
       },
 
@@ -350,6 +358,17 @@ $ yarn add @onemin-table/elem-table
         const ref = this.$refs.table;
         this.selected = true;
         if (ref) ref.toggleAllSelection();
+      },
+
+      handleShowTooltip() {
+        const ref = this.$refs.table;
+        if (!ref) return;
+
+        ref.setCellAttrs('item.remark', 0, {
+          popoverVisible: true,
+          popoverContent: '提示',
+          borderColor: 'red',
+        });
       },
 
       fetchMockData() {
@@ -388,7 +407,7 @@ $ yarn add @onemin-table/elem-table
             image: 'https://hbimg.huabanimg.com/89297c2da26b240448fd7aa7d884d9f57bd30ae21b90a-cj33e7_fw658/format/webp',
             item: {
               level: null,
-              remark: '',
+              remark: '1',
             },
             date: '',
             category: '',
