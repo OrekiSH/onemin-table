@@ -166,7 +166,6 @@ export default {
       });
 
       return {
-        'hide-on-single-page': true,
         'pager-count': 5,
         'page-size': this.pageSize,
         layout: 'sizes, total, prev, pager, next',

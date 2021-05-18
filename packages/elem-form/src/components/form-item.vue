@@ -102,7 +102,8 @@ export default {
   computed: {
     // components attributes, 组件属性
     attrs() {
-      const omitAttrs = LIST_COMPONENTS.indexOf(this.filter.type) > -1
+      const { type } = this.filter;
+      const omitAttrs = LIST_COMPONENTS.indexOf(type) > -1
         ? EL_COL_ATTRS
         : EL_COL_ATTRS.concat('type');
 
@@ -114,9 +115,11 @@ export default {
       };
 
       // multiple attr for type select, 多选框类型默认添加multiple
-      if (this.filter.type === 'select') result.multiple = true;
-      if (this.filter.type === 'cascader') result.multiple = true;
-      if (this.filter.type === 'single-cascader') result.checkStrictly = true;
+      if (type === 'select' && typeof result.multiple === 'undefined') result.multiple = true;
+      if (type === 'cascader' && typeof result.multiple === 'undefined') result.multiple = true;
+      if (type === 'single-cascader' && typeof result.checkStrictly === 'undefined') {
+        result.checkStrictly = true;
+      }
 
       return result;
     },

@@ -288,7 +288,7 @@ export default {
     // required filed in rules, rules中含有required字段的key
     customRequiredFields() {
       const result = [];
-      const rules = this.$attrs?.rules;
+      const rules = this.$attrs?.rules || {};
 
       Object.keys(rules).forEach((key) => {
         const val = rules[key];
@@ -307,7 +307,7 @@ export default {
     // required为true的错误信息自动转换
     innerRules() {
       const { input, select } = this.requiredRuleTransform;
-      const rules = this.$attrs?.rules;
+      const rules = this.$attrs?.rules || {};
       if (typeof input !== 'function' || typeof select !== 'function') return rules;
 
       const { customRequiredFields } = this;
