@@ -154,6 +154,9 @@ export default {
 
       paginationListeners: null,
       tableListeners: null,
+
+      order: null,
+      prop: null,
     };
   },
 
@@ -295,6 +298,9 @@ export default {
       // shallow clone origin data, 浅拷贝列表数据
       this.genInnerData = () => {
         this.innerData = (this.$attrs.data || []).concat();
+        if (this.order) {
+          this.sortInnerData(this.order, this.prop);
+        }
       };
 
       // table current page data, 表格当前页数据
@@ -307,23 +313,31 @@ export default {
         this.pageData = d.slice((this.page - 1) * this.size, this.page * this.size);
       };
 
+      // sort inner data, 列表数据排序
+      this.sortInnerData = (order, prop) => {
+        this.innerData.sort((a, b) => {
+          const av = get(a, prop);
+          const bv = get(b, prop);
+
+          // eslint-disable-next-line
+          if (!isNaN(av) && !isNaN(bv)) {
+            return order === 'ascending' ? av - bv : bv - av;
+          }
+
+          if (av > bv) return order === 'ascending' ? 1 : -1;
+          if (bv > av) return order === 'ascending' ? -1 : 1;
+
+          return 0;
+        });
+      };
+
       // sort table, 表格排序
       this.handleSortChange = ({ prop, order }) => {
+        this.order = order;
+        this.prop = prop;
+
         if (order) {
-          this.innerData.sort((a, b) => {
-            const av = get(a, prop);
-            const bv = get(b, prop);
-
-            // eslint-disable-next-line
-            if (!isNaN(av) && !isNaN(bv)) {
-              return order === 'ascending' ? av - bv : bv - av;
-            }
-
-            if (av > bv) return order === 'ascending' ? 1 : -1;
-            if (bv > av) return order === 'ascending' ? -1 : 1;
-
-            return 0;
-          });
+          this.sortInnerData(order, prop);
         } else {
           this.genInnerData();
         }
