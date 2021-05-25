@@ -4,7 +4,6 @@
     :model="query"
     class="ot-form--elem"
     v-bind="attrs"
-    :rules="innerRules"
     v-on="listeners"
   >
     <template v-for="(row, index) in rows">
@@ -177,6 +176,7 @@ export default {
       resizeObserver: null,
 
       BUTTON_GROUP_TYPE: '@onemin-table/button_group',
+      mounted: false,
     };
   },
 
@@ -256,7 +256,11 @@ export default {
 
     // form attributes, 表单属性
     attrs() {
-      return pick(this.$attrs, ELEM_FORM_ATTRS);
+      return {
+        'validate-on-rule-change': this.mounted,
+        ...pick(this.$attrs, ELEM_FORM_ATTRS),
+        rules: this.innerRules,
+      };
     },
 
     // form listeners, 表单事件
@@ -337,8 +341,11 @@ export default {
   },
 
   watch: {
-    filters() {
-      this.$refs?.form?.clearValidate();
+    filters: {
+      handler() {
+        this.$refs?.form?.clearValidate();
+      },
+      deep: true,
     },
   },
 
@@ -380,6 +387,8 @@ export default {
       });
       this.resizeObserver.observe(document.body);
     }
+
+    this.mounted = true;
   },
 
   beforeDestroy() {

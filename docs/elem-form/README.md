@@ -98,6 +98,7 @@ schema-based表单模板组件
             label: 'b',
             value: 2,
           }],
+          required: true,
         }, {
           label: '区间',
           prop: 'range',
@@ -149,6 +150,10 @@ schema-based表单模板组件
     mounted() {
       this.fetchRoles();
       this.fetchDepartments();
+
+      setTimeout(() => {
+        this.$set(this.query, 'name', 'foo');
+      }, 200);
     },
 
     methods: {
