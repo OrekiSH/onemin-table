@@ -176,7 +176,6 @@ export default {
       resizeObserver: null,
 
       BUTTON_GROUP_TYPE: '@onemin-table/button_group',
-      mounted: false,
     };
   },
 
@@ -257,7 +256,7 @@ export default {
     // form attributes, 表单属性
     attrs() {
       return {
-        'validate-on-rule-change': this.mounted,
+        'validate-on-rule-change': false,
         ...pick(this.$attrs, ELEM_FORM_ATTRS),
         rules: this.innerRules,
       };
@@ -387,8 +386,6 @@ export default {
       });
       this.resizeObserver.observe(document.body);
     }
-
-    this.mounted = true;
   },
 
   beforeDestroy() {

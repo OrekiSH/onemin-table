@@ -139,6 +139,15 @@ export default {
       type: Boolean,
       default: true,
     },
+
+    /**
+     * @language=zh
+     * 过滤列表数据的参数，仅在offline模式下有效
+     */
+    query: {
+      type: Object,
+      default: null,
+    },
   },
 
   data() {
@@ -246,6 +255,14 @@ export default {
 
       // init data, 初始化数据
       this.genInnerData();
+
+      // default query, 默认过滤参数
+      const values = Object.values(this.query || {}).filter(Boolean);
+      if (values.length) {
+        this.filterInnerData();
+      }
+
+      // generate current page data, 生成当前页数据
       this.genPageData();
 
       // watch origin data change, 监听源数据变化
@@ -253,6 +270,16 @@ export default {
         handler(val, oldVal) {
           this.genInnerData();
           this.genPageData(oldVal.length !== val.length ? { page: 1 } : {});
+        },
+        deep: true,
+      });
+
+      // watch query change, 监听过滤参数变化
+      this.$watch('query', {
+        handler() {
+          this.genInnerData();
+          this.filterInnerData();
+          this.genPageData({ page: 1 });
         },
         deep: true,
       });
@@ -328,6 +355,25 @@ export default {
           if (bv > av) return order === 'ascending' ? -1 : 1;
 
           return 0;
+        });
+      };
+
+      // filter inner data, 列表数据过滤
+      this.filterInnerData = () => {
+        const keys = Object.keys(this.query || {});
+
+        this.innerData = this.innerData.filter((row) => {
+          for (let i = 0; i < keys.length; i += 1) {
+            const k = keys[i];
+            let rowVal = get(row, k);
+            if (typeof rowVal === 'number') rowVal = `${rowVal}`;
+
+            let val = this.query[k];
+            if (typeof val === 'string') val = val.trim();
+            if (rowVal?.indexOf?.(val) > -1) return true;
+          }
+
+          return false;
         });
       };
 

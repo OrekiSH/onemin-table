@@ -19,6 +19,12 @@ $ yarn add @onemin-table/elem-extend-table
 ::: demo
 <template>
   <div>
+    <elem-input
+      v-model="searchText"
+      :width="200"
+      placeholder="编号/ID"
+      lite
+    />
     <elem-extend-table
       ref="table"
       :data="data"
@@ -26,6 +32,7 @@ $ yarn add @onemin-table/elem-extend-table
       :default-sort="{ prop: 'name', order: 'descending' }"
       :pagination-left-slot-render="leftSlot"
       :summary-method="summaryMethod"
+      :query="query"
       @current-change="handleCurrentChange"
     />
     <button @click="handleResetPage">reset</button>
@@ -37,13 +44,23 @@ $ yarn add @onemin-table/elem-extend-table
     data() {
       return {
         data: new Array(100).fill(0).map((e, i) => ({
-          index: 0,
+          index: i,
           name: `name_${Math.random(10)}_${i}`,
+          id: i + 1,
         })),
+
+        searchText: '99',
       };
     },
 
     computed: {
+      query() {
+        return {
+          id: this.searchText,
+          index: this.searchText,
+        };
+      },
+
       columns() {
         return [{
           label: '编号',
@@ -68,6 +85,9 @@ $ yarn add @onemin-table/elem-extend-table
               }
             },
           },
+        }, {
+          label: 'ID',
+          prop: 'id',
         }];
       },
     },
