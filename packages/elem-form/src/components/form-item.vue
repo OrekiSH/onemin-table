@@ -68,6 +68,8 @@ const EL_FORM_ITEM_ATTRS = [
 export default {
   inheritAttrs: false,
 
+  inject: ['trim'],
+
   props: {
     filter: {
       type: Object,
@@ -126,18 +128,31 @@ export default {
 
     // components listeners, 组件事件
     listeners() {
-      const { type, listeners } = this.filter;
+      const { type, listeners, trim } = this.filter;
 
       const result = listeners || {};
       // system components value changed, 系统定义组件值改变事件
       if (ELEM_COMPONENTS.indexOf(type) > -1) {
-        const evt = INPUT_TYPES.indexOf(type) > -1 ? 'input' : 'change';
+        let evt = INPUT_TYPES.indexOf(type) > -1 ? 'input' : 'change';
+
         result[evt] = (...args) => {
           if (typeof listeners?.[evt] === 'function') {
             listeners[evt](...args);
           }
           this.handleChange(...args);
         };
+
+        // v-model.trim
+        if (this.trim || trim) {
+          result.blur = (...args) => {
+            if (typeof listeners?.blur === 'function') {
+              listeners.blur(...args);
+            }
+            if (typeof this.value === 'string') {
+              this.handleChange(this.value.trim());
+            }
+          };
+        }
       }
 
       return result;

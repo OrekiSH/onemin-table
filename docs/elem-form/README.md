@@ -15,6 +15,7 @@ schema-based表单模板组件
       :auto-layout="autoLayout"
       label-width="80px"
       label-position="top"
+      trim
       @on-search="handleSearch"
       @on-change="handleChange"
     />
@@ -31,6 +32,8 @@ schema-based表单模板组件
         query: {
           content: [{ text: 'foo' }],
           role: ['cto'],
+          color: '#409EFF',
+          radio: 0,
         },
         // options
         roles: [],
@@ -68,6 +71,13 @@ schema-based表单模板组件
           type: 'input-number',
           span: 12,
         }, {
+          label: '颜色',
+          prop: 'color',
+          required: true,
+          render: (h, p) => (
+            <el-color-picker v-model={this.query.color} />
+          ),
+        }, {
           label: '描述',
           prop: 'desc',
           type: 'autocomplete',
@@ -93,10 +103,10 @@ schema-based表单模板组件
           type: 'radio',
           options: [{
             label: 'a',
-            value: 1,
+            value: 0,
           }, {
             label: 'b',
-            value: 2,
+            value: 1,
           }],
           required: true,
         }, {
@@ -229,6 +239,7 @@ schema-based表单模板组件
 | collapse-button-text | 收起按钮文本 | String | '收起' |
 | expand-button-text | 展开按钮文本 | String | '展开' |
 | default-collapsed | 是否默认收起 | Boolean | false |
+| trim | 全局设置组件是否使用v-model.trim, 优先级低于`filter.trim` | Boolean | false |
 
 其他继承自`el-form`的表单属性见[element-ui文档](https://element.eleme.cn/#/zh-CN/component/form#form-attributes)
 
@@ -264,6 +275,7 @@ schema-based表单模板组件
 | span/... | `span`等[`<el-col>`的属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes) | - |
 | listeners | 表单元素组件的事件 | Object |
 | render | 自定义渲染函数 | Function |
+| trim | 组件是否使用v-model.trim | Boolean |
 
 
 **表单元素支持的类型(type):**

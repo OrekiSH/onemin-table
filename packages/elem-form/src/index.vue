@@ -71,6 +71,12 @@ export default {
 
   inheritAttrs: false,
 
+  provide() {
+    return {
+      trim: this.trim,
+    };
+  },
+
   components: {
     ElemFormItem,
     ButtonGroup,
@@ -163,6 +169,15 @@ export default {
           input: (name) => `请输入${name}`,
         };
       },
+    },
+
+    /**
+     * @language=zh
+     * 全局设置组件是否使用v-model.trim
+     */
+    trim: {
+      type: Boolean,
+      default: false,
     },
 
     ...searchResetProps,
