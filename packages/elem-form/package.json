@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-form",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "@onemin-table/elem-form",
   "module": "es/index.js",
   "main": "lib/index.js",

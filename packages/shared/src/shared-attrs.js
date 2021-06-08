@@ -1,7 +1,7 @@
 /**
  * <el-col> attributes, <el-col>属性
  */
- export const EL_COL_ATTRS = [
+export const EL_COL_ATTRS = [
   'span',
   'offset',
   'push',

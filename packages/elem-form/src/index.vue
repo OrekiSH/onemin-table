@@ -39,6 +39,7 @@
 <script>
 import pick from 'lodash/pick';
 import throttle from 'lodash/throttle';
+import omit from 'lodash/omit';
 import {
   searchResetProps, proxyMethods, EL_COL_ATTRS, OPTIONS_COMPONENTS,
 } from '@onemin-table/shared';
@@ -233,13 +234,18 @@ export default {
 
       let tmp = [];
       this.filtersWithSpan.forEach((filter) => {
-        const sum = tmp.reduce((a, c) => a + (c.span || 0), 0);
+        tmp.push(filter);
+        const sum = tmp
+          .reduce((a, c) => a + (c.span || 0) + (c?.offset || 0) - (c?.pull || 0) + (c?.push || 0), 0);
         // fill and change row, 行满推入result
-        if (sum >= ROW_SPAN_COUNT) {
+        if (sum > ROW_SPAN_COUNT) {
+          const last = tmp.pop();
+          result.push(tmp);
+          tmp = last ? [omit(last, ['offset'])] : [];
+        } else if (sum === ROW_SPAN_COUNT) {
           result.push(tmp);
           tmp = [];
         }
-        tmp.push(filter);
       });
       // push last
       if (tmp.length) result.push(tmp);

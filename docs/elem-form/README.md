@@ -38,7 +38,7 @@ schema-based表单模板组件
         // options
         roles: [],
         departments: [],
-        autoLayout: true,
+        autoLayout: false,
       };
     },
 
@@ -63,13 +63,13 @@ schema-based表单模板组件
         return [{
           label: '姓名',
           prop: 'name',
-          span: 12,
+          span: 8,
           required: true,
         }, {
           label: '数量',
           prop: 'count',
           type: 'input-number',
-          span: 12,
+          span: 8,
         }, {
           label: '颜色',
           prop: 'color',
@@ -77,6 +77,8 @@ schema-based表单模板组件
           render: (h, p) => (
             <el-color-picker v-model={this.query.color} />
           ),
+          span: 8,
+          offset: 8,
         }, {
           label: '描述',
           prop: 'desc',
