@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/shared",
-  "version": "0.8.11",
+  "version": "0.8.12",
   "description": "@onemin-table/shared",
   "main": "lib/index.js",
   "module": "src/index.js",

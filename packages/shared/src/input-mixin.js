@@ -262,29 +262,27 @@ export const inputSlotMixin = {
         prefix: this.innerPrefixSlotRender,
       };
     },
-  },
 
-  methods: {
-    innerAppendSlotRender(h) {
+    innerAppendSlotRender() {
       if (!this.append && !this.appendSlotRender) return null;
-      return this.appendSlotRender || h('div', null, this.append);
+      return this.appendSlotRender || ((h) => h('div', null, this.append));
     },
 
     innerPrependSlotRender(h) {
       if (!this.prepend && !this.prependSlotRender) return null;
-      return this.prependSlotRender || h('div', null, this.prepend);
+      return this.prependSlotRender || ((h) => h('div', null, this.prepend));
     },
 
     innerSuffixSlotRender(h) {
       if (!this.suffixIcon && !this.suffixSlotRender) return null;
       return this.suffixSlotRender
-        || h('i', { class: `el-input__icon el-icon-${this.suffixIcon}` });
+        || ((h) => h('i', { class: `el-input__icon el-icon-${this.suffixIcon}` }));
     },
 
     innerPrefixSlotRender(h) {
       if (!this.prefixIcon && !this.prefixSlotRender) return null;
       return this.prefixSlotRender
-        || h('i', { class: `el-input__icon el-icon-${this.prefixIcon}` });
+        || ((h) => h('i', { class: `el-input__icon el-icon-${this.prefixIcon}` }));
     },
   },
 };

@@ -16,6 +16,7 @@ schema-based表单模板组件
       label-width="80px"
       label-position="top"
       trim
+      label-suffix=":"
       @on-search="handleSearch"
       @on-change="handleChange"
     />
@@ -65,6 +66,9 @@ schema-based表单模板组件
           prop: 'name',
           span: 8,
           required: true,
+          attrs: {
+            suffixSlotRender: () => <i class="el-icon-time el-input__icon" />,
+          },
         }, {
           label: '数量',
           prop: 'count',

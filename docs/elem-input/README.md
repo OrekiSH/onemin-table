@@ -29,6 +29,7 @@ $ yarn add @onemin-table/elem-input
     v-model="foo"
     split
     placeholder="空格分隔"
+    :suffix-slot-render="suffix"
   />
 </template>
 
@@ -44,6 +45,11 @@ $ yarn add @onemin-table/elem-input
         console.warn(val);
       },
     },
+    methods: {
+      suffix() {
+        return <i class="el-icon-time el-input__icon" />;
+      },
+    }
   };
 </script>
 :::
@@ -59,8 +65,6 @@ $ yarn add @onemin-table/elem-input
       v-model="foo"
       :popoverVisible="active"
       :border-color="active ? 'red' : ''"
-      :prefix-slot-render="prefixSlotRender"
-      suffix-icon="date"
       append=".com"
       prepend="https://"
       popover-content="content"
@@ -82,10 +86,6 @@ $ yarn add @onemin-table/elem-input
       handleChange(val) {
         console.warn(this.foo, val);
       },
-
-      prefixSlotRender() {
-        return <i class="el-icon-time el-input__icon" />;
-      },
     },
   };
 </script>
@@ -99,7 +99,6 @@ $ yarn add @onemin-table/elem-input
     <elem-input
       v-model="foo"
       :prefix-slot-render="prefixSlotRender"
-      suffix-icon="date"
       append=".com"
       prepend="https://"
     />
