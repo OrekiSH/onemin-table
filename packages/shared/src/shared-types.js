@@ -68,6 +68,8 @@ export const LIST_COMPONENTS = [
 export const INPUT_TYPES = [
   'input',
   'autocomplete',
+  'input-number',
+  'input-range',
   ...LIST_COMPONENTS,
 ];
 
