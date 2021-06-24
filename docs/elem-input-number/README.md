@@ -35,6 +35,12 @@ export default {
     };
   },
 
+  watch: {
+    foo(val) {
+      console.error(val);
+    },
+  },
+
   mounted() {
     console.warn(this.$refs?.input?.select);
   },

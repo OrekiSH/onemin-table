@@ -6,7 +6,7 @@ schema-based表单模板组件
 
 ::: demo
 <template>
-  <div>
+  <div style="height: 400px;overflow: scroll;">
     <elem-form
       ref="form"
       :query="query"
@@ -31,10 +31,13 @@ schema-based表单模板组件
     data() {
       return {
         query: {
-          content: [{ text: 'foo' }],
+          content: [{ text: 'foo' }, []],
           role: ['cto'],
           color: '#409EFF',
           radio: 0,
+          nest: {
+            arr: ['a', { nest: ['b', 'c'] }]
+          },
         },
         // options
         roles: [],
@@ -69,6 +72,14 @@ schema-based表单模板组件
           attrs: {
             suffixSlotRender: () => <i class="el-icon-time el-input__icon" />,
           },
+        }, {
+          label: '默认值错误',
+          prop: 'content[1].value',
+          type: 'input',
+        }, {
+          label: '嵌套1',
+          prop: 'nest.arr[0]',
+          type: 'input',
         }, {
           label: '数量',
           prop: 'count',

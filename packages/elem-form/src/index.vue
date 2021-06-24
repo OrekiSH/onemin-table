@@ -202,7 +202,7 @@ export default {
         ? this.filters.map((e) => ({ ...e, span: this.GLOBAL_SPAN }))
         : this.filters;
 
-      const result =  filters.filter((e) => e.visible !== false);
+      const result = filters.filter((e) => e.visible !== false);
       result.forEach((item) => {
         // default input, 默认输入框
         if (!item.type && !item.render) item.type = 'input';

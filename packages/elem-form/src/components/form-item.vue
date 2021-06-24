@@ -36,6 +36,7 @@
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import get from 'lodash/get';
+import toPath from 'lodash/toPath';
 import {
   CustomRender, COMPONENT_MAP, ELEM_COMPONENTS,
   LIST_COMPONENTS, INPUT_TYPES, EL_COL_ATTRS,
@@ -167,11 +168,42 @@ export default {
     value() {
       return get(this.query, this.filter.prop);
     },
+
+    // split prop into path token
+    propTokens() {
+      return toPath(this.filter.prop);
+    },
+  },
+
+  errorCaptured(err, vm) {
+    if (err.message === 'please transfer a valid prop path to form item!') {
+      throw new Error(`${err.message}, now receives ${vm.prop}`);
+    }
   },
 
   methods: {
     handleChange(value) {
-      this.$set(this.query, this.filter.prop, value);
+      this.deepSet(this.query, this.filter.prop, value);
+    },
+
+    deepSet(obj, path, value) {
+      const fields = Array.isArray(path) ? path : toPath(path);
+      const prop = fields.shift();
+
+      if (!fields.length) {
+        if (Array.isArray(obj) && !obj.length && Number.isNaN(+prop)) {
+          const index = this.propTokens.indexOf(prop);
+          const parentProp = this.propTokens[index - 1];
+          const parent = get(this.query, this.propTokens.slice(0, index - 1));
+          // change [] to {}
+          this.$set(parent, parentProp, {});
+          this.$set(parent[parentProp], prop, value);
+        } else {
+          this.$set(obj, prop, value);
+        }
+      } else {
+        this.deepSet(obj[prop], fields, value);
+      }
     },
   },
 };

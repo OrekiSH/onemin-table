@@ -26,6 +26,7 @@ $ yarn add @onemin-table/elem-table-page
       :pagination-left-slot-render="leftSlot"
       :on-response="onResponse"
       :on-error="onError"
+      :request-config="requestConfig"
       data-key="programs"
       total-key="count"
       page-key="offset"
@@ -48,6 +49,12 @@ $ yarn add @onemin-table/elem-table-page
           prop: 'mainSong.artists[0].picUrl',
           type: 'image',
         }];
+      },
+
+      requestConfig() {
+        return {
+          params: { foo: 1 },
+        };
       },
     },
 

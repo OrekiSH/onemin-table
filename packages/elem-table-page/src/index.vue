@@ -135,6 +135,8 @@ export default {
       data: [],
       total: at?.total || 0,
       loading: false,
+
+      axios: null,
     };
   },
 
@@ -151,15 +153,17 @@ export default {
       });
     }
 
+    this.axios = axios.create({});
+
     // register interceptors, 注册拦截器
     if (typeof this.onRequest === 'function') {
-      axios.interceptors.request.use(
+      this.axios.interceptors.request.use(
         onCallback(this.onRequest, false), // resolve
         onCallback(this.onRequest, true), // reject
       );
     }
     if (typeof this.onResponse === 'function') {
-      axios.interceptors.response.use(
+      this.axios.interceptors.response.use(
         onCallback(this.onResponse, false),
         onCallback(this.onResponse, true),
       );
@@ -244,22 +248,25 @@ export default {
 
         const { params } = this;
         // request config generated, 生成的axios请求配置
-        const opts = {
-          url: this.url,
-        };
+        if (!config.url) {
+          config.url = this.url;
+        }
 
         // with body or not, 数据携带于body/url
         const method = (config?.method || '').toLowerCase();
         if (['post', 'put', 'patch'].indexOf(method) !== -1) {
-          opts.data = params;
+          config.data = {
+            ...config.data,
+            ...params,
+          };
         } else {
-          opts.params = params;
+          config.params = {
+            ...config.params,
+            ...params,
+          };
         }
 
-        const { data } = await axios({
-          ...opts,
-          ...config,
-        });
+        const { data } = await this.axios(config);
 
         // data list, 列表数据
         const d = get(data, this.dataKey);

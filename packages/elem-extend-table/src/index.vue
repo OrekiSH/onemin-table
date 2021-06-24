@@ -438,26 +438,32 @@ export default {
     genPaginationListeners() {
       const listeners = pick(this.$listeners, PAGINATION_LISTENERS);
       // 前端分页, use frontend pagination
-      if (this.offline) {
-        const pageChange = listeners['current-change'];
-        const sizeChange = listeners['size-change'];
+      const pageChange = listeners['current-change'];
+      const sizeChange = listeners['size-change'];
 
-        // 当前页变化, current page change
-        listeners['current-change'] = (page) => {
-          if (typeof pageChange === 'function') {
-            pageChange(page);
-          }
+      // 当前页变化, current page change
+      listeners['current-change'] = (page) => {
+        if (typeof pageChange === 'function') {
+          pageChange(page);
+        }
+        this.$emit('update:currentPage', page);
+
+        if (this.offline) {
           this.genPageData({ page });
-        };
+        }
+      };
 
-        // 每页条数变化, page size change
-        listeners['size-change'] = (size) => {
-          if (typeof sizeChange === 'function') {
-            sizeChange(size);
-          }
+      // 每页条数变化, page size change
+      listeners['size-change'] = (size) => {
+        if (typeof sizeChange === 'function') {
+          sizeChange(size);
+        }
+        this.$emit('update:pageSize', size);
+
+        if (this.offline) {
           this.genPageData({ page: 1, size });
-        };
-      }
+        }
+      };
 
       this.paginationListeners = listeners;
     },
