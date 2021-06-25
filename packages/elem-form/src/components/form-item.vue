@@ -19,9 +19,14 @@
       />
 
       <!-- plain text, 纯文本 -->
-      <span
+      <template
         v-else-if="filter.type === 'text'"
-      >{{ value }}</span>
+      >
+        <span v-if="typeof filter.transformer === 'function'">
+          {{ filter.transformer(value) }}
+        </span>
+        <span v-else>{{ value }}</span>
+      </template>
 
       <!-- Custom render component, 用户自定义渲染组件 -->
       <custom-render

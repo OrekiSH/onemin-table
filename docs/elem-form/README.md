@@ -108,6 +108,7 @@ schema-based表单模板组件
           label: '文本',
           prop: 'content[0].text',
           type: 'text',
+          transformer: (e) => `$${e}`,
         }, {
           label: '角色',
           prop: 'role',
