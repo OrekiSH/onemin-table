@@ -80,6 +80,11 @@ schema-based表单模板组件
           label: '嵌套1',
           prop: 'nest.arr[0]',
           type: 'input',
+          listeners: {
+            input: (...args) => {
+              console.error(args);
+            },
+          },
         }, {
           label: '数量',
           prop: 'count',

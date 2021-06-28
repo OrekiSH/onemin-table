@@ -136,7 +136,7 @@ export default {
     listeners() {
       const { type, listeners, trim } = this.filter;
 
-      const result = listeners || {};
+      const result = { ...listeners };
       // system components value changed, 系统定义组件值改变事件
       if (ELEM_COMPONENTS.indexOf(type) > -1) {
         let evt = INPUT_TYPES.indexOf(type) > -1 ? 'input' : 'change';
