@@ -76,12 +76,15 @@ schema-based表单模板组件
           label: '默认值错误',
           prop: 'content[1].value',
           type: 'input',
+          visible: this.autoLayout,
+          required: true,
         }, {
           label: '嵌套1',
           prop: 'nest.arr[0]',
-          type: 'input',
+          type: !this.autoLayout ? 'text' : 'input',
+          transformer: (e) => `￥${e}`,
           listeners: {
-            input: (...args) => {
+            change: (...args) => {
               console.error(args);
             },
           },

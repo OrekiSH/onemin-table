@@ -1,5 +1,11 @@
 <template>
   <div class="ot-table-page--elem">
+    <elem-form
+      ref="form"
+      v-bind="formAttrs"
+      v-on="formListeners"
+    />
+
     <elem-extend-table
       ref="table"
       v-bind="tableAttrs"
@@ -13,7 +19,14 @@ import axios from 'axios';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import omit from 'lodash/omit';
-import { ELEM_TABLE_METHODS } from '@onemin-table/shared';
+import pick from 'lodash/pick';
+import debounce from 'lodash/debounce';
+import {
+  EL_FORM_EVENTS,
+  ELEM_TABLE_METHODS,
+  ELEM_FORM_ATTRS,
+  OPTIONS_COMPONENTS,
+} from '@onemin-table/shared';
 
 // 解析后端数据的键, key to parse data from backend.
 const DATA_KEYS = [
@@ -123,6 +136,42 @@ export default {
       type: Function,
       default: null,
     },
+
+    /**
+     * @language=zh
+     * 响应列表数据处理函数
+     */
+    transformer: {
+      type: Function,
+      default: null,
+    },
+
+    /**
+     * @language=zh
+     * 表单元素schema
+     */
+    filters: {
+      type: Array,
+      default() { return []; },
+    },
+
+    /**
+     * @language=zh
+     * 是否展示搜索&重置按钮组
+     */
+    showButtonGroup: {
+      type: Boolean,
+      default: false,
+    },
+
+    /**
+     * @language=zh
+     * 输入值改变后触发请求的间隔(ms)
+     */
+    inputDebounce: {
+      type: Boolean,
+      default: 300,
+    },
   },
 
   data() {
@@ -137,6 +186,8 @@ export default {
       loading: false,
 
       axios: null,
+
+      query: null,
     };
   },
 
@@ -152,6 +203,8 @@ export default {
         this[key] = table[key];
       });
     }
+
+    this.query = this.defaultQuery;
 
     this.axios = axios.create({});
 
@@ -169,6 +222,7 @@ export default {
       );
     }
 
+    this.debounceFetchTableData = debounce(this.fetchTableData, this.inputDebounce);
     this.fetchTableData();
   },
 
@@ -182,7 +236,7 @@ export default {
         data: this.data,
         currentPage: this.page,
         pageSize: this.size,
-        ...omit(this.$attrs, []),
+        ...omit(this.$attrs, ELEM_FORM_ATTRS),
       };
 
       return result;
@@ -190,7 +244,7 @@ export default {
 
     // table listeners, 表格事件监听
     tableListeners() {
-      const listeners = this.$listeners || {};
+      const listeners = omit(this.$listeners || {}, EL_FORM_EVENTS);
       const sizeChange = listeners['size-change'];
       const currentChange = listeners['current-change'];
 
@@ -207,13 +261,95 @@ export default {
       };
     },
 
+    // form attributes, 表单属性
+    formAttrs() {
+      return {
+        ...pick(this.$attrs || {}, ELEM_FORM_ATTRS),
+        query: this.query,
+        filters: this.FILTERS,
+        'auto-layout': true,
+        'label-position': 'left',
+        'label-width': '80px',
+        'show-button-group': this.showButtonGroup,
+      };
+    },
+
+    // form attributes, 表单监听
+    formListeners() {
+      const listeners = pick(this.$listeners || {}, EL_FORM_EVENTS);
+      const onSearch = listeners['on-search'];
+      const onReset = listeners['on-reset'];
+
+      return {
+        ...listeners,
+        'on-search': () => {
+          if (typeof onSearch === 'function') onSearch(this.query);
+          this.setCurrentPage(1);
+        },
+        'on-reset': () => {
+          this.query = this.defaultQuery;
+          console.warn(this.query);
+          if (typeof onReset === 'function') onReset(this.query);
+          this.setCurrentPage(1);
+        },
+      };
+    },
+
+    // form attributes, 表单监听
+    defaultQuery() {
+      return this.filters.reduce((a, c) => {
+        if (typeof c.defaultValue !== 'undefined') {
+          set(a, c.prop, c.defaultValue);
+        } else if (c.type === 'select') {
+          set(a, c.prop, []);
+        } else {
+          set(a, c.prop, '');
+        }
+        return a;
+      }, {});
+    },
+
     // query params, 请求参数
     params() {
       const result = {};
       set(result, this.pageKey, this.page);
       set(result, this.pageSizeKey, this.size);
+      Object.keys(this.query).forEach((k) => {
+        set(result, k, this.query[k]);
+      });
 
       return result;
+    },
+
+    FILTERS() {
+      // reactive filters, 数据变化自动请求
+      if (!this.showButtonGroup) {
+        return this.filters.map((e) => {
+          const change = e?.listeners?.change;
+          const input = e?.listeners?.change;
+
+          return {
+            ...e,
+            listeners: {
+              ...e.listeners,
+              change: (val) => {
+                if (typeof change === 'function') change(val);
+                if (OPTIONS_COMPONENTS.indexOf(e.type) > -1) this.fetchTableData();
+              },
+              input: (val) => {
+                if (typeof input === 'function') input(val);
+                if (OPTIONS_COMPONENTS.indexOf(e.type) === -1) {
+                  this.$nextTick(() => {
+                    this.debounceFetchTableData();
+                  });
+                }
+              },
+            },
+          };
+        });
+      }
+
+      return this.filters;
     },
   },
 
@@ -269,8 +405,11 @@ export default {
         const { data } = await this.axios(config);
 
         // data list, 列表数据
-        const d = get(data, this.dataKey);
-        this.data = Array.isArray(d) ? d : [];
+        let d = get(data, this.dataKey);
+        d = Array.isArray(d) ? d : [];
+        if (typeof this.transformer === 'function') d = this.transformer(d);
+        this.data = d;
+
         // total count, 数据总量
         const t = get(data, this.totalKey);
         this.total = +t || 0;

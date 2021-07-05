@@ -5,6 +5,7 @@
     class="ot-form--elem"
     v-bind="attrs"
     v-on="listeners"
+    @submit.native.prevent
   >
     <template v-for="(row, index) in rows">
       <el-row
@@ -199,8 +200,8 @@ export default {
     // filter with span value in autoLayout mode, 自动布局模式下filters自带span
     filtersWithSpan() {
       const filters = this.autoLayout
-        ? this.filters.map((e) => ({ ...e, span: this.GLOBAL_SPAN }))
-        : this.filters;
+        ? this.filters.filter(isObject).map((e) => ({ ...e, span: this.GLOBAL_SPAN }))
+        : this.filters.filter(isObject);
 
       const result = filters.filter((e) => e.visible !== false);
       result.forEach((item) => {

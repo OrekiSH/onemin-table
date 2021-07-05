@@ -108,5 +108,9 @@ export default {
         : text;
     },
   },
+
+  mounted() {
+    console.warn(this.genColumnAttrs(this.col));
+  },
 };
 </script>

@@ -6,3 +6,4 @@ export * from './shared-props';
 export * from './shared-methods';
 export * from './shared-slot';
 export * from './shared-attrs';
+export * from './shared-events';

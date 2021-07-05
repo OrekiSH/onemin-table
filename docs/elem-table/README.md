@@ -48,6 +48,9 @@ $ yarn add @onemin-table/elem-table
         }, {
           label: '姓名',
           prop: 'name',
+          formatter() {
+            return 'wtf';
+          },
         }, {
           children: [{
             headerAlign: 'right',
