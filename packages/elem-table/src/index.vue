@@ -23,6 +23,20 @@
         v-bind="genColumnAttrs(col)"
       />
 
+      <el-table-column
+        v-else-if="col.type === 'selection-item'"
+        :key="`${col.prop}_${index}`"
+        v-bind="genColumnAttrs(col)"
+      >
+        <template slot-scope="{ row }">
+          <el-radio
+            :value="selectionItemVal"
+            :label="get(row, selectionKey)"
+            @change="handleSelectionItemChange(row)"
+          >{{ }}</el-radio>
+        </template>>
+      </el-table-column>
+
       <!-- Other types with children, 其他类型带多级表头 -->
       <elem-table-column-group
         v-else-if="Array.isArray(col.children)"
@@ -46,6 +60,7 @@ import camelCase from 'lodash/camelCase';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import kebabCase from 'lodash/kebabCase';
+import pick from 'lodash/pick';
 import {
   ELEM_COMPONENTS, EL_TABLE_METHODS,
   OPTIONS_COMPONENTS, VALUE_COMPONENTS, LIST_COMPONENTS, INPUT_TYPES,
@@ -119,6 +134,15 @@ export default {
     selection: {
       type: Array,
       default() { return []; },
+    },
+
+    /**
+     * @language=zh
+     * 全局单选选中项
+     */
+    selectionItem: {
+      type: Object,
+      default: null,
     },
 
     /**
@@ -279,14 +303,14 @@ export default {
   inheritAttrs: false,
 
   provide() {
-    return {
-      genColumnAttrs: this.genColumnAttrs,
-      genColumnItemAttrs: this.genColumnItemAttrs,
-      genColumnItemListeners: this.genColumnItemListeners,
-      lite: this.lite,
-      placeholder: this.placeholder,
-      genColumnEnterChangeLine: this.genColumnEnterChangeLine,
-    };
+    return pick(this, [
+      'genColumnAttrs',
+      'genColumnItemAttrs',
+      'genColumnItemListeners',
+      'lite',
+      'genColumnEnterChangeLine',
+      'placeholder',
+    ]);
   },
 
   data() {
@@ -296,6 +320,10 @@ export default {
   },
 
   computed: {
+    selectionItemVal() {
+      return get(this.selectionItem, this.selectionKey);
+    },
+
     listeners() {
       return Object.keys(this.$listeners).reduce((a, key) => {
         // combine selection event, rewrite cell event, 合并选择事件, 重新封装单元格事件
@@ -360,10 +388,10 @@ export default {
       });
 
       this.clearSelection = () => {
-        this.$emit('selection-change', []);
+        this.handleSelectionChange([]);
       };
       this.toggleAllSelection = () => {
-        this.$emit('selection-change', cloneDeep(this.data));
+        this.handleSelectionChange(cloneDeep(this.data));
       };
       // toggle row selection by rowIndex, 根据行索引触发列选中
       this.toggleRowSelection = (rowIndex, selected) => {
@@ -378,7 +406,7 @@ export default {
           if (!this.checkSelectionKey()) return;
           const d = this.selection
             .filter((e) => get(e, this.selectionKey) !== get(row, this.selectionKey));
-          this.$emit('selection-change', cloneDeep(d));
+          this.handleSelectionChange(cloneDeep(d));
         }
       };
     }
@@ -446,7 +474,7 @@ export default {
         }
       });
 
-      this.$emit('selection-change', selection);
+      this.handleSelectionChange(selection);
     },
 
     /**
@@ -676,6 +704,24 @@ export default {
           nextEl.focus();
         }
       }
+    },
+
+    /**
+     * selection(checkbox) handler
+     * 选中列表处理函数
+     */
+     handleSelectionChange(e) {
+      this.$emit('selection-change', e);
+      this.$emit('update:selection', e);
+    },
+
+    /**
+     * selection item(radio) handler
+     * 单选项处理函数
+     */
+    handleSelectionItemChange(e) {
+      this.$emit('selection-item-change', e);
+      this.$emit('update:selectionItem', e);
     },
   },
 };

@@ -24,6 +24,8 @@ $ yarn add @onemin-table/elem-table
     :loading="loading"
     :data="data"
     :columns="columns"
+    selection-key="id"
+    :selection-item.sync="radio"
     placeholder="/"
     @on-change="onDataChange"
   />
@@ -35,12 +37,17 @@ $ yarn add @onemin-table/elem-table
       return {
         loading: false,
         data: [],
+        radio: null,
       };
     },
 
     computed: {
       columns() {
         return [{
+          type: 'selection-item',
+          prop: 'selection',
+          minWidth: 30,
+        }, {
           label: '编号',
           type: 'index',
           prop: 'index',
@@ -79,11 +86,21 @@ $ yarn add @onemin-table/elem-table
       },
     },
 
+    watch: {
+      radio() {
+        console.warn('radio', this.radio);
+      },
+    },
+
     mounted() {
       this.fetchMockData();
     },
 
     methods: {
+      // handleSelectionItemChange(e) {
+      //   this.radio = e;
+      // },
+
       onDataChange() {
         console.warn(this.data);
       },
@@ -509,6 +526,7 @@ $ yarn add @onemin-table/elem-table
 **支持的列的类型(type)**
 
 - image
+- single-selection: 全局单选
 - [select](/elem-select/): 选择器(多选), 默认属性: `{ multiple: true, collapseTags: true }`
 - [single-select](/elem-select/): 选择器(单选)
 - [cascader](/elem-cascader/): 级联选择器(多选), 默认属性: `{ props: { multiple: true, collapseTags: true } }`

@@ -169,7 +169,7 @@ export default {
      * 输入值改变后触发请求的间隔(ms)
      */
     inputDebounce: {
-      type: Boolean,
+      type: Number,
       default: 300,
     },
   },
