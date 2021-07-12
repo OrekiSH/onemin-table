@@ -30,6 +30,7 @@
             v-else
             :filter="filter"
             :query="query"
+            @on-change="handleChange(filter)"
           />
         </el-col>
       </el-row>
@@ -420,6 +421,13 @@ export default {
     // <el-col> attrs, <el-col>属性
     genColAttrs(filter) {
       return pick(filter, EL_COL_ATTRS);
+    },
+
+    handleChange(filter) {
+      this.$emit('on-change', {
+        query: this.query,
+        filter,
+      });
     },
   },
 };

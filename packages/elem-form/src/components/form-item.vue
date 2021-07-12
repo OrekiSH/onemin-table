@@ -145,8 +145,18 @@ export default {
           if (typeof listeners?.[evt] === 'function') {
             listeners[evt](...args);
           }
+          if (evt === 'change') this.$emit('on-change');
           this.handleChange(...args);
         };
+
+        if (!result.change) {
+          result.change = (...args) => {
+            if (typeof listeners?.change === 'function') {
+              listeners.change(...args);
+            }
+            this.$emit('on-change');
+          }
+        }
 
         // v-model.trim
         if (this.trim || trim) {
