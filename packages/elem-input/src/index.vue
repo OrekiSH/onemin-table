@@ -16,7 +16,6 @@
       :value="inputVal"
       :attrs="attrs"
       :listeners="listeners"
-      :slot-renders="slotRenders"
     />
   </el-popover>
 
@@ -26,14 +25,12 @@
     :value="inputVal"
     :attrs="attrs"
     :listeners="listeners"
-    :slot-renders="slotRenders"
   />
 </template>
 
 <script>
 import {
-  inputMixin, CustomRender, InputSlot, inputProps,
-  inputSlotMixin,
+  inputMixin, CustomRender,
 } from '@onemin-table/shared';
 import InputFragment from './components/input-fragment.vue';
 import proxyMixin from './mixins/proxy';
@@ -43,7 +40,6 @@ export default {
 
   mixins: [
     inputMixin, // mounted, innerVisible, popoverListeners, popoverSlotRender, lite
-    inputSlotMixin, // slotRenders
     proxyMixin,
   ],
 
@@ -58,8 +54,6 @@ export default {
       type: [String, Number, Array],
       default: null,
     },
-
-    ...inputProps,
 
     /**
      * @language=zh
@@ -91,8 +85,6 @@ export default {
 
   components: {
     CustomRender,
-    InputSlot,
-
     InputFragment,
   },
 

@@ -29,6 +29,7 @@ $ yarn add @onemin-table/elem-table
     placeholder="/"
     @on-change="onDataChange"
   />
+  <button @click="sum = !sum">click</button>
 </template>
 
 <script>
@@ -38,6 +39,7 @@ $ yarn add @onemin-table/elem-table
         loading: false,
         data: [],
         radio: null,
+        sum: false,
       };
     },
 
@@ -59,9 +61,11 @@ $ yarn add @onemin-table/elem-table
             return 'wtf';
           },
         }, {
+          prop: 'z',
           children: [{
             headerAlign: 'right',
             headerSlotRender: this.headerSlotRender,
+            prop: 'ff',
             children: [{
               label: '备注',
               prop: 'item.remark',
@@ -82,6 +86,21 @@ $ yarn add @onemin-table/elem-table
               style: 'overflow: hidden;text-overflow: ellipsis;',
             }, p.row.name),
           }],
+        }, {
+          prop: this.sum ? 'a' : 'b',
+          children: [{
+            label: '盘盈',
+            render: (h) => h('span', 123)
+          }, ...this.sum ? [{
+            label: '汇总',
+            render: (h) => h('span', 'sum')
+          }] : [{
+            label: '汇总',
+            render: (h) => h('span', 'v1')
+          }, {
+            label: '汇总',
+            render: (h) => h('span', 'v2')
+          }]],
         }];
       },
     },

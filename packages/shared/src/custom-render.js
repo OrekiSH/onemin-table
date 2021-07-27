@@ -17,8 +17,19 @@ export const CustomRender = {
       type: Function,
       default: null,
     },
+    attrs: {
+      type: Object,
+      default: null,
+    },
+    listeners: {
+      type: Object,
+      default: null,
+    },
   },
-  render: (h, ctx) => (typeof ctx.props.render === 'function' ? ctx.props.render(h) : ''),
+  render: (h, ctx) => (
+    typeof ctx.props.render === 'function'
+      ? ctx.props.render(h, ctx.props.attrs, ctx.props.listeners) : ''
+  ),
 };
 
 /**

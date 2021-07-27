@@ -6,10 +6,8 @@
     v-on="$attrs.listeners"
   >
     <input-slot
-      :prefix-slot-render="slotRenders.prefix"
-      :suffix-slot-render="slotRenders.suffix"
-      :prepend-slot-render="slotRenders.prepend"
-      :append-slot-render="slotRenders.append"
+      :value="$attrs.value"
+      v-bind="$attrs.attrs"
     />
   </el-input>
 </template>
@@ -25,13 +23,6 @@ export default {
 
   components: {
     InputSlot,
-  },
-
-  props: {
-    slotRenders: {
-      type: Object,
-      default() { return {}; },
-    },
   },
 };
 </script>

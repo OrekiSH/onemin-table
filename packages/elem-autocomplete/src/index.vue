@@ -16,7 +16,6 @@
       :value="innerVal"
       :attrs="attrs"
       :listeners="$listeners"
-      :slot-renders="slotRenders"
       :option-slot-render="optionSlotRender"
     />
   </el-popover>
@@ -27,14 +26,13 @@
     :value="innerVal"
     :attrs="attrs"
     :listeners="$listeners"
-    :slot-renders="slotRenders"
     :option-slot-render="optionSlotRender"
   />
 </template>
 
 <script>
 import {
-  inputMixin, CustomRender, inputProps, inputSlotMixin,
+  inputMixin, CustomRender,
 } from '@onemin-table/shared';
 import AutocompleteFragment from './components/autocomplete-fragment.vue';
 import proxyMixin from './mixins/proxy';
@@ -44,7 +42,6 @@ export default {
 
   mixins: [
     inputMixin, // mounted, innerVisible, popoverListeners, popoverSlotRender, lite, innerVal
-    inputSlotMixin, // slotRenders
     proxyMixin,
   ],
 
@@ -73,8 +70,6 @@ export default {
       type: Function,
       default: null,
     },
-
-    ...inputProps,
   },
 
   computed: {

@@ -45,84 +45,44 @@ export const atomicProps = {
   },
 };
 
-export const inputSlotRenderProps = {
-  /**
-   * @language=zh
-   * 头部内容渲染函数
-   */
-  prefixSlotRender: {
-    type: Function,
-    default: null,
-  },
-
-  /**
-   * @language=zh
-   * 尾部内容渲染函数
-   */
-  suffixSlotRender: {
-    type: Function,
-    default: null,
-  },
-
-  /**
-   * @language=zh
-   * 前置内容渲染函数
-   */
-  prependSlotRender: {
-    type: Function,
-    default: null,
-  },
-
-  /**
-   * @language=zh
-   * 后置内容渲染函数
-   */
-  appendSlotRender: {
-    type: Function,
-    default: null,
-  },
-};
-
 /**
  * 输入框与Autocomplete的共有props
  * input and Autocomplete shared props
  */
 export const inputProps = {
-  ...inputSlotRenderProps,
-
   /**
    * @language=zh
-   * 前置内容字符串
+   * 前置内容字符串/渲染函数
    */
   prepend: {
-    type: String,
+    type: [String, Function],
     default: '',
   },
 
   /**
    * @language=zh
-   * 后置内容字符串
+   * 后置内容字符串/渲染函数
    */
   append: {
-    type: String,
+    type: [String, Function],
     default: '',
   },
 
   /**
    * @language=zh
-   * 尾部图标类名
+   * 尾部图标类名/渲染函数
    */
-  suffixIcon: {
-    type: String,
+  suffix: {
+    type: [String, Function],
     default: '',
   },
 
   /**
    * @language=zh
-   * 首部图标类名
+   * 首部图标类名/渲染函数
    */
-  prefixIcon: {
-    type: String,
+  prefix: {
+    type: [String, Function],
     default: '',
   },
 };

@@ -29,7 +29,7 @@ $ yarn add @onemin-table/elem-input
     v-model="foo"
     split
     placeholder="空格分隔"
-    :suffix-slot-render="suffix"
+    :suffix="suffix"
   />
 </template>
 
@@ -46,8 +46,10 @@ $ yarn add @onemin-table/elem-input
       },
     },
     methods: {
-      suffix() {
-        return <i class="el-icon-time el-input__icon" />;
+      suffix(h, value) {
+        return value?.length > 4
+          ? <i class="el-icon-time el-input__icon" />
+          : <i class="el-icon-delete el-input__icon" />;
       },
     }
   };
@@ -98,7 +100,7 @@ $ yarn add @onemin-table/elem-input
   <div>
     <elem-input
       v-model="foo"
-      :prefix-slot-render="prefixSlotRender"
+      :prefix="prefix"
       append=".com"
       prepend="https://"
     />
@@ -114,7 +116,7 @@ $ yarn add @onemin-table/elem-input
     },
 
     methods: {
-      prefixSlotRender() {
+      prefix() {
         return <i class="el-icon-time el-input__icon" />;
       },
     },
@@ -127,12 +129,10 @@ $ yarn add @onemin-table/elem-input
 
 | 参数        | 说明           | 类型  |
 | ------------- |---------------| ------|
-| prefix-slot-render | 选择器头部内容渲染函数, 相当于`el-input`的prefix slot | Function |
-| suffix-slot-render | 选择器尾部内容渲染函数, 相当于`el-input`的suffix slot | Function |
-| append-slot-render | 选择器后置内容渲染函数, 相当于`el-input`的append slot | Function |
-| prepend-slot-render | 选择器前置内容渲染函数, 相当于`el-input`的prepend slot | Function |
-| append | 选择器后置内容字符串, 优先级低于`appendSlotRender` | String |
-| prepend | 选择器前置内容字符串, 优先级低于`prependSlotRender` | String |
+| prefix-icon | 选择器头部图标类名/渲染函数, 相当于`el-input`的prefix slot | `String/Function` |
+| suffix-icon | 选择器尾部图标类名/渲染函数, 相当于`el-input`的suffix slot | `String/Function` |
+| append | 选择器后置内容字符串/渲染函数, 相当于`el-input`的append slot | `String/Function` |
+| prepend | 选择器前置内容字符串/渲染函数, 相当于`el-input`的prepend slot | `String/Function` |
 | split | 分隔模式，双向绑定值为根据`this.splitChar`分隔的数组, 默认值false | Boolean |
 | split-char | 分隔模式分隔字符串，默认值`" "` | Boolean |
 | convert-number | type="number"时, 输入字符串是否转换为number类型，默认值true | Boolean |

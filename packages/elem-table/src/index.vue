@@ -532,7 +532,7 @@ export default {
         'min-width': this.minWidth,
         'show-overflow-tooltip': this.showOverflowTooltip,
         'header-align': this.headerAlign,
-        'column-key': col.prop || '',
+        'column-key': (Array.isArray(col.children) && col.children.length) ? '' : col.prop,
         align: this.align,
         ...temp,
       };

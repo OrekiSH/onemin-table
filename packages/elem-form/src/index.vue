@@ -254,22 +254,24 @@ export default {
 
       if (this.showButtonGroup) {
         const last = result[result.length - 1];
-        // last row max column count, 最后一行最大列数
-        const lastMaxCount = ROW_SPAN_COUNT / this.GLOBAL_SPAN;
-        const lastCount = last.length;
-        // button group column, 搜索&重置按钮组所在列
-        const buttonGroupCol = {
-          type: this.BUTTON_GROUP_TYPE,
-          span: this.GLOBAL_SPAN,
-          push: ROW_SPAN_COUNT - this.GLOBAL_SPAN,
-        };
-        if (lastCount === lastMaxCount) {
-          result.push([buttonGroupCol]);
-        } else {
-          last.push({
-            ...buttonGroupCol,
-            push: ROW_SPAN_COUNT - ((lastCount + 1) * this.GLOBAL_SPAN),
-          });
+        if (last) {
+          // last row max column count, 最后一行最大列数
+          const lastMaxCount = ROW_SPAN_COUNT / this.GLOBAL_SPAN;
+          const lastCount = last.length;
+          // button group column, 搜索&重置按钮组所在列
+          const buttonGroupCol = {
+            type: this.BUTTON_GROUP_TYPE,
+            span: this.GLOBAL_SPAN,
+            push: ROW_SPAN_COUNT - this.GLOBAL_SPAN,
+          };
+          if (lastCount === lastMaxCount) {
+            result.push([buttonGroupCol]);
+          } else {
+            last.push({
+              ...buttonGroupCol,
+              push: ROW_SPAN_COUNT - ((lastCount + 1) * this.GLOBAL_SPAN),
+            });
+          }
         }
       }
 

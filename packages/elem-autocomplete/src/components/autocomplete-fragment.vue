@@ -6,11 +6,8 @@
     v-on="$attrs.listeners"
   >
     <input-slot
-      :prefix-slot-render="slotRenders.prefix"
-      :suffix-slot-render="slotRenders.suffix"
-      :prepend-slot-render="slotRenders.prepend"
-      :append-slot-render="slotRenders.append"
-    />
+      :value="$attrs.value"
+      v-bind="$attrs.attrs" />
 
     <template
       v-if="$attrs.optionSlotRender"
@@ -37,13 +34,6 @@ export default {
   components: {
     InputSlot,
     OptionSlot,
-  },
-
-  props: {
-    slotRenders: {
-      type: Object,
-      default() { return {}; },
-    },
   },
 };
 </script>

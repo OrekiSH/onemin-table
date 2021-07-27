@@ -28,46 +28,134 @@ $ yarn add @onemin-table/elem-table-page
       :on-error="onError"
       :request-config="requestConfig"
       :filters="filters"
-      data-key="programs"
-      total-key="count"
-      page-key="offset"
-      page-size-key="limit"
-      url="https://musicapi.leanapp.cn/dj/program?rid=336355127"
-    />
+      :parse-request-path="false"
+      :button-layout="buttonLayout"
+      :immediate="false"
+      :custom-render="customRender"
+      data-key="data"
+      total-key="meta.count"
+      page-key="page[offset]"
+      page-size-key="page[limit]"
+      url="https://kitsu.io/api/edge/anime"
+      show-button-group
+      layout="total, sizes, ->, prev, pager, next, jumper"
+      @sort-change="sortChange"
+    >
+      <section>
+        <button @click="customRender = null">sku</button>
+        <button @click="customRender = CUSTOM_RENDER">spu</button>
+      </section>
+    </elem-table-page>
     <button @click="handleResetPage">reset</button>
   </div>
 </template>
 
 <script>
   export default {
-    computed: {
-      columns() {
-        return [{
-          label: '名称',
-          prop: 'mainSong.name',
-        }, {
-          label: '头像',
-          prop: 'mainSong.artists[0].picUrl',
-          type: 'image',
-        }];
-      },
+    data() {
+      return {
+        columns: [],
+        filters: [],
+        customRender: null,
+      };
+    },
 
-      filters() {
-        return [{
-          label: '单号查询',
-          prop: 'order.id',
-          defaultValue: 'kkk',
-        }];
+    computed: {
+      buttonLayout() {
+        return [
+          () => <span onClick={this.handleFooClick}>foo</span>,
+          'reset',
+          'search',
+          'collapse',
+        ];
       },
 
       requestConfig() {
         return {
-          params: { foo: 1 },
+          params: {
+            foo: 1,
+          },
         };
       },
     },
 
+    mounted() {
+      const ref = this.$refs.table;
+      if (ref) ref.loading = true;
+
+      setTimeout(() => {
+        this.filters = [{
+          label: '单号查询',
+          prop: 'order',
+          defaultValue: 'kkk',
+          type: 'input',
+          'suffix-icon': 'el-icon-search',
+        }];
+      }, 1e3);
+
+      this.columns = [{
+        label: 'id',
+        prop: 'id',
+        sortable: true,
+        fixed: true,
+      }, {
+        label: '名称',
+        prop: 'attributes.titles.en_jp',
+        minWidth: 160,
+        fixed: true,
+      }, {
+        label: '封面',
+        prop: 'attributes.posterImage.small',
+        type: 'image',
+      }, {
+        label: '上映日期',
+        prop: 'onDate',
+        minWidth: 200,
+        render: (h, { row }) => (
+          <span>{`${row?.attributes?.startDate || ''}~${row?.attributes?.endDate || ''}`}</span>
+        ),
+      }, {
+        label: '集数',
+        prop: 'attributes.episodeCount',
+      }, {
+        label: '单集长度',
+        prop: 'attributes.episodeLength',
+      }, {
+        label: '平均分',
+        prop: 'attributes.averageRating',
+        fixed: 'right',
+      }];
+    },
+
     methods: {
+      CUSTOM_RENDER(h, bindData, listeners) {
+        return (
+          <div>
+            <section
+              {...{ directives: [{ name: 'loading', value: bindData.loading }] }}
+              style="margin: -12px;">
+              {
+                bindData.data.map((e) => (
+                  <div
+                    class="card"
+                    key={e.id}>{ e?.attributes?.titles?.en_jp || '' }</div>
+                ))
+              }
+            </section>
+
+            <el-pagination
+              props={bindData}
+              on={listeners}
+            />
+          </div>
+        );
+      },
+
+      handleFooClick() {
+        this.filters.splice(0, 1);
+        console.error(this.filters);
+      },
+
       handleResetPage() {
         const ref = this.$refs.table;
         if (ref) ref.setCurrentPage(0);
@@ -81,7 +169,11 @@ $ yarn add @onemin-table/elem-table-page
         console.warn(err, response);
       },
 
-      onError(err) { console.warn(err); }
+      onError(err) { console.warn(err); },
+
+      sortChange(e) {
+        console.error(e);
+      },
     },
   };
 </script>
@@ -89,6 +181,14 @@ $ yarn add @onemin-table/elem-table-page
 <style>
 .ot-pagination--elem {
   display: flex;
+}
+
+.card {
+  width: 254px;
+  height: 100px;
+  display: inline-block;
+  border: 1px solid #F7F9FC;
+  margin: 12px;
 }
 </style>
 :::

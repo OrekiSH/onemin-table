@@ -26,13 +26,12 @@ $ yarn add @onemin-table/elem-autocomplete
       v-model="foo"
       :popoverVisible="active"
       :border-color="active ? 'red' : ''"
-      :prefix-slot-render="prefixSlotRender"
+      :prefix="prefix"
       :fetch-suggestions="fetchSuggestions"
       append=".com"
       prepend="https://"
       popover-content="content"
       @change="handleChange"
-      lite
     />
   </div>
 </template>
@@ -58,7 +57,7 @@ $ yarn add @onemin-table/elem-autocomplete
         console.warn(this.foo, val);
       },
 
-      prefixSlotRender() {
+      prefix() {
         return <i class="el-icon-time el-input__icon" />;
       },
 
@@ -83,12 +82,10 @@ $ yarn add @onemin-table/elem-autocomplete
 
 | 参数        | 说明           | 类型  |
 | ------------- |---------------| ------|
-| prefix-slot-render | 输入匹配框头部内容渲染函数, 相当于`el-autocomplete`的prefix slot | Function |
-| suffix-slot-render | 输入匹配框尾部内容渲染函数, 相当于`el-autocomplete`的suffix slot | Function |
-| append-slot-render | 输入匹配框后置内容渲染函数, 相当于`el-autocomplete`的append slot | Function |
-| prepend-slot-render | 输入匹配框前置内容渲染函数, 相当于`el-autocomplete`的prepend slot | Function |
-| append | 输入匹配框后置内容字符串, 优先级低于`appendSlotRender` | String |
-| prepend | 输入匹配框前置内容字符串, 优先级低于`prependSlotRender` | String |
+| prefix-icon | 选择器头部图标类名/渲染函数, 相当于`el-input`的prefix slot | `String/Function` |
+| suffix-icon | 选择器尾部图标类名/渲染函数, 相当于`el-input`的suffix slot | `String/Function` |
+| append | 选择器后置内容字符串/渲染函数, 相当于`el-input`的append slot | `String/Function` |
+| prepend | 选择器前置内容字符串/渲染函数, 相当于`el-input`的prepend slot | `String/Function` |
 | option-slot-render | 输入匹配框自定义备选项渲染函数, 相当于`el-autocomplete`的scoped slot, 参数为当前输入建议对象 | Function |
 | data-prop | 元素标识，会被绑定到DOM元素的`data-prop`属性上, 默认为空 | String |
 | width | 输入匹配框宽度, 传入数字会被识别为像素值(px) | `String|Number` |

@@ -1,7 +1,14 @@
 <template>
   <div class="ot-form__button-group">
-    <template v-for="button in buttonLayout">
+    <template v-for="(button, index) in buttonLayout">
+      <custom-render
+        v-if="typeof button === 'function'"
+        :key="index"
+        :render="button"
+      />
+
       <component
+        v-else
         :key="button"
         :is="button"
         v-bind="genButtonGroupProps(button)"
@@ -12,7 +19,7 @@
 </template>
 
 <script>
-import { searchResetProps } from '@onemin-table/shared';
+import { searchResetProps, CustomRender } from '@onemin-table/shared';
 import search from './search.vue';
 import reset from './reset.vue';
 import collapse from './collapse.vue';
@@ -24,6 +31,7 @@ export default {
     search,
     reset,
     collapse,
+    CustomRender,
   },
 
   props: {

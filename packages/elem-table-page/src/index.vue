@@ -6,10 +6,20 @@
       v-on="formListeners"
     />
 
+    <slot />
+
     <elem-extend-table
+      v-if="!customRender"
       ref="table"
       v-bind="tableAttrs"
       v-on="tableListeners"
+    />
+
+    <custom-render
+      v-if="typeof customRender === 'function'"
+      :render="customRender"
+      :attrs="tableAttrs"
+      :listeners="tableListeners"
     />
   </div>
 </template>
@@ -26,6 +36,7 @@ import {
   ELEM_TABLE_METHODS,
   ELEM_FORM_ATTRS,
   OPTIONS_COMPONENTS,
+  CustomRender,
 } from '@onemin-table/shared';
 
 // 解析后端数据的键, key to parse data from backend.
@@ -54,6 +65,10 @@ function onCallback(cb, rejected) {
 
 export default {
   inheritAttrs: false,
+
+  components: {
+    CustomRender,
+  },
 
   props: {
     /**
@@ -172,6 +187,33 @@ export default {
       type: Number,
       default: 300,
     },
+
+    /**
+     * @language=zh
+     * 组件挂载后是否向服务端发送请求
+     */
+    immediate: {
+      type: Boolean,
+      default: true,
+    },
+
+    /**
+     * @language=zh
+     * 是否对发送的参数开启路径解析
+     */
+    parseRequestPath: {
+      type: Boolean,
+      default: true,
+    },
+
+    /**
+     * @language=zh
+     * 自定义列表渲染函数
+     */
+    customRender: {
+      type: Function,
+      default: null,
+    },
   },
 
   data() {
@@ -186,16 +228,31 @@ export default {
       loading: false,
 
       axios: null,
+      cancelFunc: null,
 
       query: null,
+      init: false,
     };
+  },
+
+  watch: {
+    filters: {
+      handler(val, oldVal) {
+        if (this.init && val.length && !oldVal.length && !Object.keys(this.query).length) {
+          this.init = false;
+          this.query = this.defaultQuery;
+          this.fetchTableData();
+        }
+      },
+      deep: true,
+    },
   },
 
   created() {
     this.checkKeys();
   },
 
-  mounted() {
+  async mounted() {
     const { table } = this.$refs;
     if (table) {
       // proxy <elem-extend-table> methods, 代理<elem-extend-table>的方法
@@ -223,7 +280,13 @@ export default {
     }
 
     this.debounceFetchTableData = debounce(this.fetchTableData, this.inputDebounce);
-    this.fetchTableData();
+    if (this.immediate) this.fetchTableData();
+
+    this.init = true;
+  },
+
+  beforeDestroy() {
+    this.cancelFetchTableData();
   },
 
   computed: {
@@ -236,6 +299,7 @@ export default {
         data: this.data,
         currentPage: this.page,
         pageSize: this.size,
+        lite: true,
         ...omit(this.$attrs, ELEM_FORM_ATTRS),
       };
 
@@ -267,6 +331,7 @@ export default {
         ...pick(this.$attrs || {}, ELEM_FORM_ATTRS),
         query: this.query,
         filters: this.FILTERS,
+        loading: this.loading,
         'auto-layout': true,
         'label-position': 'left',
         'label-width': '80px',
@@ -288,7 +353,6 @@ export default {
         },
         'on-reset': () => {
           this.query = this.defaultQuery;
-          console.warn(this.query);
           if (typeof onReset === 'function') onReset(this.query);
           this.setCurrentPage(1);
         },
@@ -299,11 +363,11 @@ export default {
     defaultQuery() {
       return this.filters.reduce((a, c) => {
         if (typeof c.defaultValue !== 'undefined') {
-          set(a, c.prop, c.defaultValue);
+          this.set(a, c.prop, c.defaultValue);
         } else if (c.type === 'select') {
-          set(a, c.prop, []);
+          this.set(a, c.prop, []);
         } else {
-          set(a, c.prop, '');
+          this.set(a, c.prop, '');
         }
         return a;
       }, {});
@@ -312,10 +376,10 @@ export default {
     // query params, 请求参数
     params() {
       const result = {};
-      set(result, this.pageKey, this.page);
-      set(result, this.pageSizeKey, this.size);
+      this.set(result, this.pageKey, this.page);
+      this.set(result, this.pageSizeKey, this.size);
       Object.keys(this.query).forEach((k) => {
-        set(result, k, this.query[k]);
+        this.set(result, k, this.query[k]);
       });
 
       return result;
@@ -354,6 +418,16 @@ export default {
   },
 
   methods: {
+    set(obj, path, value) {
+      if (this.parseRequestPath) {
+        return set(obj, path, value);
+      }
+
+      // eslint-disable-next-line
+      obj[path] = value;
+      return obj;
+    },
+
     // check parse data keys, 检查解析数据的键值
     checkKeys() {
       DATA_KEYS.forEach((k) => {
@@ -380,7 +454,12 @@ export default {
 
       try {
         // axios request config passed by user, 用户传入的axios请求配置
-        const config = this.requestConfig;
+        const config = {
+          ...this.requestConfig,
+          cancelToken: new axios.CancelToken((func) => {
+            this.cancelFunc = func;
+          }),
+        };
 
         const { params } = this;
         // request config generated, 生成的axios请求配置
@@ -417,6 +496,14 @@ export default {
         if (typeof this.onError === 'function') this.onError(err);
       }
       this.loading = false;
+    },
+
+    // cancel fetch table data, 取消获取表格数据
+    cancelFetchTableData() {
+      if (typeof this.cancelFunc === 'function') {
+        this.cancelFunc();
+        this.cancelFunc = null;
+      }
     },
   },
 };
