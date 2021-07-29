@@ -6,6 +6,7 @@
       `el-range-editor--${ size }`,
       pickerDisabled ? 'is-disabled' : '',
     ]"
+    style="width: 100%;"
     @mouseenter="handleMouseEnter"
     @mouseleave="showClose = false"
   >

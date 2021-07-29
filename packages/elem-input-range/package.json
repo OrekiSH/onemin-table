@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-input-range",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "@onemin-table/elem-input-range",
   "module": "es/index.js",
   "main": "lib/index.js",

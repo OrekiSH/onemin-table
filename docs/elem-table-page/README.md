@@ -86,9 +86,18 @@ $ yarn add @onemin-table/elem-table-page
       setTimeout(() => {
         this.filters = [{
           label: '单号查询',
-          prop: 'order.foo.start,order.foo.start',
+          prop: 'order',
           defaultValue: ['kkk'],
           type: 'input-range',
+        }, {
+          label: 'foo',
+          prop: 'foo',
+        }, {
+          label: 'bar',
+          prop: 'bar',
+        }, {
+          label: 'baz',
+          prop: 'baz',
         }];
       }, 1e3);
 

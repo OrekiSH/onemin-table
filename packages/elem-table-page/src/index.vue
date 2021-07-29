@@ -175,6 +175,15 @@ export default {
 
     /**
      * @language=zh
+     * 请求参数处理函数
+     */
+    paramTransformer: {
+      type: Function,
+      default: null,
+    },
+
+    /**
+     * @language=zh
      * 表单元素schema
      */
     filters: {
@@ -349,9 +358,9 @@ export default {
     // form attributes, 表单属性
     formAttrs() {
       return {
-        lite: true,
         ...pick(this.$attrs || {}, ELEM_FORM_ATTRS),
         query: this.query,
+        lite: true,
         filters: this.FILTERS,
         loading: this.loading,
         'auto-layout': true,
@@ -492,16 +501,24 @@ export default {
 
         // with body or not, 数据携带于body/url
         const method = (config?.method || '').toLowerCase();
+
+        const transformable = typeof this.paramTransformer === 'function';
         if (['post', 'put', 'patch'].indexOf(method) !== -1) {
           config.data = {
             ...config.data,
             ...params,
           };
+          if (transformable) {
+            config.data = this.paramTransformer(config.data);
+          }
         } else {
           config.params = {
             ...config.params,
             ...params,
           };
+          if (transformable) {
+            config.params = this.paramTransformer(config.params);
+          }
         }
 
         const { data } = await this.axios(config);
