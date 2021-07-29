@@ -138,7 +138,7 @@ schema-based表单模板组件
           required: true,
         }, {
           label: '区间',
-          prop: 'range.start,range.end',
+          prop: 'range',
           type: 'input-range',
         }, {
           label: '部门',
@@ -153,7 +153,7 @@ schema-based表单模板组件
         }, {
           label: '创建日期',
           prop: 'createTime',
-          type: 'datetimerange',
+          type: 'daterange',
           attrs: {
             valueFormat: 'yyyy-MM-dd',
           },

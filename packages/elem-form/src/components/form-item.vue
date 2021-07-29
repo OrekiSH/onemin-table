@@ -44,7 +44,7 @@ import get from 'lodash/get';
 import toPath from 'lodash/toPath';
 import {
   CustomRender, COMPONENT_MAP, ELEM_COMPONENTS,
-  LIST_COMPONENTS, INPUT_TYPES, EL_COL_ATTRS,
+  LIST_COMPONENTS, INPUT_TYPES, EL_COL_ATTRS, ELEM_DATE_TYPES,
 } from '@onemin-table/shared';
 
 const ElemSelect = () => import('@onemin-table/elem-select');
@@ -111,7 +111,7 @@ export default {
     // components attributes, 组件属性
     attrs() {
       const { type } = this.filter;
-      const omitAttrs = LIST_COMPONENTS.indexOf(type) > -1
+      const omitAttrs = [...LIST_COMPONENTS, ...ELEM_DATE_TYPES].indexOf(type) > -1
         ? EL_COL_ATTRS
         : EL_COL_ATTRS.concat('type');
 
@@ -139,7 +139,7 @@ export default {
       const result = { ...listeners };
       // system components value changed, 系统定义组件值改变事件
       if (ELEM_COMPONENTS.indexOf(type) > -1) {
-        let evt = INPUT_TYPES.indexOf(type) > -1 ? 'input' : 'change';
+        const evt = INPUT_TYPES.indexOf(type) > -1 ? 'input' : 'change';
 
         result[evt] = (...args) => {
           if (typeof listeners?.[evt] === 'function') {

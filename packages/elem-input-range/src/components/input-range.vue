@@ -9,6 +9,10 @@
     @mouseenter="handleMouseEnter"
     @mouseleave="showClose = false"
   >
+    <div v-if="$slots.prepend">
+      <slot name="prepend"></slot>
+    </div>
+
     <input
       autocomplete="off"
       :placeholder="startPlaceholder"
@@ -44,6 +48,10 @@
       class="el-input__icon el-range__close-icon"
       @click="handleClickIcon"
     />
+
+    <div v-if="$slots.append">
+      <slot name="append"></slot>
+    </div>
   </div>
 </template>
 

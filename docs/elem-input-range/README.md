@@ -29,6 +29,7 @@ $ yarn add @onemin-table/elem-input-range
       popover-content="内容"
       type="number"
       :range-separator-slot-render="rangeSeparatorSlotRender"
+      append="%"
       @change="onChange"
     />
   </div>

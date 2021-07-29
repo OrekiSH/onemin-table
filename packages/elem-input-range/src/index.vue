@@ -20,6 +20,11 @@
       <custom-render
         slot="range-separator"
         :render="rangeSeparatorSlotRender" />
+
+      <input-slot
+        :value="innerVal"
+        v-bind="$attrs"
+      />
     </el-input-range>
   </el-popover>
 
@@ -33,13 +38,19 @@
     <custom-render
       slot="range-separator"
       :render="rangeSeparatorSlotRender" />
+
+    <input-slot
+      :value="innerVal"
+      v-bind="$attrs"
+    />
   </el-input-range>
 </template>
 
 <script>
 import pick from 'lodash/pick';
 import {
-  popoverMixin, CustomRender, EL_INPUT_RANGE_ATTRS, proxyMethods, ATOMIC_ATTRS,
+  popoverMixin, InputSlot, EL_INPUT_RANGE_ATTRS, proxyMethods, ATOMIC_ATTRS,
+  CustomRender,
 } from '@onemin-table/shared';
 import ElInputRange from './components/input-range.vue';
 
@@ -53,6 +64,7 @@ export default {
   components: {
     ElInputRange,
     CustomRender,
+    InputSlot,
   },
 
   props: {
