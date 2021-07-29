@@ -38,6 +38,7 @@ schema-based表单模板组件
           nest: {
             arr: ['a', { nest: ['b', 'c'] }]
           },
+          'range.start,range.end': ['', ''],
         },
         // options
         roles: [],
@@ -137,7 +138,7 @@ schema-based表单模板组件
           required: true,
         }, {
           label: '区间',
-          prop: 'range',
+          prop: 'range.start,range.end',
           type: 'input-range',
         }, {
           label: '部门',

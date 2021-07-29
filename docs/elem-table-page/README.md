@@ -28,7 +28,7 @@ $ yarn add @onemin-table/elem-table-page
       :on-error="onError"
       :request-config="requestConfig"
       :filters="filters"
-      :parse-request-path="false"
+      :parse-request-path="true"
       :button-layout="buttonLayout"
       :immediate="false"
       :custom-render="customRender"
@@ -86,10 +86,9 @@ $ yarn add @onemin-table/elem-table-page
       setTimeout(() => {
         this.filters = [{
           label: '单号查询',
-          prop: 'order',
-          defaultValue: 'kkk',
-          type: 'input',
-          'suffix-icon': 'el-icon-search',
+          prop: 'order.foo.start,order.foo.start',
+          defaultValue: ['kkk'],
+          type: 'input-range',
         }];
       }, 1e3);
 

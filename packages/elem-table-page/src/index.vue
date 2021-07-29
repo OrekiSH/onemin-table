@@ -48,6 +48,9 @@ const DATA_KEYS = [
   'url',
 ];
 
+const { toString } = Object.prototype;
+const isObject = (val) => toString.call(val) === '[object Object]';
+
 function onCallback(cb, rejected) {
   // config/error/response
   return (data) => {
@@ -85,6 +88,15 @@ export default {
      * 解析后端返回列表数据, 支持使用"."或者"[0]"解析嵌套值
      */
     dataKey: {
+      type: String,
+      default: '',
+    },
+
+    /**
+     * @language=zh
+     * 解析后端返回的汇总数据, 支持使用"."或者"[0]"解析嵌套值
+     */
+    summaryKey: {
       type: String,
       default: '',
     },
@@ -214,6 +226,15 @@ export default {
       type: Function,
       default: null,
     },
+
+    /**
+     * @language=zh
+     * 将以该字符分隔的prop解析为多个
+     */
+    splitChar: {
+      type: String,
+      default: ',',
+    },
   },
 
   data() {
@@ -328,12 +349,13 @@ export default {
     // form attributes, 表单属性
     formAttrs() {
       return {
+        lite: true,
         ...pick(this.$attrs || {}, ELEM_FORM_ATTRS),
         query: this.query,
         filters: this.FILTERS,
         loading: this.loading,
         'auto-layout': true,
-        'label-position': 'left',
+        'label-position': 'right',
         'label-width': '80px',
         'show-button-group': this.showButtonGroup,
       };
@@ -369,6 +391,7 @@ export default {
         } else {
           this.set(a, c.prop, '');
         }
+        console.warn(a);
         return a;
       }, {});
     },
@@ -419,7 +442,7 @@ export default {
 
   methods: {
     set(obj, path, value) {
-      if (this.parseRequestPath) {
+      if (this.parseRequestPath && !path.includes(this.splitChar)) {
         return set(obj, path, value);
       }
 
@@ -486,7 +509,17 @@ export default {
         // data list, 列表数据
         let d = get(data, this.dataKey);
         d = Array.isArray(d) ? d : [];
-        if (typeof this.transformer === 'function') d = this.transformer(d);
+
+        // summary data, 汇总数据
+        let summary = null;
+        if (this.summaryKey) {
+          summary = get(data, this.summaryKey);
+          if (isObject(summary)) d = [summary, ...d];
+        }
+        // transformer, 转换函数
+        if (typeof this.transformer === 'function') {
+          d = await this.transformer(d);
+        }
         this.data = d;
 
         // total count, 数据总量

@@ -1,41 +1,48 @@
 <template>
-  <el-popover
-    :value="attrs.popoverVisible && mounted"
-    v-bind="innerPopoverAttrs"
-    v-on="attrs.popoverListeners"
-  >
-    <template v-if="attrs.popoverSlotRender">
-      <custom-render :render="attrs.popoverSlotRender" />
-    </template>
+  <div>
+    <el-popover
+      v-if="useImage"
+      :value="attrs.popoverVisible && mounted"
+      v-bind="innerPopoverAttrs"
+      v-on="attrs.popoverListeners"
+    >
+      <template v-if="attrs.popoverSlotRender">
+        <custom-render :render="attrs.popoverSlotRender" />
+      </template>
 
-    <template v-else>
+      <template v-else>
+        <el-image
+          class="ot-table__popover-image--elem"
+          :src="imageSrc"
+          :preview-src-list="previewSrcList"
+        >
+          <image-slot
+            :error-slot-render="col.errorSlotRender"
+            :placeholder-slot-render="col.placeholderSlotRender"
+          />
+        </el-image>
+      </template>
+
       <el-image
-        class="ot-table__popover-image--elem"
-        :src="genImageSrc(scope.row, col.prop)"
-        :preview-src-list="genPreviewSrcList(scope.row, col)"
+        slot="reference"
+        :src="imageSrc"
+        :preview-src-list="previewSrcList"
+        :data-prop="col.prop"
+        class="ot-table__image--elem"
+        v-bind="attrs"
+        v-on="listeners"
       >
         <image-slot
           :error-slot-render="col.errorSlotRender"
           :placeholder-slot-render="col.placeholderSlotRender"
         />
       </el-image>
-    </template>
+    </el-popover>
 
-    <el-image
-      slot="reference"
-      :src="genImageSrc(scope.row, col.prop)"
-      :preview-src-list="genPreviewSrcList(scope.row, col)"
-      :data-prop="col.prop"
-      class="ot-table__image--elem"
-      v-bind="attrs"
-      v-on="listeners"
-    >
-      <image-slot
-        :error-slot-render="col.errorSlotRender"
-        :placeholder-slot-render="col.placeholderSlotRender"
-      />
-    </el-image>
-  </el-popover>
+    <div
+      v-else
+      class="cell">{{ imageSrc }}</div>
+  </div>
 </template>
 
 <script>
@@ -49,6 +56,8 @@ export default {
   },
 
   inheritAttrs: false,
+
+  inject: ['imageIgnoreValue'],
 
   props: {
     col: {
@@ -108,6 +117,13 @@ export default {
   },
 
   computed: {
+    useImage() {
+      const d = Array.isArray(this.imageIgnoreValue)
+        ? this.imageIgnoreValue : [];
+
+      return !d.includes(this.imageSrc);
+    },
+
     innerPopoverAttrs() {
       const result = {
         trigger: 'hover',
@@ -148,20 +164,13 @@ export default {
 
       return result;
     },
-  },
 
-  mounted() {
-    // corrent popover placement, 纠正<el-popover>的位置
-    this.mounted = true;
-  },
-
-  methods: {
     /**
      * image src
      * 图片src属性
      */
-    genImageSrc(row, prop) {
-      const data = get(row, prop);
+    imageSrc() {
+      const data = get(this.scope?.row, this.col?.prop);
       const url = (Array.isArray(data) && data.length) ? data[0] : data;
       if (typeof this.imageSrcTransformer === 'function') {
         return this.imageSrcTransformer(url);
@@ -170,6 +179,17 @@ export default {
       return url;
     },
 
+    previewSrcList() {
+      return this.genPreviewSrcList(this.scope?.row, this.col?.prop);
+    },
+  },
+
+  mounted() {
+    // corrent popover placement, 纠正<el-popover>的位置
+    this.mounted = true;
+  },
+
+  methods: {
     /**
      * preview url list
      * 预览url列表

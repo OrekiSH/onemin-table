@@ -455,4 +455,8 @@ export default {
   flex-wrap: nowrap;
   overflow: hidden;
 }
+
+.ot-form--elem .el-date-editor.el-input, .el-date-editor.el-input__inner {
+  width: 100%;
+}
 </style>
