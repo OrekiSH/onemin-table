@@ -24,5 +24,9 @@ export default {
   components: {
     InputSlot,
   },
+
+  mounted() {
+    console.error(this.$attrs.value);
+  },
 };
 </script>

@@ -22,6 +22,15 @@ export const ELEM_DATE_TYPES = Object.freeze([
   ...ELEM_DATE_RANGE_TYPES,
 ]);
 
+export const ELEM_RANGE_TYPES = [
+  'select',
+  'cascader',
+  'checkbox',
+  'checkbox-button',
+  'input-range',
+  ...ELEM_DATE_RANGE_TYPES,
+];
+
 export const COMPONENT_MAP = Object.freeze({
   // input, 输入框
   input: 'elem-input',

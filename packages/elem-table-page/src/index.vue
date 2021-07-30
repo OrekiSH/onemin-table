@@ -31,12 +31,14 @@ import set from 'lodash/set';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import debounce from 'lodash/debounce';
+import cloneDeep from 'lodash/cloneDeep';
 import {
   EL_FORM_EVENTS,
   ELEM_TABLE_METHODS,
   ELEM_FORM_ATTRS,
   OPTIONS_COMPONENTS,
   CustomRender,
+  ELEM_RANGE_TYPES,
 } from '@onemin-table/shared';
 
 // 解析后端数据的键, key to parse data from backend.
@@ -235,15 +237,6 @@ export default {
       type: Function,
       default: null,
     },
-
-    /**
-     * @language=zh
-     * 将以该字符分隔的prop解析为多个
-     */
-    splitChar: {
-      type: String,
-      default: ',',
-    },
   },
 
   data() {
@@ -270,11 +263,15 @@ export default {
       handler(val, oldVal) {
         if (this.init && val.length && !oldVal.length && !Object.keys(this.query).length) {
           this.init = false;
-          this.query = this.defaultQuery;
+          this.query = cloneDeep(this.defaultQuery);
           this.fetchTableData();
         }
       },
       deep: true,
+    },
+
+    url(val) {
+      if (val) this.fetchTableData();
     },
   },
 
@@ -291,7 +288,7 @@ export default {
       });
     }
 
-    this.query = this.defaultQuery;
+    this.query = cloneDeep(this.defaultQuery);
 
     this.axios = axios.create({});
 
@@ -383,9 +380,9 @@ export default {
           this.setCurrentPage(1);
         },
         'on-reset': () => {
-          this.query = this.defaultQuery;
           if (typeof onReset === 'function') onReset(this.query);
-          this.setCurrentPage(1);
+          this.query = cloneDeep(this.defaultQuery);
+          this.page = 1;
         },
       };
     },
@@ -395,12 +392,13 @@ export default {
       return this.filters.reduce((a, c) => {
         if (typeof c.defaultValue !== 'undefined') {
           this.set(a, c.prop, c.defaultValue);
-        } else if (c.type === 'select') {
+        } else if (ELEM_RANGE_TYPES.indexOf(c.type) > -1) {
           this.set(a, c.prop, []);
         } else {
-          this.set(a, c.prop, '');
+          const isNumber = c?.attrs?.type === 'number' || c.type === 'input-number';
+          this.set(a, c.prop, isNumber ? 0 : '');
         }
-        console.warn(a);
+
         return a;
       }, {});
     },
@@ -451,7 +449,7 @@ export default {
 
   methods: {
     set(obj, path, value) {
-      if (this.parseRequestPath && !path.includes(this.splitChar)) {
+      if (this.parseRequestPath) {
         return set(obj, path, value);
       }
 
@@ -529,7 +527,7 @@ export default {
 
         // summary data, 汇总数据
         let summary = null;
-        if (this.summaryKey) {
+        if (this.summaryKey && d.length) {
           summary = get(data, this.summaryKey);
           if (isObject(summary)) d = [summary, ...d];
         }

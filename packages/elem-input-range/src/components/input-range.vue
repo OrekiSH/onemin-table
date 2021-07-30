@@ -172,7 +172,7 @@ export default {
 
     reference() {
       const { reference } = this.$refs;
-      return reference.$el || reference;
+      return reference?.$el || reference;
     },
 
     refInput() {

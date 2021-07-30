@@ -104,7 +104,7 @@ $ yarn add @onemin-table/elem-table-page
       this.columns = [{
         label: 'id',
         prop: 'id',
-        sortable: true,
+        sortable: 'custom',
         fixed: true,
       }, {
         label: '名称',
