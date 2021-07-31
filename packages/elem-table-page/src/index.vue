@@ -381,8 +381,7 @@ export default {
         },
         'on-reset': () => {
           if (typeof onReset === 'function') onReset(this.query);
-          this.query = cloneDeep(this.defaultQuery);
-          this.page = 1;
+          this.reset();
         },
       };
     },
@@ -448,6 +447,12 @@ export default {
   },
 
   methods: {
+    // reset query and page, 重置查询条件和当前页数
+    reset() {
+      this.query = cloneDeep(this.defaultQuery);
+      this.page = 1;
+    },
+
     set(obj, path, value) {
       if (this.parseRequestPath) {
         return set(obj, path, value);
