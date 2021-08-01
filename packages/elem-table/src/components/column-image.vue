@@ -180,7 +180,7 @@ export default {
     },
 
     previewSrcList() {
-      return this.genPreviewSrcList(this.scope?.row, this.col?.prop);
+      return this.genPreviewSrcList(this.scope?.row, this.col);
     },
   },
 

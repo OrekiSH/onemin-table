@@ -28,7 +28,7 @@ $ yarn add @onemin-table/elem-table-page
       :on-error="onError"
       :request-config="requestConfig"
       :filters="filters"
-      :parse-request-path="true"
+      :parse-request-path="false"
       :button-layout="buttonLayout"
       :immediate="false"
       :custom-render="customRender"
