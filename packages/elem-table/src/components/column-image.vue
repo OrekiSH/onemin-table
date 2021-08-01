@@ -1,48 +1,41 @@
 <template>
-  <div>
-    <el-popover
-      v-if="useImage"
-      :value="attrs.popoverVisible && mounted"
-      v-bind="innerPopoverAttrs"
-      v-on="attrs.popoverListeners"
-    >
-      <template v-if="attrs.popoverSlotRender">
-        <custom-render :render="attrs.popoverSlotRender" />
-      </template>
+  <el-popover
+    :value="attrs.popoverVisible && mounted"
+    v-bind="innerPopoverAttrs"
+    v-on="attrs.popoverListeners"
+  >
+    <template v-if="attrs.popoverSlotRender">
+      <custom-render :render="attrs.popoverSlotRender" />
+    </template>
 
-      <template v-else>
-        <el-image
-          class="ot-table__popover-image--elem"
-          :src="imageSrc"
-          :preview-src-list="previewSrcList"
-        >
-          <image-slot
-            :error-slot-render="col.errorSlotRender"
-            :placeholder-slot-render="col.placeholderSlotRender"
-          />
-        </el-image>
-      </template>
-
+    <template v-else>
       <el-image
-        slot="reference"
+        class="ot-table__popover-image--elem"
         :src="imageSrc"
         :preview-src-list="previewSrcList"
-        :data-prop="col.prop"
-        class="ot-table__image--elem"
-        v-bind="attrs"
-        v-on="listeners"
       >
         <image-slot
           :error-slot-render="col.errorSlotRender"
           :placeholder-slot-render="col.placeholderSlotRender"
         />
       </el-image>
-    </el-popover>
+    </template>
 
-    <div
-      v-else
-      class="cell">{{ imageSrc }}</div>
-  </div>
+    <el-image
+      slot="reference"
+      :src="imageSrc"
+      :preview-src-list="previewSrcList"
+      :data-prop="col.prop"
+      class="ot-table__image--elem"
+      v-bind="attrs"
+      v-on="listeners"
+    >
+      <image-slot
+        :error-slot-render="col.errorSlotRender"
+        :placeholder-slot-render="col.placeholderSlotRender"
+      />
+    </el-image>
+  </el-popover>
 </template>
 
 <script>
@@ -56,8 +49,6 @@ export default {
   },
 
   inheritAttrs: false,
-
-  inject: ['imageIgnoreValue'],
 
   props: {
     col: {
@@ -117,13 +108,6 @@ export default {
   },
 
   computed: {
-    useImage() {
-      const d = Array.isArray(this.imageIgnoreValue)
-        ? this.imageIgnoreValue : [];
-
-      return !d.includes(this.imageSrc);
-    },
-
     innerPopoverAttrs() {
       const result = {
         trigger: 'hover',

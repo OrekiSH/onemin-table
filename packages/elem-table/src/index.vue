@@ -183,15 +183,6 @@ export default {
 
     /**
      * @language=zh
-     * 图片类型的指定值渲染为文字
-     */
-    imageIgnoreValue: {
-      type: Array,
-      default() { return []; },
-    },
-
-    /**
-     * @language=zh
      * 图片类型的列数据转换函数
      */
     imageSrcTransformer: {
@@ -319,7 +310,6 @@ export default {
       'lite',
       'genColumnEnterChangeLine',
       'placeholder',
-      'imageIgnoreValue',
     ]);
   },
 

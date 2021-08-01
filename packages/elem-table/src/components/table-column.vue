@@ -12,7 +12,7 @@
     <template slot-scope="scope">
       <!-- System component, 系统定义组件 -->
       <component
-        v-if="COMPONENT_MAP[col.type] && !lite"
+        v-if="COMPONENT_MAP[col.type] && !lite && col.customIndex !== scope.$index"
         :is="COMPONENT_MAP[col.type]"
         v-bind="genColumnItemAttrs(col, scope)"
         v-on="genColumnItemListeners(col, scope)"
@@ -20,7 +20,7 @@
       />
 
       <column-image
-        v-else-if="col.type === 'image'"
+        v-else-if="col.type === 'image' && col.customIndex !== scope.$index"
         v-bind="genColumnItemAttrs(col, scope)"
         v-on="genColumnItemListeners(col, scope)"
       />
@@ -28,11 +28,12 @@
       <!-- Custom render component, includes expand type -->
       <!-- 用户自定义渲染组件, 包含expand类型 -->
       <custom-cell-render
-        v-else-if="typeof col.render === 'function'"
+        v-else-if="typeof col.render === 'function'
+          || (col.customIndex === scope.$index && typeof col.customIndexRender === 'function')"
         :index="scope.$index"
         :column="col"
         :row="scope.row"
-        :render="col.render"
+        :render="col.render || col.customIndexRender"
       />
 
       <!-- Default, 默认 -->

@@ -32,6 +32,7 @@ $ yarn add @onemin-table/elem-table-page
       :button-layout="buttonLayout"
       :immediate="false"
       :custom-render="customRender"
+      :lite="false"
       data-key="data"
       total-key="meta.count"
       page-key="page[offset]"
@@ -115,6 +116,8 @@ $ yarn add @onemin-table/elem-table-page
         label: '封面',
         prop: 'attributes.posterImage.small',
         type: 'image',
+        customIndex: 0,
+        customIndexRender: () => <span>汇总</span>,
       }, {
         label: '上映日期',
         prop: 'onDate',
@@ -125,6 +128,9 @@ $ yarn add @onemin-table/elem-table-page
       }, {
         label: '集数',
         prop: 'attributes.episodeCount',
+        type: 'input',
+        customIndex: 2,
+        customIndexRender: () => <span>汇总</span>,
       }, {
         label: '单集长度',
         prop: 'attributes.episodeLength',
