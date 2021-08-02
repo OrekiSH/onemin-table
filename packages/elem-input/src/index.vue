@@ -156,7 +156,7 @@ export default {
      */
     genOuterVal(val) {
       return this.split
-        ? val.split(this.splitChar)
+        ? val.split(this.splitChar).filter(Boolean)
         : ((this.$attrs.type === 'number' && this.convertNumber) ? +val : val);
     },
   },
