@@ -402,18 +402,6 @@ export default {
       }, {});
     },
 
-    // query params, 请求参数
-    params() {
-      const result = {};
-      this.set(result, this.pageKey, this.page);
-      this.set(result, this.pageSizeKey, this.size);
-      Object.keys(this.query).forEach((k) => {
-        this.set(result, k, this.query[k]);
-      });
-
-      return result;
-    },
-
     FILTERS() {
       // reactive filters, 数据变化自动请求
       if (!this.showButtonGroup) {
@@ -484,71 +472,57 @@ export default {
     },
 
     // fetch table data, 获取表格数据
-    async fetchTableData() {
-      this.loading = true;
+    fetchTableData() {
+      // wait for request-config change
+      this.$nextTick(async () => {
+        this.loading = true;
 
-      try {
-        // axios request config passed by user, 用户传入的axios请求配置
-        const config = {
-          ...this.requestConfig,
-          cancelToken: new axios.CancelToken((func) => {
-            this.cancelFunc = func;
-          }),
-        };
-
-        const { params } = this;
-        // request config generated, 生成的axios请求配置
-        if (!config.url) {
-          config.url = this.url;
-        }
-
-        // with body or not, 数据携带于body/url
-        const method = (config?.method || '').toLowerCase();
-
-        const transformable = typeof this.paramTransformer === 'function';
-        if (['post', 'put', 'patch'].indexOf(method) !== -1) {
-          config.data = {
-            ...config.data,
-            ...params,
+        try {
+          // axios request config passed by user, 用户传入的axios请求配置
+          const config = {
+            ...this.requestConfig,
+            cancelToken: new axios.CancelToken((func) => {
+              this.cancelFunc = func;
+            }),
           };
-          if (transformable) {
-            config.data = this.paramTransformer(config.data);
+
+          // request config generated, 生成的axios请求配置
+          if (!config.url) {
+            config.url = this.url;
           }
-        } else {
-          config.params = {
-            ...config.params,
-            ...params,
-          };
-          if (transformable) {
-            config.params = this.paramTransformer(config.params);
+
+          // with body or not, 数据携带于body/url
+          const method = (config?.method || '').toLowerCase();
+
+          const key = ['post', 'put', 'patch'].indexOf(method) !== -1 ? 'data' : 'params';
+          config[key] = await this.mergeConfigData(config, key);
+
+          const { data } = await this.axios(config);
+
+          // data list, 列表数据
+          let d = get(data, this.dataKey);
+          d = Array.isArray(d) ? d : [];
+
+          // summary data, 汇总数据
+          let summary = null;
+          if (this.summaryKey && d.length) {
+            summary = get(data, this.summaryKey);
+            if (isObject(summary)) d = [summary, ...d];
           }
+          // transformer, 转换函数
+          if (typeof this.transformer === 'function') {
+            d = await this.transformer(d);
+          }
+          this.data = d;
+
+          // total count, 数据总量
+          const t = get(data, this.totalKey);
+          this.total = +t || 0;
+        } catch (err) {
+          if (typeof this.onError === 'function') this.onError(err);
         }
-
-        const { data } = await this.axios(config);
-
-        // data list, 列表数据
-        let d = get(data, this.dataKey);
-        d = Array.isArray(d) ? d : [];
-
-        // summary data, 汇总数据
-        let summary = null;
-        if (this.summaryKey && d.length) {
-          summary = get(data, this.summaryKey);
-          if (isObject(summary)) d = [summary, ...d];
-        }
-        // transformer, 转换函数
-        if (typeof this.transformer === 'function') {
-          d = await this.transformer(d);
-        }
-        this.data = d;
-
-        // total count, 数据总量
-        const t = get(data, this.totalKey);
-        this.total = +t || 0;
-      } catch (err) {
-        if (typeof this.onError === 'function') this.onError(err);
-      }
-      this.loading = false;
+        this.loading = false;
+      });
     },
 
     // cancel fetch table data, 取消获取表格数据
@@ -557,6 +531,33 @@ export default {
         this.cancelFunc();
         this.cancelFunc = null;
       }
+    },
+
+    // generate query params, 生成请求参数
+    genParams() {
+      const result = {};
+      this.set(result, this.pageKey, this.page);
+      this.set(result, this.pageSizeKey, this.size);
+      Object.keys(this.query).forEach((k) => {
+        this.set(result, k, this.query[k]);
+      });
+
+      return result;
+    },
+
+    // merge config data, 合并请求数据
+    async mergeConfigData(config, key) {
+      let result = cloneDeep({
+        ...this.genParams(),
+        ...config[key],
+      });
+
+      const transformable = typeof this.paramTransformer === 'function';
+      if (transformable) {
+        result = await this.paramTransformer(result);
+      }
+
+      return result;
     },
   },
 };

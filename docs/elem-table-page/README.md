@@ -58,6 +58,9 @@ $ yarn add @onemin-table/elem-table-page
         columns: [],
         filters: [],
         customRender: null,
+
+        sort: null,
+        sortType: null,
       };
     },
 
@@ -75,6 +78,8 @@ $ yarn add @onemin-table/elem-table-page
         return {
           params: {
             foo: 1,
+            sort: this.sort,
+            sortType: this.sortType,
           },
         };
       },
@@ -112,6 +117,7 @@ $ yarn add @onemin-table/elem-table-page
         prop: 'attributes.titles.en_jp',
         minWidth: 160,
         fixed: true,
+        sortable: 'custom',
       }, {
         label: '封面',
         prop: 'attributes.posterImage.small',
@@ -185,8 +191,13 @@ $ yarn add @onemin-table/elem-table-page
 
       onError(err) { console.warn(err); },
 
-      sortChange(e) {
-        console.error(e);
+      sortChange({ order, prop }) {
+        const hasSort = order && prop;
+        this.sort = hasSort ? prop : null;
+        this.sortType = hasSort ? order.slice(0, order.length - 'ending'.length) : null;
+
+        const ref = this.$refs.table;
+        if (ref) ref.fetchTableData();
       },
     },
   };
