@@ -1,6 +1,6 @@
 {
   "name": "@onemin-table/elem-table-page",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "@onemin-table/elem-table-page",
   "module": "es/index.js",
   "main": "lib/index.js",

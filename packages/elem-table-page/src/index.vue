@@ -355,7 +355,6 @@ export default {
     // form attributes, 表单属性
     formAttrs() {
       return {
-        ...pick(this.$attrs || {}, ELEM_FORM_ATTRS),
         query: this.query,
         lite: true,
         filters: this.FILTERS,
@@ -364,6 +363,7 @@ export default {
         'label-position': 'right',
         'label-width': '80px',
         'show-button-group': this.showButtonGroup,
+        ...pick(this.$attrs || {}, ELEM_FORM_ATTRS),
       };
     },
 
