@@ -264,14 +264,18 @@ export default {
         if (this.init && val.length && !oldVal.length && !Object.keys(this.query).length) {
           this.init = false;
           this.query = cloneDeep(this.defaultQuery);
+          this.cancelFetchTableData();
           this.fetchTableData();
         }
       },
       deep: true,
     },
 
-    url(val) {
-      if (val) this.fetchTableData();
+    url(val, oldVal) {
+      if (val !== oldVal) {
+        this.cancelFetchTableData();
+        this.fetchTableData();
+      }
     },
   },
 
@@ -306,7 +310,11 @@ export default {
       );
     }
 
-    this.debounceFetchTableData = debounce(this.fetchTableData, this.inputDebounce);
+    this.debounceFetchTableData = debounce(() => {
+      this.cancelFetchTableData();
+      this.fetchTableData();
+    }, this.inputDebounce);
+
     if (this.immediate) this.fetchTableData();
 
     this.init = true;
@@ -358,7 +366,6 @@ export default {
         query: this.query,
         lite: true,
         filters: this.FILTERS,
-        loading: this.loading,
         'auto-layout': true,
         'label-position': 'right',
         'label-width': '80px',
@@ -415,7 +422,10 @@ export default {
               ...e.listeners,
               change: (val) => {
                 if (typeof change === 'function') change(val);
-                if (OPTIONS_COMPONENTS.indexOf(e.type) > -1) this.fetchTableData();
+                if (OPTIONS_COMPONENTS.indexOf(e.type) > -1) {
+                  this.cancelFetchTableData();
+                  this.fetchTableData();
+                }
               },
               input: (val) => {
                 if (typeof input === 'function') input(val);
@@ -461,6 +471,7 @@ export default {
     // change current page, 修改当前页
     setCurrentPage(page) {
       this.page = page;
+      this.cancelFetchTableData();
       this.fetchTableData();
     },
 
@@ -468,6 +479,7 @@ export default {
     setPageSize(size) {
       this.size = size;
       this.page = 1;
+      this.cancelFetchTableData();
       this.fetchTableData();
     },
 
@@ -518,10 +530,13 @@ export default {
           // total count, 数据总量
           const t = get(data, this.totalKey);
           this.total = +t || 0;
+          this.loading = false;
         } catch (err) {
+          if (!(err instanceof axios.Cancel)) {
+            this.loading = false;
+          }
           if (typeof this.onError === 'function') this.onError(err);
         }
-        this.loading = false;
       });
     },
 

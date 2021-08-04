@@ -33,6 +33,7 @@ $ yarn add @onemin-table/elem-table-page
       :immediate="false"
       :custom-render="customRender"
       :lite="false"
+      label-width="100px"
       data-key="data"
       total-key="meta.count"
       page-key="page[offset]"
