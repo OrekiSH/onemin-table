@@ -112,10 +112,6 @@ export default {
         },
       };
     },
-
-    isNumber() {
-      return this.$attrs.type === 'number';
-    },
   },
 
   data() {
@@ -143,7 +139,7 @@ export default {
       // eslint-disable-next-line no-nested-ternary
       return (this.split && Array.isArray(this.value))
         ? this.value.join(this.splitChar)
-        : (this.isNumber && this.value === 0) ? '' : this.value;
+        : (this.$attrs.type === 'number' && this.value === 0) ? '' : this.value;
     },
 
     /**
@@ -154,7 +150,7 @@ export default {
       // eslint-disable-next-line no-nested-ternary
       return this.split
         ? val.split(this.splitChar).filter(Boolean)
-        : (this.isNumber ? +val : val);
+        : (this.$attrs.type === 'number' ? +val : val);
     },
   },
 };

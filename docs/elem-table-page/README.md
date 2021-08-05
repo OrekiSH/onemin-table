@@ -101,6 +101,9 @@ $ yarn add @onemin-table/elem-table-page
         }, {
           label: 'foo',
           prop: 'foo',
+          attrs: {
+            type: 'number',
+          },
         }, {
           label: 'bar',
           prop: 'bar',

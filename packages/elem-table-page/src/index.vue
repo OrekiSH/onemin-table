@@ -402,8 +402,7 @@ export default {
         } else if (ELEM_RANGE_TYPES.indexOf(c.type) > -1) {
           this.set(a, c.prop, []);
         } else {
-          const isNumber = c?.attrs?.type === 'number' || c.type === 'input-number';
-          this.set(a, c.prop, isNumber ? 0 : '');
+          this.set(a, c.prop, c.type === 'input-number' ? 0 : '');
         }
 
         return a;

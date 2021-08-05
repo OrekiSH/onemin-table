@@ -80,7 +80,7 @@ $ yarn add @onemin-table/elem-input
   export default {
     data() {
       return {
-        foo: '',
+        foo: 4,
         active: true,
       };
     },
