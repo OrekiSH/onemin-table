@@ -181,6 +181,10 @@ export default {
       }
       return [];
     },
+
+    isNumber() {
+      return this.type === 'number';
+    },
   },
 
   watch: {
@@ -262,18 +266,28 @@ export default {
     },
 
     handleStartInput(event) {
+      const start = this.isNumber ? +event.target.value : event.target.value;
+      const end = this.isNumber && this.displayValue[1]
+        ? +this.displayValue[1]
+        : this.displayValue[1];
+
       if (this.displayValue) {
-        this.displayValue = [event.target.value, this.displayValue[1]];
+        this.displayValue = [start, end];
       } else {
-        this.displayValue = [event.target.value, null];
+        this.displayValue = [start, null];
       }
     },
 
     handleEndInput(event) {
+      const start = this.isNumber && this.displayValue[0]
+        ? +this.displayValue[0]
+        : this.displayValue[0];
+      const end = this.isNumber ? +event.target.value : event.target.value;
+
       if (this.displayValue) {
-        this.displayValue = [this.displayValue[0], event.target.value];
+        this.displayValue = [start, end];
       } else {
-        this.displayValue = [null, event.target.value];
+        this.displayValue = [null, end];
       }
     },
 
