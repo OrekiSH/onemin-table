@@ -237,6 +237,15 @@ export default {
       type: Function,
       default: null,
     },
+
+    /**
+     * @language=zh
+     * 筛选内容同步至url
+     */
+    syncUrl: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -393,7 +402,7 @@ export default {
       };
     },
 
-    // form attributes, 表单监听
+    // default query, 表单默认值
     defaultQuery() {
       return this.filters.reduce((a, c) => {
         if (typeof c.defaultValue !== 'undefined') {
@@ -521,19 +530,27 @@ export default {
             summary = get(data, this.summaryKey);
             if (isObject(summary)) d = [summary, ...d];
           }
+
           // transformer, 转换函数
-          if (typeof this.transformer === 'function') {
-            d = await this.transformer(d);
+          try {
+            if (typeof this.transformer === 'function') {
+              d = await this.transformer(d);
+            }
+          } catch (err) {
+            console.error(err);
           }
           this.data = d;
 
           // total count, 数据总量
           const t = get(data, this.totalKey);
           this.total = +t || 0;
+
           this.loading = false;
+          this.cancelFunc = null;
         } catch (err) {
           if (!(err instanceof axios.Cancel)) {
             this.loading = false;
+            this.cancelFunc = null;
           }
           if (typeof this.onError === 'function') this.onError(err);
         }
@@ -567,9 +584,12 @@ export default {
         ...config[key],
       });
 
-      const transformable = typeof this.paramTransformer === 'function';
-      if (transformable) {
-        result = await this.paramTransformer(result);
+      try {
+        if (typeof this.paramTransformer === 'function') {
+          result = await this.paramTransformer(result);
+        }
+      } catch (err) {
+        console.error(err);
       }
 
       return result;
