@@ -72,15 +72,6 @@ export default {
       type: String,
       default: ' ',
     },
-
-    /**
-     * @language=zh
-     * type="number"时输入字符串是否转换为number类型
-     */
-    convertNumber: {
-      type: Boolean,
-      default: true,
-    },
   },
 
   components: {
@@ -121,6 +112,10 @@ export default {
         },
       };
     },
+
+    isNumber() {
+      return this.$attrs.type === 'number';
+    },
   },
 
   data() {
@@ -145,9 +140,10 @@ export default {
      * array join into string
      */
     genInnerVal() {
+      // eslint-disable-next-line no-nested-ternary
       return (this.split && Array.isArray(this.value))
         ? this.value.join(this.splitChar)
-        : this.value;
+        : (this.isNumber && this.value === 0) ? '' : this.value;
     },
 
     /**
@@ -155,9 +151,10 @@ export default {
      * string split into array
      */
     genOuterVal(val) {
+      // eslint-disable-next-line no-nested-ternary
       return this.split
         ? val.split(this.splitChar).filter(Boolean)
-        : ((this.$attrs.type === 'number' && this.convertNumber) ? +val : val);
+        : (this.isNumber ? +val : val);
     },
   },
 };

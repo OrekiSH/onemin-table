@@ -70,6 +70,7 @@ $ yarn add @onemin-table/elem-input
       append=".com"
       prepend="https://"
       popover-content="content"
+      type="number"
       @change="handleChange"
     />
   </div>

@@ -46,6 +46,7 @@ $ yarn add @onemin-table/elem-table-page
       <section>
         <button @click="customRender = null">sku</button>
         <button @click="customRender = CUSTOM_RENDER">spu</button>
+        <button @click="handleSwitch">switch</button>
       </section>
     </elem-table-page>
     <button @click="handleResetPage">reset</button>
@@ -62,6 +63,7 @@ $ yarn add @onemin-table/elem-table-page
 
         sort: null,
         sortType: null,
+        switch: true,
       };
     },
 
@@ -106,6 +108,8 @@ $ yarn add @onemin-table/elem-table-page
           label: 'baz',
           prop: 'baz',
         }];
+
+        ref.fetchTableData();
       }, 1e3);
 
       this.columns = [{
@@ -175,6 +179,20 @@ $ yarn add @onemin-table/elem-table-page
       handleFooClick() {
         this.filters.splice(0, 1);
         console.error(this.filters);
+      },
+
+      handleSwitch() {
+        this.switch = !this.switch;
+        if (this.switch) {
+          this.filters.splice(this.filters.length - 1, 1);
+        } else {
+          this.filters.push({
+            label: 'switch',
+            prop: 'switch',
+            defaultValue: '123',
+          });
+        }
+        // this.$set(this.filters[0], 'visible', this.switch);
       },
 
       handleResetPage() {

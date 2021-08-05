@@ -263,19 +263,13 @@ export default {
       cancelFunc: null,
 
       query: null,
-      init: false,
     };
   },
 
   watch: {
     filters: {
-      handler(val, oldVal) {
-        if (this.init && val.length && !oldVal.length && !Object.keys(this.query).length) {
-          this.init = false;
-          this.query = cloneDeep(this.defaultQuery);
-          this.cancelFetchTableData();
-          this.fetchTableData();
-        }
+      handler() {
+        this.query = cloneDeep(this.defaultQuery);
       },
       deep: true,
     },
@@ -325,8 +319,6 @@ export default {
     }, this.inputDebounce);
 
     if (this.immediate) this.fetchTableData();
-
-    this.init = true;
   },
 
   beforeDestroy() {
