@@ -41,6 +41,7 @@ $ yarn add @onemin-table/elem-table-page
       url="https://kitsu.io/api/edge/anime"
       show-button-group
       layout="total, sizes, ->, prev, pager, next, jumper"
+      sync-url
       @sort-change="sortChange"
     >
       <section>
@@ -50,6 +51,7 @@ $ yarn add @onemin-table/elem-table-page
       </section>
     </elem-table-page>
     <button @click="handleResetPage">reset</button>
+    <button @click="handleSetPage">set page 1000</button>
   </div>
 </template>
 
@@ -201,6 +203,11 @@ $ yarn add @onemin-table/elem-table-page
       handleResetPage() {
         const ref = this.$refs.table;
         if (ref) ref.setCurrentPage(0);
+      },
+
+      handleSetPage() {
+        const ref = this.$refs.table;
+        if (ref) ref.page = 1000;
       },
 
       leftSlot(h) {

@@ -250,10 +250,11 @@ export default {
 
   data() {
     const at = this.$attrs || {};
+    const { page, size } = this.genDefaultPageInfo();
 
     return {
-      page: at?.['current-page'] || 1,
-      size: at?.['page-size'] || 10,
+      page: at?.['current-page'] || page,
+      size: at?.['page-size'] || size,
 
       data: [],
       total: at?.total || 0,
@@ -263,13 +264,21 @@ export default {
       cancelFunc: null,
 
       query: null,
+      fetchedFlag: false,
     };
   },
 
   watch: {
     filters: {
       handler() {
-        this.query = cloneDeep(this.defaultQuery);
+        if (!this.fetchedFlag) {
+          this.query = cloneDeep({
+            ...this.defaultQuery,
+            ...this.genSearchQuery(),
+          });
+        } else {
+          this.query = cloneDeep(this.defaultQuery);
+        }
       },
       deep: true,
     },
@@ -295,7 +304,11 @@ export default {
       });
     }
 
-    this.query = cloneDeep(this.defaultQuery);
+    // load from location.search, 从location.search中加载筛选条件
+    this.query = cloneDeep({
+      ...this.defaultQuery,
+      ...this.genSearchQuery(),
+    });
 
     this.axios = axios.create({});
 
@@ -385,10 +398,12 @@ export default {
         ...listeners,
         'on-search': () => {
           if (typeof onSearch === 'function') onSearch(this.query);
+          this.handleSyncUrl();
           this.setCurrentPage(1);
         },
         'on-reset': () => {
           if (typeof onReset === 'function') onReset(this.query);
+          this.handleSyncUrl();
           this.reset();
         },
       };
@@ -402,7 +417,8 @@ export default {
         } else if (ELEM_RANGE_TYPES.indexOf(c.type) > -1) {
           this.set(a, c.prop, []);
         } else {
-          this.set(a, c.prop, c.type === 'input-number' ? 0 : '');
+          const isNumber = c?.attrs?.type === 'number' || c.type === 'input-number';
+          this.set(a, c.prop, isNumber ? 0 : '');
         }
 
         return a;
@@ -538,6 +554,9 @@ export default {
 
           this.loading = false;
           this.cancelFunc = null;
+
+          // fetched
+          this.fetchedFlag = true;
         } catch (err) {
           if (!(err instanceof axios.Cancel)) {
             this.loading = false;
@@ -584,6 +603,66 @@ export default {
       }
 
       return result;
+    },
+
+    // check URLSearchParams, 检测URLSearchParams
+    checkURLSearchParams() {
+      return typeof window !== 'undefined' && typeof URLSearchParams !== 'undefined';
+    },
+
+    // generate default page and pageSize, page与pageSize的默认值
+    genDefaultPageInfo() {
+      let page = 1;
+      let size = 10;
+
+      if (this.syncUrl && this.checkURLSearchParams()) {
+        const search = new URLSearchParams(window.location.search);
+        // eslint-disable-next-line no-restricted-syntax
+        for (const [key, val] of search) {
+          if (key === this.pageKey) page = +val;
+          else if (key === this.pageSizeKey) size = +val;
+        }
+      }
+
+      return { page, size };
+    },
+
+    // generate query value from location.search, 从location.search生成筛选条件值
+    genSearchQuery() {
+      const result = {};
+      if (this.syncUrl && this.checkURLSearchParams()) {
+        const search = new URLSearchParams(window.location.search);
+        // eslint-disable-next-line no-restricted-syntax
+        for (const [key, val] of search) {
+          if ([this.pageKey, this.pageSizeKey].indexOf(key) === -1) {
+            try {
+              set(result, key, JSON.parse(val));
+            } catch (err) {
+              console.error(err);
+            }
+          }
+        }
+      }
+
+      return result;
+    },
+
+    // sync parameters to url, 同步筛选条件到url
+    handleSyncUrl() {
+      if (this.syncUrl && this.checkURLSearchParams()) {
+        const search = new URLSearchParams(window.location.search);
+        const searchParams = {};
+        // eslint-disable-next-line no-restricted-syntax
+        for (const [key, val] of search) searchParams[key] = val;
+        let params = this.genParams();
+        params = Object.keys(params).reduce((a, c) => ({
+          ...a,
+          [c]: JSON.stringify(params[c]),
+        }), {});
+
+        const url = `?${new URLSearchParams({ ...searchParams, ...params })}`;
+        window.history.replaceState(null, null, url);
+      }
     },
   },
 };
