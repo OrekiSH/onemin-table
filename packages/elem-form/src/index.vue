@@ -204,9 +204,10 @@ export default {
         ? this.filters.filter(isObject).map((e) => ({ ...e, span: this.GLOBAL_SPAN }))
         : this.filters.filter(isObject);
 
-      const result = filters.filter((e) => e.visible !== false);
+      const result = filters.filter((e) => typeof e.visible === 'undefined' || e.visible);
       result.forEach((item) => {
         // default input, 默认输入框
+        // eslint-disable-next-line no-param-reassign
         if (!item.type && !item.render) item.type = 'input';
       });
 

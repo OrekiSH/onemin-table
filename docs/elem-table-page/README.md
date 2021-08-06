@@ -108,7 +108,10 @@ $ yarn add @onemin-table/elem-table-page
           },
         }, {
           label: 'bar',
-          prop: 'bar',
+          prop: 'bar.zz',
+          attrs: {
+            split: true,
+          },
         }, {
           label: 'baz',
           prop: 'baz',

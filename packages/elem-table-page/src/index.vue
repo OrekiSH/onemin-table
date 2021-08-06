@@ -264,21 +264,13 @@ export default {
       cancelFunc: null,
 
       query: null,
-      fetchedFlag: false,
     };
   },
 
   watch: {
     filters: {
       handler() {
-        if (!this.fetchedFlag) {
-          this.query = cloneDeep({
-            ...this.defaultQuery,
-            ...this.genSearchQuery(),
-          });
-        } else {
-          this.query = cloneDeep(this.defaultQuery);
-        }
+        this.mergeSearchQuery();
       },
       deep: true,
     },
@@ -305,10 +297,7 @@ export default {
     }
 
     // load from location.search, 从location.search中加载筛选条件
-    this.query = cloneDeep({
-      ...this.defaultQuery,
-      ...this.genSearchQuery(),
-    });
+    this.mergeSearchQuery();
 
     this.axios = axios.create({});
 
@@ -554,9 +543,6 @@ export default {
 
           this.loading = false;
           this.cancelFunc = null;
-
-          // fetched
-          this.fetchedFlag = true;
         } catch (err) {
           if (!(err instanceof axios.Cancel)) {
             this.loading = false;
@@ -629,20 +615,32 @@ export default {
 
     // generate query value from location.search, 从location.search生成筛选条件值
     genSearchQuery() {
-      const result = {};
+      const searchQuery = {};
       if (this.syncUrl && this.checkURLSearchParams()) {
         const search = new URLSearchParams(window.location.search);
         // eslint-disable-next-line no-restricted-syntax
         for (const [key, val] of search) {
-          if ([this.pageKey, this.pageSizeKey].indexOf(key) === -1) {
-            try {
-              set(result, key, JSON.parse(val));
-            } catch (err) {
-              console.error(err);
-            }
+          try {
+            set(searchQuery, key, JSON.parse(val));
+          } catch (err) {
+            console.error(err);
           }
         }
       }
+
+      const result = {};
+      // in filters and visible is truly, 存在于filters中且visible为真值
+      this.filters.forEach((e) => {
+        if (typeof e.visible === 'undefined' || e.visible) {
+          const val = get(searchQuery, e.prop);
+
+          if (Array.isArray(val) && val.length) {
+            set(result, e.prop, val);
+          } else if (val != null && val !== 0 && val !== '') {
+            set(result, e.prop, val);
+          }
+        }
+      });
 
       return result;
     },
@@ -663,6 +661,14 @@ export default {
         const url = `?${new URLSearchParams({ ...searchParams, ...params })}`;
         window.history.replaceState(null, null, url);
       }
+    },
+
+    // merge search query with default query, 合并url中筛选条件和默认值
+    mergeSearchQuery() {
+      this.query = cloneDeep({
+        ...this.defaultQuery,
+        ...this.genSearchQuery(),
+      });
     },
   },
 };

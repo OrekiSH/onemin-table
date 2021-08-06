@@ -110,6 +110,19 @@ export default {
           const change = this.$listeners?.change;
           if (typeof change === 'function') change(this.genOuterVal(val));
         },
+        blur: (...args) => {
+          const blur = this.$listeners?.blur;
+          if (typeof blur === 'function') blur(...args);
+
+          if (this.split) {
+            const tokens = this.genOuterVal(this.inputVal);
+            if (Array.isArray(tokens)) {
+              const val = tokens.filter(Boolean);
+              this.$emit('input', val);
+              this.$emit('change', val);
+            }
+          }
+        },
       };
     },
   },
@@ -148,8 +161,8 @@ export default {
      */
     genOuterVal(val) {
       // eslint-disable-next-line no-nested-ternary
-      return this.split
-        ? val.split(this.splitChar).filter(Boolean)
+      return (this.split && Array.isArray(val))
+        ? val.split(this.splitChar)
         : (this.$attrs.type === 'number' ? +val : val);
     },
   },
