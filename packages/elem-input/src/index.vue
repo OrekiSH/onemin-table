@@ -161,7 +161,7 @@ export default {
      */
     genOuterVal(val) {
       // eslint-disable-next-line no-nested-ternary
-      return (this.split && Array.isArray(val))
+      return this.split
         ? val.split(this.splitChar)
         : (this.$attrs.type === 'number' ? +val : val);
     },

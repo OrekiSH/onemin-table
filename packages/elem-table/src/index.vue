@@ -519,8 +519,8 @@ export default {
       const temp = {
         // 可编辑列show-overflow-tooltip默认false
         // editable columns show-overflow-tooltip default false
-        'show-overflow-tooltip': typeof col.type === 'undefined'
-          || typeof col.render === 'function',
+        'show-overflow-tooltip': typeof col.type !== 'undefined'
+          || typeof col.render !== 'function',
       };
       Object.keys(col).forEach((k) => {
         if (SKIP_COLUMN_ATTRS.includes(k)) return; // 过滤children等属性, filter children attr
