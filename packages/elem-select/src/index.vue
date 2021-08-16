@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import pick from 'lodash/pick';
+import get from 'lodash/get';
 import { inputMixin, CustomRender, loadingProps } from '@onemin-table/shared';
 import SelectFragment from './components/select-fragment.vue';
 import proxyMixin from './mixins/proxy';
@@ -107,7 +109,52 @@ export default {
       default: null,
     },
 
+    /**
+     * @language=zh
+     * 指定选项的值为选项对象的某个属性值
+     */
+    valueKey: {
+      type: String,
+      default: 'value',
+    },
+
+    /**
+     * @language=zh
+     * 指定选项标签为选项对象的某个属性值
+     */
+    labelKey: {
+      type: String,
+      default: 'label',
+    },
+
+    /**
+     * @language=zh
+     * 指定选项的子选项为选项对象的某个属性值
+     */
+    childrenKey: {
+      type: String,
+      default: 'children',
+    },
+
+    /**
+     * @language=zh
+     * 指定选项的禁用为选项对象的某个属性值
+     */
+    disabledKey: {
+      type: String,
+      default: 'disabled',
+    },
+
     ...loadingProps,
+  },
+
+  provide() {
+    return pick(this, [
+      'disabledKey',
+      'labelKey',
+      'valueKey',
+      'childrenKey',
+    ]);
   },
 
   computed: {
@@ -128,7 +175,7 @@ export default {
     },
 
     isGroup() {
-      return this.options.every((option) => Array.isArray(option.children));
+      return this.options.every((option) => Array.isArray(get(option, this.childrenKey)));
     },
 
     innerPopoverAttrs() {

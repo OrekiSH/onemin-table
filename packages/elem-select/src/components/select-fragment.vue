@@ -11,14 +11,14 @@
       :empty-slot-render="slotRenders.empty"
     />
 
-    <template v-if="$attrs.isGroup">
+    <template v-if="$attrs['is-group']">
       <el-option-group
         v-for="(option, i) in ($attrs.options || [])"
         :key="i"
-        :label="option.label"
+        :label="get(option, labelKey)"
       >
         <elem-option
-          :options="option.children"
+          :options="get(option, childrenKey)"
           :option-slot-render="slotRenders.option"
         />
       </el-option-group>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import get from 'lodash/get';
 import SelectSlot from './select-slot';
 import ElemOption from './elem-option';
 import proxyMixin from '../mixins/proxy';
@@ -46,6 +47,11 @@ export default {
     ElemOption,
   },
 
+  inject: [
+    'childrenKey',
+    'labelKey',
+  ],
+
   mixins: [proxyMixin],
 
   props: {
@@ -53,6 +59,14 @@ export default {
       type: Object,
       default() { return {}; },
     },
+  },
+
+  methods: {
+    get,
+  },
+
+  mounted() {
+    console.warn(this.$attrs.options, this.childrenKey, this.$props, this.$attrs);
   },
 };
 </script>
