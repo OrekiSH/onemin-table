@@ -47,7 +47,7 @@ $ yarn add @onemin-table/elem-input
     },
     methods: {
       suffix(h, value) {
-        return value?.length > 4
+        return value && value.length > 4
           ? <i class="el-icon-time el-input__icon" />
           : <i class="el-icon-delete el-input__icon" />;
       },

@@ -160,10 +160,11 @@ export default {
      * string split into array
      */
     genOuterVal(val) {
-      // eslint-disable-next-line no-nested-ternary
-      return this.split
-        ? val.split(this.splitChar)
-        : (this.$attrs.type === 'number' ? +val : val);
+      if (this.split) {
+        return val === '' ? [] : val.split(this.splitChar);
+      }
+
+      return this.$attrs.type === 'number' ? +val : val;
     },
   },
 };
