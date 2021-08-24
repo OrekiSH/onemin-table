@@ -34,7 +34,7 @@
             :label="get(row, selectionKey)"
             @change="handleSelectionItemChange(row)"
           >{{ }}</el-radio>
-        </template>>
+        </template>
       </el-table-column>
 
       <!-- Other types with children, 其他类型带多级表头 -->
@@ -608,7 +608,12 @@ export default {
             // merge system change event with user defined change event
             // 合并系统值改变事件与用户定义值改变事件
             if (typeof changeEvent[k] === 'function') changeEvent[k](...args);
-            col.listeners[k](scope.$index, ...args);
+            const transform = this.$attrs['transform-column-listener-params'];
+            if (typeof transform === 'function') {
+              col.listeners[k](...transform(col.listeners[k].length, scope.$index, ...args));
+            } else {
+              col.listeners[k](scope.$index, ...args);
+            }
           };
         }
       });

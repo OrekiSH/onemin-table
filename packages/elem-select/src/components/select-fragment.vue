@@ -64,9 +64,5 @@ export default {
   methods: {
     get,
   },
-
-  mounted() {
-    console.warn(this.$attrs.options, this.childrenKey, this.$props, this.$attrs);
-  },
 };
 </script>

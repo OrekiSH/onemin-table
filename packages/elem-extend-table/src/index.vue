@@ -215,6 +215,11 @@ export default {
       // 前端分页, use frontend pagination
       if (this.offline) {
         attrs.data = this.pageData;
+
+        attrs['transform-column-listener-params'] = (argCount, rowIndex, ...args) => {
+          if (argCount < 3) return [rowIndex, ...args];
+          return [rowIndex, ...args, attrs.data[rowIndex]];
+        };
       }
       // 总计, summary
       if (typeof this.summaryMethod === 'function') {
@@ -285,7 +290,7 @@ export default {
       });
 
       // default sort, 默认排序
-      const prop = this.defaultSort?.prop;
+      const { prop } = this.defaultSort || {};
       if (prop) {
         const curr = (this.$attrs.columns || []).find((e) => e.prop === prop);
         // if not editable can be sorted, 不可编辑可排序
@@ -304,6 +309,7 @@ export default {
     this.setCurrentPage = (page) => {
       if (!this.offline) return;
       this.page = page;
+      this.$emit('update:currentPage', page);
       this.genPageData({ page });
     };
 
@@ -311,6 +317,7 @@ export default {
     this.setPageSize = (size) => {
       if (!this.offline) return;
       this.size = size;
+      this.$emit('update:pageSize', size);
       this.genPageData({ size });
     };
 
@@ -396,9 +403,10 @@ export default {
         const hasVal = Object.values(filterMap).some((e) => e.length);
         if (hasVal) {
           const keys = Object.keys(filterMap);
-          this.innerData = (this.$attrs.data || []).filter((row) =>
+          this.innerData = (this.$attrs.data || []).filter((row) => (
             // in selected, 在选中列表中
-            keys.every((key) => get(filterMap, key).indexOf(get(row, key)) > -1));
+            keys.every((key) => get(filterMap, key).indexOf(get(row, key)) > -1)),
+          );
         } else {
           this.genInnerData();
         }

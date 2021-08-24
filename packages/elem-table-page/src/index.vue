@@ -53,9 +53,31 @@ const DATA_KEYS = [
 const { toString } = Object.prototype;
 const isObject = (val) => toString.call(val) === '[object Object]';
 
-function onCallback(cb, rejected) {
+function deepFreeze(o) {
+  Object.freeze(o);
+
+  Object.getOwnPropertyNames(o).forEach((prop) => {
+    // eslint-disable-next-line no-prototype-builtins
+    if (o.hasOwnProperty(prop)
+    && o[prop] !== null
+    && (typeof o[prop] === 'object' || typeof o[prop] === 'function')
+    && !Object.isFrozen(o[prop])) {
+      deepFreeze(o[prop]);
+    }
+  });
+
+  return o;
+}
+
+function onCallback(cb, opts) {
   // config/error/response
   return (data) => {
+    const {
+      rejected,
+      freeze,
+    } = opts || {};
+
+    if (freeze) deepFreeze(data);
     try {
       if (typeof cb === 'function') {
         cb(rejected ? data : null, rejected ? null : data);
@@ -269,8 +291,10 @@ export default {
 
   watch: {
     filters: {
-      handler() {
-        this.mergeSearchQuery();
+      handler(val, oldVal) {
+        if (val?.length !== oldVal.length) {
+          this.mergeSearchQuery();
+        }
       },
       deep: true,
     },
@@ -304,14 +328,14 @@ export default {
     // register interceptors, 注册拦截器
     if (typeof this.onRequest === 'function') {
       this.axios.interceptors.request.use(
-        onCallback(this.onRequest, false), // resolve
-        onCallback(this.onRequest, true), // reject
+        onCallback(this.onRequest), // resolve
+        onCallback(this.onRequest, { rejected: true }), // reject
       );
     }
     if (typeof this.onResponse === 'function') {
       this.axios.interceptors.response.use(
-        onCallback(this.onResponse, false),
-        onCallback(this.onResponse, true),
+        onCallback(this.onResponse, { freeze: true }),
+        onCallback(this.onResponse, { rejected: true, freeze: true }),
       );
     }
 
