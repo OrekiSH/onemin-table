@@ -101,8 +101,12 @@ export default {
 
   methods: {
     genTextColumn(col, scope) {
-      const placeholder = (col.placeholder || this.placeholder);
       const text = get(scope.row, col.prop);
+      if (typeof col.formatter === 'function') {
+        return col.formatter(scope.row, scope.column, text, scope.$index);
+      }
+
+      const placeholder = (col.placeholder || this.placeholder);
 
       return (text == null || text === '') && typeof placeholder === 'string'
         ? placeholder
