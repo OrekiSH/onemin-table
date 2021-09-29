@@ -499,6 +499,7 @@ export default {
       // wait for request-config change
       this.$nextTick(async () => {
         this.loading = true;
+        this.data = [];
 
         try {
           // axios request config passed by user, 用户传入的axios请求配置
