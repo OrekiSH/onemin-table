@@ -4,6 +4,66 @@ schema-based表单模板组件
 
 ## 基础使用 - Usage
 
+:::demo[scope]
+<template>
+  <elem-form
+    ref="form"
+    :query="query"
+    :filters="filters"
+  />
+  <button @click="onClick">click</button>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        query: {
+          radio: 'a',
+        },
+      };
+    },
+
+    computed: {
+      filters() {
+        return [{
+          label: '单选',
+          prop: 'radio',
+          type: 'radio',
+          options: [{
+            label: 'A',
+            value: 'a',
+          }, {
+            label: 'B',
+            value: 'b',
+          }],
+        }, this.query.radio === 'a' ? {
+          label: 'foo',
+          prop: 'foo',
+          required: true,
+        } : {
+          label: 'bar',
+          prop: 'bar',
+          required: true,
+        }];
+      },
+    },
+
+    methods: {
+      async onClick() {
+        try {
+          const ref = this.$refs.form;
+          const { valid } = await ref.validateAsync();
+          console.warn(valid);
+        } catch (err) {
+          console.error(err);
+        }
+      },
+    },
+  }
+</script>
+:::
+
 ::: demo
 <template>
   <div style="height: 400px;overflow: scroll;">

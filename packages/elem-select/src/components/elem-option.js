@@ -26,12 +26,6 @@ export default {
     return (Array.isArray(props.options) ? props.options : []).map((item, i) => {
       const slotRender = item.optionSlotRender || props.optionSlotRender;
 
-      console.error({
-        label: get(item, injections.labelKey),
-        value: get(item, injections.valueKey),
-        disabled: get(item, injections.disabledKey),
-      });
-
       return h('el-option', {
         key: i,
         props: {

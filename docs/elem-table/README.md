@@ -57,9 +57,7 @@ $ yarn add @onemin-table/elem-table
         }, {
           label: '姓名',
           prop: 'name',
-          formatter() {
-            return 'wtf';
-          },
+          formatter: this.formatter
         }, {
           prop: 'z',
           children: [{
@@ -119,6 +117,11 @@ $ yarn add @onemin-table/elem-table
       // handleSelectionItemChange(e) {
       //   this.radio = e;
       // },
+
+      formatter(row, column, cellValue) {
+        console.warn(row, column, cellValue);
+        return 'wtf';
+      },
 
       onDataChange() {
         console.warn(this.data);

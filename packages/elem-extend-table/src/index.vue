@@ -377,6 +377,9 @@ export default {
 
             let val = this.query[k];
             if (typeof val === 'string') val = val.trim();
+            if (Array.isArray(val) && val.filter(Boolean).some((e) => rowVal.indexOf(`${e}`) > -1)) {
+              return true;
+            }
             if (rowVal?.indexOf?.(val) > -1) return true;
           }
 
