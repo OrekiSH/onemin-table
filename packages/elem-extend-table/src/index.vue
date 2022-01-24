@@ -262,10 +262,7 @@ export default {
       this.genInnerData();
 
       // default query, 默认过滤参数
-      const values = Object.values(this.query || {}).filter(Boolean);
-      if (values.length) {
-        this.filterInnerData();
-      }
+      this.filterInnerData();
 
       // generate current page data, 生成当前页数据
       this.genPageData();
@@ -274,6 +271,7 @@ export default {
       this.$watch('$attrs.data', {
         handler(val, oldVal) {
           this.genInnerData();
+          this.filterInnerData();
           this.genPageData(oldVal.length !== val.length ? { page: 1 } : {});
         },
         deep: true,
@@ -367,7 +365,10 @@ export default {
 
       // filter inner data, 列表数据过滤
       this.filterInnerData = () => {
-        const keys = Object.keys(this.query || {});
+        const keys = Object.keys(this.query || {}).filter(Boolean);
+        if (!keys?.length) {
+          return;
+        }
 
         this.innerData = this.innerData.filter((row) => {
           for (let i = 0; i < keys.length; i += 1) {
